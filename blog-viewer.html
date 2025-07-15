@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Ale Gallo</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Ale Gallo - Blog</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog.html">📝 Blog</a></li>
+                <li><a href="about.html">👤 Sobre mí</a></li>
+                <li><a href="admin.html" style="color: #4a90e2;">🔐 Admin</a></li>
+                <li><a href="#" onclick="logout()" style="color: #f44336;">🚪 Salir</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="blog-header">
+            <h2>📝 Mi Blog Personal</h2>
+            <p>Reflexiones, experiencias y pensamientos sobre música, arte y vida</p>
+        </section>
+        
+        <section class="blog-content">
+            <!-- Contenedor para los posts del blog -->
+            <div id="blog-posts" class="blog-posts">
+                <p>Cargando entradas...</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>© 2025 Ale Gallo - Blog Personal</p>
+    </footer>
+    
+    <!-- Scripts de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/blog-viewer.js"></script>
+</body>
+</html>

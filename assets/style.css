@@ -1,4 +1,3 @@
-
 body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
@@ -53,4 +52,506 @@ footer {
     margin-top: 2rem;
     font-size: 0.9rem;
     color: #aaa;
+}
+
+/* Estilos para formularios */
+.contact-form, .new-post-form, .comment-form {
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #333;
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+}
+
+/* Estilos para notificaciones */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    z-index: 1000;
+    font-weight: 600;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+.notification.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Estilos para posts del blog */
+.blog-posts {
+    margin-top: 2rem;
+}
+
+.blog-post {
+    background-color: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.blog-post h3 {
+    margin-top: 0;
+    color: #4a90e2;
+}
+
+.post-date {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 1rem;
+}
+
+.read-more {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para post individual */
+.post-content {
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.post-content h2 {
+    color: #4a90e2;
+    margin-top: 0;
+}
+
+.post-text {
+    line-height: 1.6;
+    margin-top: 1.5rem;
+}
+
+/* Estilos para comentarios */
+.comments-section {
+    margin-top: 2rem;
+}
+
+.comments {
+    margin-bottom: 2rem;
+}
+
+.comment {
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.comment h4 {
+    margin: 0 0 0.5rem 0;
+    color: #4a90e2;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+/* Estilos para sección de contacto */
+.contact-section {
+    margin-bottom: 2rem;
+}
+
+.social-section {
+    margin-top: 2rem;
+}
+
+.social-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: #4a90e2;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid #4a90e2;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.social-links a:hover {
+    background-color: #4a90e2;
+    color: white;
+}
+
+/* Sección de administración (oculta por defecto) */
+.admin-section {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 2px solid #4a90e2;
+}
+
+/* Estilos para la sección de información de acceso */
+.access-info {
+    margin: 2rem 0;
+}
+
+.info-box {
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid #4a90e2;
+}
+
+.info-box h3 {
+    color: #4a90e2;
+    margin-top: 0;
+}
+
+.info-box ul {
+    color: #ccc;
+    padding-left: 1.5rem;
+}
+
+.info-box li {
+    margin: 0.5rem 0;
+}
+
+.info-box p {
+    margin: 1rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+    
+    .social-links {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .notification {
+        right: 10px;
+        left: 10px;
+    }
+}
+
+/* Estilos para autenticación */
+.auth-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.auth-modal-content {
+    background-color: #1e1e1e;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    border: 2px solid #4a90e2;
+}
+
+.auth-modal-content h3 {
+    margin-top: 0;
+    color: #4a90e2;
+    text-align: center;
+}
+
+.auth-modal-content p {
+    text-align: center;
+    color: #ccc;
+    margin-bottom: 1.5rem;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background-color: #666;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #555;
+}
+
+.login-error {
+    color: #f44336;
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(244, 67, 54, 0.1);
+    border-radius: 4px;
+}
+
+.auth-controls {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
+
+.auth-controls button {
+    margin: 0 0.5rem;
+}
+
+.auth-required-message {
+    margin: 1rem 0;
+}
+
+.auth-required-message p {
+    border: 2px solid #4a90e2;
+}
+
+.protected-form {
+    display: none;
+}
+
+/* Estilo para el indicador de estado de sesión */
+.session-status {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #4a90e2;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    z-index: 1000;
+}
+
+/* Estilos para la página del blog viewer */
+.blog-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.blog-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.blog-header p {
+    font-size: 1.2rem;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.blog-posts {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.blog-post {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.blog-post:hover {
+    transform: translateY(-5px);
+}
+
+.blog-post h3 {
+    color: #4a90e2;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.post-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.post-content {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: #f0f0f0;
+}
+
+.post-actions {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.btn-comments {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-comments:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.comments-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    border-left: 4px solid #4a90e2;
+}
+
+.comments-container h4 {
+    color: #4a90e2;
+    margin-bottom: 1rem;
+}
+
+.comments-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.comment {
+    background-color: #333;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.comment-header strong {
+    color: #4a90e2;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.comment-content {
+    color: #f0f0f0;
+    line-height: 1.4;
+}
+
+/* Responsive para el blog viewer */
+@media (max-width: 768px) {
+    .blog-header h2 {
+        font-size: 2rem;
+    }
+    
+    .blog-header p {
+        font-size: 1rem;
+    }
+    
+    .blog-post {
+        padding: 1.5rem;
+    }
+    
+    .post-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
