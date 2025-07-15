@@ -18,7 +18,7 @@ function loadBlogPosts() {
     
     // Referencia a la base de datos
     const database = firebase.database();
-    const postsRef = database.ref('posts');
+    const postsRef = database.ref('blog-posts');
     
     postsRef.on('value', (snapshot) => {
         const posts = snapshot.val();
@@ -35,7 +35,7 @@ function loadBlogPosts() {
             ...posts[key]
         }));
         
-        postsArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+        postsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         
         // Crear HTML para cada post
         postsArray.forEach(post => {
@@ -53,11 +53,11 @@ function createPostElement(post) {
         <article>
             <h3>${post.title}</h3>
             <div class="post-meta">
-                <span>📅 ${formatDate(post.date)}</span>
-                <span>🏷️ ${post.category || 'General'}</span>
+                <span>📅 ${formatDate(post.timestamp)}</span>
+                <span>👤 ${post.author}</span>
             </div>
             <div class="post-content">
-                ${post.content.replace(/\n/g, '<br>')}
+                ${post.summary ? post.summary.replace(/\n/g, '<br>') : post.content.substring(0, 200) + '...'}
             </div>
             <div class="post-actions">
                 <button onclick="showComments('${post.id}')" class="btn-comments">
@@ -79,8 +79,8 @@ function createPostElement(post) {
 }
 
 // Función para formatear fecha
-function formatDate(dateString) {
-    const date = new Date(dateString);
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
     return date.toLocaleDateString('es-ES', {
         year: 'numeric',
         month: 'long',
@@ -122,7 +122,7 @@ function loadComments(postId) {
             ...comments[key]
         }));
         
-        commentsArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+        commentsArray.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         
         // Crear HTML para cada comentario
         commentsArray.forEach(comment => {
@@ -131,10 +131,10 @@ function loadComments(postId) {
             commentElement.innerHTML = `
                 <div class="comment-header">
                     <strong>${comment.name}</strong>
-                    <span class="comment-date">${formatDate(comment.date)}</span>
+                    <span class="comment-date">${formatDate(comment.timestamp)}</span>
                 </div>
                 <div class="comment-content">
-                    ${comment.content.replace(/\n/g, '<br>')}
+                    ${comment.comment.replace(/\n/g, '<br>')}
                 </div>
             `;
             commentsContainer.appendChild(commentElement);
