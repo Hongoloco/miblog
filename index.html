@@ -73,6 +73,14 @@
             color: #f44336;
             margin-top: 1rem;
             display: none;
+            padding: 0.5rem;
+            background: rgba(244, 67, 54, 0.1);
+            border-radius: 4px;
+            border: 1px solid #f44336;
+        }
+        
+        .login-error.show {
+            display: block;
         }
         
         /* Edit Mode Styles */
@@ -203,17 +211,19 @@
     <!-- Login Modal -->
     <div id="loginModal" class="login-modal">
         <div class="login-content">
-            <h2 class="login-title">🔐 Login</h2>
+            <h2 class="login-title">🔐 Login de Administrador</h2>
             <form id="loginForm" class="login-form">
-                <input type="text" id="username" class="login-input" placeholder="Usuario" required>
-                <input type="password" id="password" class="login-input" placeholder="Contraseña" required>
-                <button type="submit" class="login-btn">Entrar</button>
-                <div id="loginError" class="login-error">Usuario o contraseña incorrectos</div>
+                <input type="text" id="username" class="login-input" placeholder="Usuario" required autocomplete="username">
+                <input type="password" id="password" class="login-input" placeholder="Contraseña" required autocomplete="current-password">
+                <button type="submit" class="login-btn">🔐 Iniciar Sesión</button>
+                <div id="loginError" class="login-error" style="display: none;">Usuario o contraseña incorrectos</div>
             </form>
             <div style="margin-top: 1rem; color: #888; font-size: 0.9rem;">
+                <p><strong>Credenciales de prueba:</strong></p>
                 <p>Usuario: <strong>alito</strong></p>
                 <p>Contraseña: <strong>vinilo28</strong></p>
             </div>
+            <button type="button" onclick="closeLoginModal()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer;">×</button>
         </div>
     </div>
     
@@ -320,8 +330,8 @@
     <script src="js/firebase-config.js"></script>
     
     <script>
-        // Sistema de Login y Edición Simple
-        class SimpleEditor {
+        // Sistema de Login y Edición Mejorado
+        class AdvancedEditor {
             constructor() {
                 this.isLoggedIn = false;
                 this.isEditMode = false;
@@ -333,127 +343,297 @@
             }
             
             init() {
+                console.log('🎨 Advanced Editor System iniciado');
+                
+                // Verificar si Firebase está disponible
+                this.checkFirebaseConnection();
+                
                 // Event listeners
-                document.getElementById('quickLoginBtn').addEventListener('click', () => this.showLogin());
-                document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
-                document.getElementById('saveBtn').addEventListener('click', () => this.saveChanges());
-                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+                this.setupEventListeners();
                 
-                // Contact form
-                document.getElementById('quickContactForm').addEventListener('submit', (e) => this.handleContact(e));
+                // Verificar estado de autenticación
+                this.checkAuthState();
+            }
+            
+            checkFirebaseConnection() {
+                if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                    console.log('✅ Firebase conectado correctamente');
+                    this.firebaseAvailable = true;
+                    
+                    // Probar conexión a la base de datos
+                    firebase.database().ref('.info/connected').on('value', (snapshot) => {
+                        if (snapshot.val() === true) {
+                            console.log('✅ Conexión a Firebase Database establecida');
+                            this.showStatus('🔥 Firebase conectado', 'success');
+                        } else {
+                            console.warn('⚠️ Sin conexión a Firebase Database');
+                            this.showStatus('⚠️ Firebase sin conexión', 'warning');
+                        }
+                    });
+                } else {
+                    console.warn('⚠️ Firebase no está disponible');
+                    this.firebaseAvailable = false;
+                    this.showStatus('⚠️ Firebase no disponible - usando almacenamiento local', 'warning');
+                }
+            }
+            
+            setupEventListeners() {
+                // Botón de login rápido
+                const quickLoginBtn = document.getElementById('quickLoginBtn');
+                if (quickLoginBtn) {
+                    quickLoginBtn.addEventListener('click', () => this.showLogin());
+                }
                 
-                // Close modal on background click
-                document.getElementById('loginModal').addEventListener('click', (e) => {
-                    if (e.target === document.getElementById('loginModal')) {
+                // Formulario de login
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                }
+                
+                // Botones de la toolbar
+                const saveBtn = document.getElementById('saveBtn');
+                const logoutBtn = document.getElementById('logoutBtn');
+                
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', () => this.saveChanges());
+                }
+                
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', () => this.logout());
+                }
+                
+                // Formulario de contacto
+                const contactForm = document.getElementById('quickContactForm');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', (e) => this.handleContact(e));
+                }
+                
+                // Cerrar modal al hacer clic fuera
+                const loginModal = document.getElementById('loginModal');
+                if (loginModal) {
+                    loginModal.addEventListener('click', (e) => {
+                        if (e.target === loginModal) {
+                            this.hideLogin();
+                        }
+                    });
+                }
+                
+                // Atajos de teclado
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 's' && this.isEditMode) {
+                        e.preventDefault();
+                        this.saveChanges();
+                    }
+                    if (e.key === 'Escape' && document.getElementById('loginModal').classList.contains('active')) {
                         this.hideLogin();
                     }
                 });
-                
-                // Check if already logged in
-                if (sessionStorage.getItem('editorLoggedIn') === 'true') {
+            }
+            
+            checkAuthState() {
+                const auth = sessionStorage.getItem('editorLoggedIn');
+                if (auth === 'true') {
                     this.isLoggedIn = true;
-                    this.updateUI();
+                    this.enableEditMode();
                 }
             }
             
             showLogin() {
-                document.getElementById('loginModal').classList.add('active');
-                document.getElementById('username').focus();
+                const modal = document.getElementById('loginModal');
+                const usernameInput = document.getElementById('username');
+                const errorDiv = document.getElementById('loginError');
+                
+                if (modal) {
+                    modal.classList.add('active');
+                    if (usernameInput) {
+                        usernameInput.focus();
+                    }
+                    if (errorDiv) {
+                        errorDiv.style.display = 'none';
+                        errorDiv.classList.remove('show');
+                    }
+                }
             }
             
             hideLogin() {
-                document.getElementById('loginModal').classList.remove('active');
-                document.getElementById('loginError').style.display = 'none';
+                const modal = document.getElementById('loginModal');
+                const form = document.getElementById('loginForm');
+                const errorDiv = document.getElementById('loginError');
+                
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+                if (form) {
+                    form.reset();
+                }
+                if (errorDiv) {
+                    errorDiv.style.display = 'none';
+                    errorDiv.classList.remove('show');
+                }
             }
             
             handleLogin(e) {
                 e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const errorDiv = document.getElementById('loginError');
+                
+                console.log('🔐 Intentando login con usuario:', username);
                 
                 if (username === this.credentials.username && password === this.credentials.password) {
                     this.isLoggedIn = true;
                     sessionStorage.setItem('editorLoggedIn', 'true');
+                    
                     this.hideLogin();
                     this.enableEditMode();
-                    this.showStatus('¡Login exitoso! Modo edición activado', 'success');
+                    
+                    this.showStatus('✅ Login exitoso - Modo edición activado', 'success');
+                    console.log('✅ Login exitoso');
                 } else {
-                    document.getElementById('loginError').style.display = 'block';
+                    if (errorDiv) {
+                        errorDiv.style.display = 'block';
+                        errorDiv.classList.add('show');
+                        errorDiv.textContent = '❌ Usuario o contraseña incorrectos';
+                    }
+                    this.showStatus('❌ Credenciales incorrectas', 'error');
+                    console.log('❌ Login fallido');
                 }
             }
             
             enableEditMode() {
                 this.isEditMode = true;
                 document.body.classList.add('edit-mode');
-                document.getElementById('editToolbar').classList.add('active');
-                document.getElementById('quickLoginBtn').style.display = 'none';
                 
-                // Make elements editable
-                document.querySelectorAll('[contenteditable="false"]').forEach(el => {
+                const toolbar = document.getElementById('editToolbar');
+                const quickLoginBtn = document.getElementById('quickLoginBtn');
+                
+                if (toolbar) {
+                    toolbar.classList.add('active');
+                }
+                if (quickLoginBtn) {
+                    quickLoginBtn.style.display = 'none';
+                }
+                
+                // Hacer elementos editables
+                const editableElements = document.querySelectorAll('[contenteditable="false"]');
+                editableElements.forEach(el => {
                     el.contentEditable = 'true';
+                    el.addEventListener('input', () => this.handleContentChange(el));
                 });
                 
-                this.showStatus('Modo edición activado. Haz clic en cualquier texto para editarlo', 'success');
+                this.showStatus('✏️ Modo edición activado - Ctrl+S para guardar', 'success');
+                console.log('✏️ Modo edición activado');
             }
             
             disableEditMode() {
                 this.isEditMode = false;
                 document.body.classList.remove('edit-mode');
-                document.getElementById('editToolbar').classList.remove('active');
-                document.getElementById('quickLoginBtn').style.display = 'block';
                 
-                // Make elements non-editable
-                document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                const toolbar = document.getElementById('editToolbar');
+                const quickLoginBtn = document.getElementById('quickLoginBtn');
+                
+                if (toolbar) {
+                    toolbar.classList.remove('active');
+                }
+                if (quickLoginBtn) {
+                    quickLoginBtn.style.display = 'block';
+                }
+                
+                // Hacer elementos no editables
+                const editableElements = document.querySelectorAll('[contenteditable="true"]');
+                editableElements.forEach(el => {
                     el.contentEditable = 'false';
                 });
             }
             
+            handleContentChange(element) {
+                // Marcar como modificado
+                element.classList.add('modified');
+                
+                // Auto-guardar después de 3 segundos de inactividad
+                clearTimeout(this.autoSaveTimer);
+                this.autoSaveTimer = setTimeout(() => {
+                    this.saveChanges();
+                }, 3000);
+            }
+            
             saveChanges() {
-                // Save to localStorage as backup
+                if (!this.isEditMode) {
+                    this.showStatus('⚠️ No estás en modo edición', 'warning');
+                    return;
+                }
+                
+                console.log('💾 Guardando cambios...');
+                
                 const editableElements = document.querySelectorAll('[contenteditable="true"]');
                 const changes = {};
                 
                 editableElements.forEach((el, index) => {
-                    changes[`element_${index}`] = el.innerHTML;
-                });
-                
-                localStorage.setItem('pageEdits', JSON.stringify(changes));
-                
-                // Try to save to Firebase
-                if (typeof BlogDB !== 'undefined') {
-                    const pageData = {
-                        page: 'index',
-                        content: changes,
+                    const selector = this.getElementSelector(el);
+                    changes[selector] = {
+                        content: el.textContent,
+                        html: el.innerHTML,
                         timestamp: Date.now()
                     };
-                    
-                    firebase.database().ref('page-edits').push(pageData)
-                        .then(() => {
-                            this.showStatus('Cambios guardados exitosamente', 'success');
-                        })
-                        .catch(error => {
-                            this.showStatus('Guardado local exitoso (Firebase no disponible)', 'success');
-                        });
+                });
+                
+                const pageData = {
+                    page: 'index',
+                    changes: changes,
+                    timestamp: Date.now(),
+                    savedBy: 'alito'
+                };
+                
+                // Guardar en localStorage como respaldo
+                localStorage.setItem('pageEdits_index', JSON.stringify(pageData));
+                
+                // Intentar guardar en Firebase
+                if (this.firebaseAvailable) {
+                    this.saveToFirebase(pageData);
                 } else {
-                    this.showStatus('Cambios guardados localmente', 'success');
+                    this.showStatus('💾 Guardado localmente (Firebase no disponible)', 'success');
                 }
+                
+                // Remover marca de modificado
+                editableElements.forEach(el => {
+                    el.classList.remove('modified');
+                });
+                
+                console.log('💾 Cambios guardados');
             }
             
-            logout() {
-                this.isLoggedIn = false;
-                sessionStorage.removeItem('editorLoggedIn');
-                this.disableEditMode();
-                this.showStatus('Sesión cerrada', 'success');
+            saveToFirebase(pageData) {
+                const saveRef = firebase.database().ref('page-edits').push();
                 
-                // Clear form
-                document.getElementById('loginForm').reset();
+                saveRef.set(pageData)
+                    .then(() => {
+                        this.showStatus('💾 Guardado exitoso en Firebase', 'success');
+                        console.log('✅ Guardado en Firebase exitoso');
+                    })
+                    .catch(error => {
+                        console.error('❌ Error guardando en Firebase:', error);
+                        this.showStatus('❌ Error en Firebase - Guardado local exitoso', 'error');
+                    });
+            }
+            
+            getElementSelector(element) {
+                if (element.id) return `#${element.id}`;
+                if (element.className) return `.${element.className.split(' ')[0]}`;
+                return element.tagName.toLowerCase();
             }
             
             handleContact(e) {
                 e.preventDefault();
-                const name = document.getElementById('contactName').value;
-                const email = document.getElementById('contactEmail').value;
-                const message = document.getElementById('contactMessage').value;
+                
+                const name = document.getElementById('contactName').value.trim();
+                const email = document.getElementById('contactEmail').value.trim();
+                const message = document.getElementById('contactMessage').value.trim();
+                
+                if (!name || !email || !message) {
+                    this.showStatus('⚠️ Completa todos los campos', 'warning');
+                    return;
+                }
                 
                 const contactData = {
                     name: name,
@@ -463,42 +643,62 @@
                     read: false
                 };
                 
-                // Save to Firebase
-                if (typeof firebase !== 'undefined') {
+                // Guardar en localStorage
+                const contacts = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                contacts.push(contactData);
+                localStorage.setItem('contactMessages', JSON.stringify(contacts));
+                
+                // Intentar guardar en Firebase
+                if (this.firebaseAvailable) {
                     firebase.database().ref('contact-messages').push(contactData)
                         .then(() => {
-                            this.showStatus('Mensaje enviado exitosamente', 'success');
+                            this.showStatus('📧 Mensaje enviado exitosamente', 'success');
                             document.getElementById('quickContactForm').reset();
+                            console.log('✅ Mensaje de contacto enviado');
                         })
                         .catch(error => {
-                            this.showStatus('Error al enviar mensaje', 'error');
+                            console.error('❌ Error enviando mensaje:', error);
+                            this.showStatus('❌ Error enviando mensaje - Guardado local exitoso', 'error');
                         });
                 } else {
-                    this.showStatus('Mensaje guardado localmente', 'success');
+                    this.showStatus('📧 Mensaje guardado localmente', 'success');
                     document.getElementById('quickContactForm').reset();
                 }
             }
             
+            logout() {
+                this.isLoggedIn = false;
+                sessionStorage.removeItem('editorLoggedIn');
+                this.disableEditMode();
+                this.showStatus('🚪 Sesión cerrada exitosamente', 'success');
+                console.log('🚪 Logout exitoso');
+            }
+            
             showStatus(message, type) {
                 const statusEl = document.getElementById('statusMessage');
+                if (!statusEl) return;
+                
                 statusEl.textContent = message;
                 statusEl.className = `status-message ${type} active`;
                 
                 setTimeout(() => {
                     statusEl.classList.remove('active');
-                }, 3000);
-            }
-            
-            updateUI() {
-                if (this.isLoggedIn) {
-                    this.enableEditMode();
-                }
+                }, 4000);
             }
         }
         
-        // Initialize editor when page loads
+        // Función global para cerrar modal
+        function closeLoginModal() {
+            const modal = document.getElementById('loginModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+        
+        // Inicializar cuando el DOM esté listo
+        let editorInstance;
         document.addEventListener('DOMContentLoaded', () => {
-            new SimpleEditor();
+            editorInstance = new AdvancedEditor();
         });
     </script>
 </body>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Firebase Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background: #1a1a1a;
+            color: #f0f0f0;
+        }
+        .test-result {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            border: 1px solid #333;
+        }
+        .success { background: #4caf50; color: white; }
+        .error { background: #f44336; color: white; }
+        .warning { background: #ff9800; color: white; }
+        .info { background: #2196f3; color: white; }
+        button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        #results {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            padding: 1rem;
+            background: #2a2a2a;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Test de Conexión Firebase</h1>
+    
+    <div>
+        <button onclick="testFirebaseConnection()">🔍 Probar Conexión</button>
+        <button onclick="testWriteData()">✍️ Probar Escritura</button>
+        <button onclick="testReadData()">📖 Probar Lectura</button>
+        <button onclick="clearResults()">🧹 Limpiar</button>
+    </div>
+    
+    <div id="results"></div>
+    
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong> - ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        function testFirebaseConnection() {
+            log('🔍 Iniciando test de conexión Firebase...', 'info');
+            
+            // Check if Firebase is loaded
+            if (typeof firebase === 'undefined') {
+                log('❌ Firebase no está cargado', 'error');
+                return;
+            }
+            
+            log('✅ Firebase SDK cargado correctamente', 'success');
+            
+            // Check if app is initialized
+            if (firebase.apps.length === 0) {
+                log('❌ Firebase no está inicializado', 'error');
+                return;
+            }
+            
+            log('✅ Firebase app inicializada', 'success');
+            
+            // Test database connection
+            const database = firebase.database();
+            
+            database.ref('.info/connected').once('value')
+                .then(snapshot => {
+                    if (snapshot.val() === true) {
+                        log('✅ Conexión a Firebase Database exitosa', 'success');
+                        
+                        // Test permissions
+                        database.ref('.info/serverTimeOffset').once('value')
+                            .then(snapshot => {
+                                log(`✅ Permissions OK - Server time offset: ${snapshot.val()}ms`, 'success');
+                            })
+                            .catch(error => {
+                                log(`⚠️ Permissions limitadas: ${error.message}`, 'warning');
+                            });
+                    } else {
+                        log('❌ No hay conexión a Firebase Database', 'error');
+                    }
+                })
+                .catch(error => {
+                    log(`❌ Error conectando a Firebase: ${error.message}`, 'error');
+                });
+        }
+        
+        function testWriteData() {
+            log('✍️ Probando escritura en Firebase...', 'info');
+            
+            if (typeof firebase === 'undefined' || firebase.apps.length === 0) {
+                log('❌ Firebase no está disponible', 'error');
+                return;
+            }
+            
+            const database = firebase.database();
+            const testData = {
+                message: 'Test desde firebase-test.html',
+                timestamp: Date.now(),
+                user: 'test-user'
+            };
+            
+            const testRef = database.ref('test-data').push();
+            
+            testRef.set(testData)
+                .then(() => {
+                    log(`✅ Datos escritos exitosamente. ID: ${testRef.key}`, 'success');
+                })
+                .catch(error => {
+                    log(`❌ Error escribiendo datos: ${error.message}`, 'error');
+                    log(`❌ Código de error: ${error.code}`, 'error');
+                });
+        }
+        
+        function testReadData() {
+            log('📖 Probando lectura desde Firebase...', 'info');
+            
+            if (typeof firebase === 'undefined' || firebase.apps.length === 0) {
+                log('❌ Firebase no está disponible', 'error');
+                return;
+            }
+            
+            const database = firebase.database();
+            
+            database.ref('test-data').limitToLast(5).once('value')
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    if (data) {
+                        const count = Object.keys(data).length;
+                        log(`✅ Datos leídos exitosamente. ${count} registros encontrados`, 'success');
+                        
+                        Object.entries(data).forEach(([key, value]) => {
+                            log(`📄 ${key}: ${value.message} (${new Date(value.timestamp).toLocaleString()})`, 'info');
+                        });
+                    } else {
+                        log('⚠️ No se encontraron datos en test-data', 'warning');
+                    }
+                })
+                .catch(error => {
+                    log(`❌ Error leyendo datos: ${error.message}`, 'error');
+                });
+        }
+        
+        // Auto-run connection test on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                testFirebaseConnection();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
