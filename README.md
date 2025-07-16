@@ -10,6 +10,9 @@ Un blog personal moderno desarrollado con tecnologías web nativas y Firebase co
 - **Interfaz moderna**: UI limpia y gaming-style
 - **Funcionalidad completa**: Agregar, editar, eliminar contenido
 - **Actualizaciones en tiempo real**: Los cambios se ven instantáneamente
+- **🔥 Indicadores de estado**: Monitoreo visual de conexión Firebase
+- **💾 Indicador de sincronización**: Feedback inmediato de operaciones
+- **📱 Completamente responsive**: Optimizado para todos los dispositivos
 
 ## 🛠️ Tecnologías utilizadas
 
@@ -36,8 +39,12 @@ miblog/
 │   └── post1.html           # Ejemplo de post
 ├── firebase-config.js       # Configuración de Firebase
 ├── firebase-service.js      # Servicio de Firebase
+├── firebase-connection-monitor.js  # Monitor de conexión
+├── sync-status-indicator.js # Indicador de sincronización
+├── firebase-indicators.js   # Inicializador de indicadores
 ├── firebase.json           # Configuración de Firebase Hosting
-└── FIREBASE_SETUP.md       # Guía de configuración
+├── FIREBASE_SETUP.md       # Guía de configuración
+└── FIREBASE_INDICATORS.md  # Documentación de indicadores
 ```
 
 ## 🚀 Configuración rápida
@@ -73,6 +80,9 @@ npm run deploy
 - [x] Menú móvil hamburguesa
 - [x] Notificaciones en tiempo real
 - [x] Hosting en Firebase
+- [x] 🔥 Indicadores de conexión Firebase
+- [x] 💾 Indicadores de sincronización
+- [x] 📱 Feedback visual completo
 
 ### 🔄 Próximamente
 - [ ] Sistema de notas completo

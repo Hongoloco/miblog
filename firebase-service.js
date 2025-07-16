@@ -8,7 +8,10 @@ import {
     updateDoc,
     query,
     orderBy,
-    onSnapshot
+    onSnapshot,
+    enableNetwork,
+    disableNetwork,
+    connectFirestoreEmulator
 } from 'firebase/firestore';
 import { db } from './firebase-config.js';
 
@@ -16,6 +19,67 @@ class FirebaseService {
     constructor() {
         this.resourcesCollection = 'resources';
         this.notesCollection = 'notes';
+        this.isConnected = false;
+        this.connectionListeners = [];
+        this.setupConnectionMonitoring();
+    }
+
+    setupConnectionMonitoring() {
+        // Verificar conexión inicial
+        this.checkConnection();
+        
+        // Escuchar cambios de conexión
+        window.addEventListener('online', () => {
+            this.handleOnline();
+        });
+        
+        window.addEventListener('offline', () => {
+            this.handleOffline();
+        });
+    }
+
+    async checkConnection() {
+        try {
+            // Intentar una operación simple para verificar conexión
+            const testQuery = query(collection(db, this.resourcesCollection));
+            await getDocs(testQuery);
+            this.isConnected = true;
+            this.notifyConnectionChange(true);
+        } catch (error) {
+            console.warn('Firebase connection check failed:', error);
+            this.isConnected = false;
+            this.notifyConnectionChange(false);
+        }
+    }
+
+    async handleOnline() {
+        try {
+            await enableNetwork(db);
+            this.isConnected = true;
+            this.notifyConnectionChange(true);
+            console.log('🔥 Firebase back online');
+        } catch (error) {
+            console.error('Error enabling Firebase network:', error);
+        }
+    }
+
+    async handleOffline() {
+        try {
+            await disableNetwork(db);
+            this.isConnected = false;
+            this.notifyConnectionChange(false);
+            console.log('⚠️ Firebase offline');
+        } catch (error) {
+            console.error('Error disabling Firebase network:', error);
+        }
+    }
+
+    onConnectionChange(callback) {
+        this.connectionListeners.push(callback);
+    }
+
+    notifyConnectionChange(isConnected) {
+        this.connectionListeners.forEach(callback => callback(isConnected));
     }
 
     // RECURSOS

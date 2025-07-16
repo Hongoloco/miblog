@@ -1,9 +1,13 @@
 // JavaScript para recursos con Firebase
 import FirebaseService from '../firebase-service.js';
+import FirebaseConnectionMonitor from '../firebase-connection-monitor.js';
+import SyncStatusIndicator from '../sync-status-indicator.js';
 
 class ResourcesManager {
     constructor() {
         this.firebaseService = new FirebaseService();
+        this.connectionMonitor = new FirebaseConnectionMonitor();
+        this.syncIndicator = new SyncStatusIndicator();
         this.init();
     }
 
@@ -105,6 +109,9 @@ class ResourcesManager {
             category: document.getElementById('category').value
         };
 
+        // Mostrar indicador de sincronización
+        this.syncIndicator.showSyncing();
+
         try {
             const id = await this.firebaseService.addResource(resource);
             console.log('Recurso agregado:', id);
@@ -112,11 +119,15 @@ class ResourcesManager {
             form.reset();
             window.closeModal();
             
+            // Mostrar éxito en sincronización
+            this.syncIndicator.showSuccess('Recurso guardado');
+            
             // Mostrar notificación
             this.showNotification('Recurso agregado exitosamente', 'success');
             
         } catch (error) {
             console.error('Error agregando recurso:', error);
+            this.syncIndicator.showError('Error al guardar');
             this.showNotification('Error al agregar recurso', 'error');
         }
     }
@@ -183,11 +194,15 @@ class ResourcesManager {
 
     async deleteResource(id) {
         if (confirm('¿Estás seguro de que quieres eliminar este recurso?')) {
+            this.syncIndicator.showSyncing();
+            
             try {
                 await this.firebaseService.deleteResource(id);
+                this.syncIndicator.showSuccess('Recurso eliminado');
                 this.showNotification('Recurso eliminado exitosamente', 'success');
             } catch (error) {
                 console.error('Error eliminando recurso:', error);
+                this.syncIndicator.showError('Error al eliminar');
                 this.showNotification('Error eliminando recurso', 'error');
             }
         }
