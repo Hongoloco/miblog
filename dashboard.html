@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ale Gallo - Desarrollo y Gaming</title>
+    <link rel="stylesheet" href="assets/unified-style.css">
+    <link rel="stylesheet" href="assets/firebase-status.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="gaming-header">
+        <div class="header-content">
+            <h1 class="gaming-title">💻 Ale Gallo</h1>
+            
+            <!-- Botón hamburguesa para móvil -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
+                <span id="menu-icon">☰</span>
+            </button>
+            
+            <!-- Menú de navegación -->
+            <nav class="gaming-nav">
+                <ul class="nav-links">
+                    <li><a href="dashboard.html" class="active">🏠 Inicio</a></li>
+                    <li><a href="gaming.html">🎮 Gaming</a></li>
+                    <li><a href="profesional.html">💼 Profesional</a></li>
+                    <li><a href="recursos.html">🔗 Recursos</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Menú móvil -->
+            <div id="mobile-menu" class="mobile-menu">
+                <a href="dashboard.html" class="active">🏠 Inicio</a>
+                <a href="gaming.html">🎮 Gaming</a>
+                <a href="profesional.html">💼 Profesional</a>
+                <a href="recursos.html">🔗 Recursos</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>🎮 Gaming & Desarrollo</h2>
+                    <p>Bienvenido a mi espacio personal donde combino mi pasión por el gaming con el desarrollo web y la tecnología</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <div class="container">
+                <h3>🚀 Secciones Principales</h3>
+                <div class="grid-container">
+                    <div class="card">
+                        <h4>🎮 Gaming Zone</h4>
+                        <p>Reviews, noticias, análisis y todo sobre el mundo gaming</p>
+                        <a href="gaming.html" class="btn-primary">Explorar Gaming</a>
+                    </div>
+                    <div class="card">
+                        <h4>💼 Profesional</h4>
+                        <p>Portfolio, proyectos, experiencia y información profesional</p>
+                        <a href="profesional.html" class="btn-primary">Ver Portfolio</a>
+                    </div>
+                    <div class="card">
+                        <h4> Recursos</h4>
+                        <p>Enlaces útiles, herramientas y recursos técnicos</p>
+                        <a href="recursos.html" class="btn-primary">Ver Recursos</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-info">
+                            <h3>💻 Desarrollo Web</h3>
+                            <p>Tutoriales, herramientas y recursos para desarrollo frontend y backend</p>
+                            <a href="recursos.html?category=desarrollo" class="btn-gaming primary">Explorar recursos</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-info">
+                            <h3>🚀 Tecnología</h3>
+                            <p>Últimas tendencias en tecnología, frameworks y herramientas</p>
+                            <a href="recursos.html?category=tech" class="btn-gaming primary">Ver tecnologías</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-section">
+            <div class="container">
+                <h2>📝 Últimas Notas</h2>
+                <div class="posts-grid" id="latest-posts">
+                    <!-- Se cargarán dinámicamente -->
+                </div>
+                <div class="text-center">
+                    <a href="notas.html" class="btn-gaming secondary">Ver todas las notas</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="section">
+        <div class="container text-center">
+            <p>© 2025 Ale Gallo</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="js/auth-manager.js"></script>
+    <script type="module" src="js/edit-mode-manager.js"></script>
+    <script type="module" src="js/admin-panel-manager.js"></script>
+    <script type="module" src="js/content-manager.js"></script>
+    <script type="module" src="js/firebase-connection-monitor.js"></script>
+    <script type="module" src="firebase-indicators.js"></script>
+    <script src="js/front-page.js"></script>
+
+    <script>
+        // Mejorar la interfaz de administración
+        document.addEventListener('DOMContentLoaded', () => {
+            // Agregar botones de gestión avanzada
+            const adminControls = document.createElement('div');
+            adminControls.className = 'admin-controls';
+            adminControls.innerHTML = `
+                <div class="admin-control-bar">
+                    <button class="admin-control-btn" onclick="contentManager.openContentCreator()">
+                        <span>✨</span> Crear Contenido
+                    </button>
+                    <button class="admin-control-btn" onclick="contentManager.openContentLibrary()">
+                        <span>📚</span> Biblioteca
+                    </button>
+                    <button class="admin-control-btn" onclick="adminPanel.toggleEditMode()">
+                        <span>✏️</span> Editar Página
+                    </button>
+                    <button class="admin-control-btn" onclick="exportAllContent()">
+                        <span>📤</span> Exportar Todo
+                    </button>
+                </div>
+            `;
+            
+            // Insertar después del header
+            const header = document.querySelector('header');
+            if (header) {
+                header.insertAdjacentElement('afterend', adminControls);
+            }
+            
+            // Agregar estilos para los controles
+            const style = document.createElement('style');
+            style.textContent = `
+                .admin-control-bar {
+                    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+                    padding: 1rem;
+                    display: flex;
+                    justify-content: center;
+                    gap: 1rem;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                    position: sticky;
+                    top: 0;
+                    z-index: 100;
+                }
+                
+                .admin-control-btn {
+                    background: rgba(255, 255, 255, 0.9);
+                    color: #8e44ad;
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                }
+                
+                .admin-control-btn:hover {
+                    background: white;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                }
+                
+                .admin-control-btn:active {
+                    transform: translateY(0);
+                }
+                
+                @media (max-width: 768px) {
+                    .admin-control-bar {
+                        flex-wrap: wrap;
+                        gap: 0.5rem;
+                    }
+                    
+                    .admin-control-btn {
+                        padding: 0.5rem 1rem;
+                        font-size: 0.8rem;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // Función para exportar todo el contenido
+        async function exportAllContent() {
+            try {
+                const firebaseService = new FirebaseService();
+                const allContent = await firebaseService.getDocuments('content');
+                const allEdits = await firebaseService.getDocuments('admin-edits');
+                
+                const exportData = {
+                    content: allContent,
+                    edits: allEdits,
+                    exportDate: new Date().toISOString(),
+                    version: '1.0'
+                };
+                
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `mi-blog-backup-${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                // Mostrar notificación
+                if (window.adminPanel && window.adminPanel.syncIndicator) {
+                    window.adminPanel.syncIndicator.show('Backup completo descargado', 'success');
+                }
+            } catch (error) {
+                console.error('Error exportando contenido:', error);
+                alert('Error al exportar el contenido');
+            }
+        }
+
+        // Mejorar la experiencia con atajos de teclado
+        document.addEventListener('keydown', (e) => {
+            // Ctrl + Shift + C para crear contenido
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                contentManager.openContentCreator();
+            }
+            
+            // Ctrl + Shift + L para abrir biblioteca
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'L') {
+                e.preventDefault();
+                contentManager.openContentLibrary();
+            }
+            
+            // Ctrl + Shift + E para exportar
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'E') {
+                e.preventDefault();
+                exportAllContent();
+            }
+        });
+    </script>
+</body>
+</html>

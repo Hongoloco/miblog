@@ -514,6 +514,295 @@ footer {
     color: var(--text-light);
 }
 
+/* Estilos específicos para secciones Gaming y Profesional */
+
+/* Gaming Section Styles */
+.gaming-zone {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.gaming-zone h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Professional Section Styles */
+.professional-zone {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 2rem 0;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.professional-zone h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Content Item Styles */
+.content-item,
+.project-item,
+.experience-item,
+.skill-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.content-item:hover,
+.project-item:hover,
+.experience-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.content-header,
+.project-header,
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.content-header h5,
+.project-header h5,
+.experience-header h5 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+}
+
+.content-meta,
+.project-category,
+.experience-company {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.category,
+.project-category {
+    background: #3498db;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.rating {
+    color: #f39c12;
+    font-size: 1.1rem;
+}
+
+.content-description,
+.project-description,
+.experience-description {
+    margin: 1rem 0;
+    line-height: 1.6;
+    color: #555;
+}
+
+.content-link,
+.project-link {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: background 0.2s ease;
+}
+
+.content-link:hover,
+.project-link:hover {
+    background: #2980b9;
+}
+
+.content-actions,
+.project-actions,
+.experience-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.2s ease;
+}
+
+.btn-edit {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #e67e22;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+}
+
+.content-date,
+.project-date {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    display: block;
+}
+
+/* Skills specific styles */
+.skills-category {
+    margin-bottom: 2rem;
+}
+
+.skills-category h5 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.skill-item {
+    padding: 1rem;
+    margin-bottom: 0;
+}
+
+.skill-name {
+    font-weight: 600;
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.skill-level {
+    color: #f39c12;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.skill-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Portfolio specific styles */
+.project-tech {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin: 0.5rem 0;
+}
+
+.project-links {
+    margin: 1rem 0;
+}
+
+.experience-period {
+    color: #7f8c8d;
+    font-style: italic;
+    margin: 0.5rem 0;
+}
+
+/* Form improvements for new sections */
+.content-manager,
+.portfolio-manager,
+.experience-manager,
+.skills-manager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.add-form h4,
+.portfolio-list h4,
+.experience-list h4,
+.skills-list h4,
+.content-list h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.no-content {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Contact section */
+.contact-info {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contact-card h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.contact-details {
+    text-align: left;
+    margin-top: 1.5rem;
+}
+
+.contact-details p {
+    margin: 0.5rem 0;
+}
+
+.contact-details a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.contact-details a:hover {
+    text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .gaming-nav {
@@ -564,6 +853,33 @@ footer {
     .tab-btn {
         font-size: 0.9rem;
         padding: 0.5rem 1rem;
+    }
+    
+    .content-manager,
+    .portfolio-manager,
+    .experience-manager,
+    .skills-manager {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-header,
+    .project-header,
+    .experience-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .content-actions,
+    .project-actions,
+    .experience-actions,
+    .skill-actions {
+        flex-wrap: wrap;
     }
 }
 

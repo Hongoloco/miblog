@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ale Gallo</title>
+    <link rel="stylesheet" href="assets/unified-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .login-subtitle {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1f4e79 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            display: none;
+        }
+        
+        .login-footer {
+            margin-top: 2rem;
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .loading .login-btn {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        /* Animación del logo */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .login-title {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 2rem;
+                margin: 10px;
+            }
+            
+            .login-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h1 class="login-title">🔐 Login</h1>
+            <p class="login-subtitle">Accede a tu sitio web personal</p>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Usuario:</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <span id="loginText">Iniciar Sesión</span>
+                </button>
+            </form>
+            
+            <div id="errorMessage" class="error-message">
+                Usuario o contraseña incorrectos
+            </div>
+            
+            <div class="login-footer">
+                <p>© 2025 Ale Gallo</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de autenticación
+        const AUTH_CREDENTIALS = {
+            username: 'alito',
+            password: 'vinilo28'
+        };
+
+        // Verificar si ya está logueado
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Manejar el formulario de login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const loginBtn = document.querySelector('.login-btn');
+            const loginText = document.getElementById('loginText');
+            
+            // Mostrar loading
+            document.querySelector('.login-card').classList.add('loading');
+            loginText.textContent = 'Verificando...';
+            errorMessage.style.display = 'none';
+            
+            // Simular delay de autenticación
+            setTimeout(() => {
+                if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
+                    // Login exitoso
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loginTime', new Date().toISOString());
+                    
+                    loginText.textContent = '¡Acceso concedido!';
+                    loginBtn.style.background = 'linear-gradient(135deg, #27ae60 0%, #219a52 100%)';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    // Login fallido
+                    document.querySelector('.login-card').classList.remove('loading');
+                    loginText.textContent = 'Iniciar Sesión';
+                    errorMessage.style.display = 'block';
+                    
+                    // Limpiar campos
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('username').focus();
+                }
+            }, 1500);
+        });
+
+        // Focus automático en el campo de usuario
+        document.getElementById('username').focus();
+    </script>
+</body>
+</html>

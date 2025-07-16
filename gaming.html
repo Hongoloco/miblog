@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming - Ale Gallo</title>
+    <link rel="stylesheet" href="assets/unified-style.css">
+    <link rel="stylesheet" href="assets/firebase-status.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="gaming-header">
+        <div class="header-content">
+            <h1 class="gaming-title">🎮 Gaming Zone</h1>
+            
+            <!-- Botón hamburguesa para móvil -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
+                <span id="menu-icon">☰</span>
+            </button>
+            
+            <!-- Menú de navegación -->
+            <nav class="gaming-nav">
+                <ul class="nav-links">
+                    <li><a href="dashboard.html">🏠 Inicio</a></li>
+                    <li><a href="gaming.html" class="active">🎮 Gaming</a></li>
+                    <li><a href="profesional.html">💼 Profesional</a></li>
+                    <li><a href="recursos.html">🔗 Recursos</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Menú móvil -->
+            <div id="mobile-menu" class="mobile-menu">
+                <a href="dashboard.html">🏠 Inicio</a>
+                <a href="gaming.html" class="active">🎮 Gaming</a>
+                <a href="profesional.html">💼 Profesional</a>
+                <a href="recursos.html">🔗 Recursos</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>🎮 Gaming Zone</h2>
+                    <p>Todo sobre gaming: reviews, noticias, análisis y contenido gaming en general</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <div class="container">
+                <h3>🎯 Contenido Gaming</h3>
+                <div class="grid-container">
+                    <div class="card">
+                        <h4>🎮 Game Reviews</h4>
+                        <p>Análisis detallados de los últimos juegos</p>
+                        <a href="#" class="btn-primary">Ver Reviews</a>
+                    </div>
+                    <div class="card">
+                        <h4>📺 Gaming News</h4>
+                        <p>Las últimas noticias del mundo gaming</p>
+                        <a href="#" class="btn-primary">Ver Noticias</a>
+                    </div>
+                    <div class="card">
+                        <h4>🏆 Gaming Setup</h4>
+                        <p>Mi configuración gaming y recomendaciones</p>
+                        <a href="#" class="btn-primary">Ver Setup</a>
+                    </div>
+                    <div class="card">
+                        <h4>🎯 Gaming Tips</h4>
+                        <p>Consejos y trucos para mejorar tu gaming</p>
+                        <a href="#" class="btn-primary">Ver Tips</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <h3>🎮 Gaming Content Manager</h3>
+                <div class="content-manager">
+                    <div class="add-form">
+                        <h4>Agregar Nuevo Contenido Gaming</h4>
+                        <form id="gaming-form">
+                            <div class="form-group">
+                                <label for="game-title">Título del Juego/Contenido:</label>
+                                <input type="text" id="game-title" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="game-category">Categoría:</label>
+                                <select id="game-category" name="category" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="review">Review</option>
+                                    <option value="news">Noticia</option>
+                                    <option value="setup">Setup/Hardware</option>
+                                    <option value="tips">Tips & Tricks</option>
+                                    <option value="opinion">Opinión</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="game-rating">Rating (1-5):</label>
+                                <input type="number" id="game-rating" name="rating" min="1" max="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="game-description">Descripción:</label>
+                                <textarea id="game-description" name="description" rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="game-url">URL (opcional):</label>
+                                <input type="url" id="game-url" name="url">
+                            </div>
+                            <button type="submit" class="btn-primary">Agregar Contenido</button>
+                        </form>
+                    </div>
+                    
+                    <div class="content-list">
+                        <h4>Contenido Gaming Guardado</h4>
+                        <div id="gaming-content-list">
+                            <!-- El contenido se cargará dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="js/auth-manager.js"></script>
+    <script type="module" src="js/edit-mode-manager.js"></script>
+    <script type="module" src="js/admin-panel-manager.js"></script>
+    <script type="module" src="js/content-manager.js"></script>
+    <script type="module" src="js/gaming.js"></script>
+    <script type="module" src="js/firebase-connection-monitor.js"></script>
+    <script type="module" src="js/front-page.js"></script>
+</body>
+</html>

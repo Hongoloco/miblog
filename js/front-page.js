@@ -1,24 +1,42 @@
-// JavaScript para el front page
+// JavaScript para el front page - Funcionalidad Unificada
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Funcionalidad del menú móvil
+    // Funcionalidad del menú móvil unificado
     window.toggleMobileMenu = function() {
-        const menu = document.getElementById('mobile-menu');
-        const icon = document.getElementById('menu-icon');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
         
-        if (menu.classList.contains('show')) {
-            menu.classList.remove('show');
-            menu.classList.add('hide');
-            icon.textContent = '☰';
-            
-            setTimeout(() => {
-                menu.classList.remove('hide');
-            }, 300);
+        if (mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            mobileMenu.style.display = 'none';
+            menuIcon.textContent = '☰';
         } else {
-            menu.classList.add('show');
-            icon.textContent = '✕';
+            mobileMenu.classList.add('active');
+            mobileMenu.style.display = 'flex';
+            menuIcon.textContent = '✕';
         }
     };
+    
+    // Cerrar menú móvil al hacer clic en un enlace
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            toggleMobileMenu();
+        });
+    });
+    
+    // Cerrar menú móvil al redimensionar la ventana
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            if (mobileMenu && menuIcon) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.display = 'none';
+                menuIcon.textContent = '☰';
+            }
+        }
+    });
     
     // Cargar últimas notas (simulado)
     function loadLatestPosts() {
