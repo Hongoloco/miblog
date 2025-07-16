@@ -4,100 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recursos - Ale Gallo</title>
+    <link rel="stylesheet" href="assets/clean-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Estilos de emergencia para asegurar visibilidad */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #1f2937;
             background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
-        /* Header */
-        .header {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 1rem 0;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #3b82f6;
-        }
-
-        .nav {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav a {
-            color: #6b7280;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .nav a:hover,
-        .nav a.active {
-            color: #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
-        }
-
-        /* Main content */
-        .main {
+        
+        .section {
             padding: 40px 0;
         }
-
+        
         .section-header {
             text-align: center;
             margin-bottom: 40px;
         }
-
-        .section-header h1 {
+        
+        .section-header h2 {
             font-size: 2.5rem;
             color: #3b82f6;
             margin-bottom: 16px;
         }
-
+        
         .section-header p {
             font-size: 1.2rem;
             color: #6b7280;
         }
-
-        /* Tabs */
-        .tabs {
+        
+        .category-tabs {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin-bottom: 3rem;
             flex-wrap: wrap;
         }
-
+        
         .tab-btn {
             background: linear-gradient(135deg, #3b82f6, #10b981);
             color: white;
@@ -108,27 +61,30 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-
+        
         .tab-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
-
+        
         .tab-btn.active {
             background: linear-gradient(135deg, #2563eb, #059669);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
         }
-
-        /* Resources */
+        
         .resources-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
-
+        
         .resource-card {
             background: white;
             border-radius: 16px;
@@ -137,25 +93,25 @@
             transition: all 0.3s ease;
             border: 1px solid #e5e7eb;
         }
-
+        
         .resource-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
-
+        
         .resource-card h4 {
             color: #1f2937;
             margin-bottom: 12px;
             font-size: 1.3rem;
             font-weight: 600;
         }
-
+        
         .resource-card p {
             color: #6b7280;
             margin-bottom: 20px;
             line-height: 1.6;
         }
-
+        
         .resource-card a {
             background: linear-gradient(135deg, #10b981, #3b82f6);
             color: white;
@@ -166,36 +122,93 @@
             transition: all 0.3s ease;
             display: inline-block;
         }
-
+        
         .resource-card a:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
-
+        
         .category-section {
             margin-bottom: 3rem;
         }
-
+        
         .category-section h3 {
             color: #3b82f6;
             margin-bottom: 1rem;
             font-size: 1.8rem;
             font-weight: 600;
         }
-
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #6b7280;
+        
+        .gaming-header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-
-        /* Responsive */
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .gaming-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .gaming-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .gaming-nav a {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .gaming-nav a:hover,
+        .gaming-nav a.active {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #1f2937;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .mobile-menu {
+            display: none;
+        }
+        
         @media (max-width: 768px) {
-            .nav {
+            .gaming-nav {
                 display: none;
             }
             
-            .tabs {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .category-tabs {
                 flex-wrap: wrap;
                 gap: 0.5rem;
             }
@@ -213,168 +226,180 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <h1 class="title">💻 Ale Gallo</h1>
-                <nav>
-                    <ul class="nav">
-                        <li><a href="index.html">🏠 Inicio</a></li>
-                        <li><a href="notas.html">📝 Notas</a></li>
-                        <li><a href="recursos.html" class="active">🔗 Recursos</a></li>
-                    </ul>
-                </nav>
+    <header class="gaming-header">
+        <div class="header-content">
+            <h1 class="gaming-title">💻 Ale Gallo</h1>
+            
+            <!-- Botón hamburguesa para móvil -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
+                <span id="menu-icon">☰</span>
+            </button>
+            
+            <!-- Menú de navegación -->
+            <nav class="gaming-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html">🏠 Inicio</a></li>
+                    <li><a href="notas.html">📝 Notas</a></li>
+                    <li><a href="recursos.html" class="active">🔗 Recursos</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Menú móvil -->
+            <div id="mobile-menu" class="mobile-menu">
+                <a href="index.html">🏠 Inicio</a>
+                <a href="notas.html">📝 Notas</a>
+                <a href="recursos.html" class="active">🔗 Recursos</a>
             </div>
         </div>
     </header>
 
-    <main class="main">
-        <div class="container">
-            <div class="section-header">
-                <h1>🔗 Recursos</h1>
-                <p>Herramientas y recursos para desarrollo web y tecnología</p>
-            </div>
+    <main>
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>🔗 Recursos</h2>
+                    <p>Herramientas y recursos para desarrollo web y tecnología</p>
+                </div>
 
-            <div class="tabs">
-                <button class="tab-btn active" onclick="showCategory('all')">🔥 Todos</button>
-                <button class="tab-btn" onclick="showCategory('dev')">💻 Desarrollo</button>
-                <button class="tab-btn" onclick="showCategory('tech')">🚀 Tecnología</button>
-                <button class="tab-btn" onclick="showCategory('tools')">🛠️ Herramientas</button>
-            </div>
+                <!-- Categorías Principales -->
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-category="all">🔥 Todos</button>
+                    <button class="tab-btn" data-category="dev">💻 Desarrollo</button>
+                    <button class="tab-btn" data-category="tech">🚀 Tecnología</button>
+                    <button class="tab-btn" data-category="tools">🛠️ Herramientas</button>
+                </div>
 
-            <!-- Desarrollo -->
-            <div class="category-section" id="dev-section">
-                <h3>💻 Desarrollo</h3>
-                <div class="resources-grid">
-                    <div class="resource-card">
-                        <h4>React</h4>
-                        <p>Una biblioteca de JavaScript para construir interfaces de usuario.</p>
-                        <a href="https://reactjs.org" target="_blank">Visitar</a>
+                <!-- Desarrollo -->
+                <div class="category-section" id="dev-section">
+                    <h3>💻 Desarrollo</h3>
+                    <div class="resources-grid" id="dev-resources">
+                        <div class="resource-card">
+                            <h4>React</h4>
+                            <p>Una biblioteca de JavaScript para construir interfaces de usuario.</p>
+                            <a href="https://reactjs.org" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Vue.js</h4>
+                            <p>Framework progresivo de JavaScript para construir interfaces de usuario.</p>
+                            <a href="https://vuejs.org" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
+                        <div class="resource-card">
+                            <h4>MDN Web Docs</h4>
+                            <p>Documentación completa para desarrolladores web.</p>
+                            <a href="https://developer.mozilla.org" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
                     </div>
-                    <div class="resource-card">
-                        <h4>Vue.js</h4>
-                        <p>Framework progresivo de JavaScript para construir interfaces de usuario.</p>
-                        <a href="https://vuejs.org" target="_blank">Visitar</a>
+                </div>
+
+                <!-- Tecnología -->
+                <div class="category-section" id="tech-section">
+                    <h3>🚀 Tecnología</h3>
+                    <div class="resources-grid" id="tech-resources">
+                        <div class="resource-card">
+                            <h4>GitHub</h4>
+                            <p>Plataforma de desarrollo colaborativo para alojar proyectos.</p>
+                            <a href="https://github.com" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
+                        <div class="resource-card">
+                            <h4>AWS</h4>
+                            <p>Servicios de computación en la nube.</p>
+                            <a href="https://aws.amazon.com" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Docker</h4>
+                            <p>Plataforma para contenedores de aplicaciones.</p>
+                            <a href="https://docker.com" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
                     </div>
-                    <div class="resource-card">
-                        <h4>Angular</h4>
-                        <p>Framework de desarrollo para aplicaciones web dinámicas.</p>
-                        <a href="https://angular.io" target="_blank">Visitar</a>
+                </div>
+
+                <!-- Herramientas -->
+                <div class="category-section" id="tools-section">
+                    <h3>🛠️ Herramientas</h3>
+                    <div class="resources-grid" id="tools-resources">
+                        <div class="resource-card">
+                            <h4>VS Code</h4>
+                            <p>Editor de código fuente gratuito y potente.</p>
+                            <a href="https://code.visualstudio.com" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Figma</h4>
+                            <p>Herramienta de diseño colaborativo.</p>
+                            <a href="https://figma.com" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
+                        <div class="resource-card">
+                            <h4>Postman</h4>
+                            <p>Plataforma para testing de APIs.</p>
+                            <a href="https://postman.com" target="_blank" class="btn-gaming secondary">Visitar</a>
+                        </div>
                     </div>
-                    <div class="resource-card">
-                        <h4>MDN Web Docs</h4>
-                        <p>Documentación completa para desarrolladores web.</p>
-                        <a href="https://developer.mozilla.org" target="_blank">Visitar</a>
+                </div>
+
+                <!-- Agregar Recurso -->
+                <div class="add-resource">
+                    <button id="addResourceBtn" class="btn-gaming primary">
+                        ➕ Agregar Recurso
+                    </button>
+                </div>
+
+                <!-- Modal para agregar recurso -->
+                <div id="resourceModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <h3>➕ Nuevo Recurso</h3>
+                        <form id="resourceForm">
+                            <div class="form-group">
+                                <label for="title">Título:</label>
+                                <input type="text" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="url">URL:</label>
+                                <input type="url" id="url" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Categoría:</label>
+                                <select id="category" required>
+                                    <optgroup label="Desarrollo">
+                                        <option value="frontend">🎨 Frontend</option>
+                                        <option value="backend">⚙️ Backend</option>
+                                        <option value="frameworks">🚀 Frameworks</option>
+                                        <option value="databases">🗃️ Bases de Datos</option>
+                                    </optgroup>
+                                    <optgroup label="Tecnología">
+                                        <option value="cloud">☁️ Cloud</option>
+                                        <option value="ai">🤖 IA</option>
+                                        <option value="mobile">📱 Móvil</option>
+                                        <option value="devops">🔧 DevOps</option>
+                                    </optgroup>
+                                    <optgroup label="Herramientas">
+                                        <option value="editors">📝 Editores</option>
+                                        <option value="design">🎨 Diseño</option>
+                                        <option value="testing">🧪 Testing</option>
+                                        <option value="productivity">⚡ Productividad</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Descripción:</label>
+                                <textarea id="description" rows="3"></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="submit" class="btn-gaming primary">💾 Guardar</button>
+                                <button type="button" class="btn-gaming secondary" onclick="closeModal()">❌ Cancelar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <!-- Tecnología -->
-            <div class="category-section" id="tech-section">
-                <h3>🚀 Tecnología</h3>
-                <div class="resources-grid">
-                    <div class="resource-card">
-                        <h4>GitHub</h4>
-                        <p>Plataforma de desarrollo colaborativo para alojar proyectos.</p>
-                        <a href="https://github.com" target="_blank">Visitar</a>
-                    </div>
-                    <div class="resource-card">
-                        <h4>AWS</h4>
-                        <p>Servicios de computación en la nube.</p>
-                        <a href="https://aws.amazon.com" target="_blank">Visitar</a>
-                    </div>
-                    <div class="resource-card">
-                        <h4>Docker</h4>
-                        <p>Plataforma para contenedores de aplicaciones.</p>
-                        <a href="https://docker.com" target="_blank">Visitar</a>
-                    </div>
-                    <div class="resource-card">
-                        <h4>Kubernetes</h4>
-                        <p>Sistema de orquestación de contenedores.</p>
-                        <a href="https://kubernetes.io" target="_blank">Visitar</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Herramientas -->
-            <div class="category-section" id="tools-section">
-                <h3>🛠️ Herramientas</h3>
-                <div class="resources-grid">
-                    <div class="resource-card">
-                        <h4>VS Code</h4>
-                        <p>Editor de código fuente gratuito y potente.</p>
-                        <a href="https://code.visualstudio.com" target="_blank">Visitar</a>
-                    </div>
-                    <div class="resource-card">
-                        <h4>Figma</h4>
-                        <p>Herramienta de diseño colaborativo.</p>
-                        <a href="https://figma.com" target="_blank">Visitar</a>
-                    </div>
-                    <div class="resource-card">
-                        <h4>Postman</h4>
-                        <p>Plataforma para testing de APIs.</p>
-                        <a href="https://postman.com" target="_blank">Visitar</a>
-                    </div>
-                    <div class="resource-card">
-                        <h4>Notion</h4>
-                        <p>Espacio de trabajo todo en uno para notas y proyectos.</p>
-                        <a href="https://notion.so" target="_blank">Visitar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
+    <footer class="section">
+        <div class="container text-center">
             <p>© 2025 Ale Gallo</p>
         </div>
     </footer>
 
-    <script>
-        function showCategory(category) {
-            console.log('Mostrando categoría:', category);
-            
-            // Remover active de todos los botones
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            // Agregar active al botón clickeado
-            event.target.classList.add('active');
-            
-            // Obtener secciones
-            const devSection = document.getElementById('dev-section');
-            const techSection = document.getElementById('tech-section');
-            const toolsSection = document.getElementById('tools-section');
-            
-            // Mostrar/ocultar secciones
-            if (category === 'all') {
-                devSection.style.display = 'block';
-                techSection.style.display = 'block';
-                toolsSection.style.display = 'block';
-            } else if (category === 'dev') {
-                devSection.style.display = 'block';
-                techSection.style.display = 'none';
-                toolsSection.style.display = 'none';
-            } else if (category === 'tech') {
-                devSection.style.display = 'none';
-                techSection.style.display = 'block';
-                toolsSection.style.display = 'none';
-            } else if (category === 'tools') {
-                devSection.style.display = 'none';
-                techSection.style.display = 'none';
-                toolsSection.style.display = 'block';
-            }
-        }
-        
-        // Verificar que el script se carga
-        console.log('Script de recursos cargado correctamente');
-        
-        // Mostrar todas las secciones inicialmente
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM cargado');
-            showCategory('all');
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="js/resources-simple.js"></script>
 </body>
 </html>

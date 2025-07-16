@@ -1,0 +1,32 @@
+# Archivos del sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Archivos de editor
+*~
+*.swp
+*.swo
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# Dependencias (si se agregan en el futuro)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de build (si se agregan en el futuro)
+dist/
+build/
