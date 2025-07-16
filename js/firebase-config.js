@@ -1,5 +1,4 @@
-// Configuración de Firebase
-// Reemplaza estos valores con los de tu proyecto Firebase
+// Configuración de Firebase - Actualizada
 const firebaseConfig = {
   apiKey: "AIzaSyDDh3yYNj9Cg29T-wzIhBRnOTvrWCabdBM",
   authDomain: "mi-b-99ca8.firebaseapp.com",
@@ -12,10 +11,30 @@ const firebaseConfig = {
 };
 
 // Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
+try {
+  firebase.initializeApp(firebaseConfig);
+  console.log('🔥 Firebase inicializado correctamente');
+} catch (error) {
+  console.error('❌ Error inicializando Firebase:', error);
+}
 
 // Inicializar Realtime Database
-const database = firebase.database();
+let database = null;
+try {
+  database = firebase.database();
+  console.log('📄 Database inicializada');
+  
+  // Probar conexión
+  database.ref('.info/connected').on('value', (snapshot) => {
+    if (snapshot.val() === true) {
+      console.log('✅ Conectado a Firebase Database');
+    } else {
+      console.log('❌ Desconectado de Firebase Database');
+    }
+  });
+} catch (error) {
+  console.error('❌ Error inicializando Database:', error);
+}
 
 // Funciones para manejar la base de datos
 const BlogDB = {

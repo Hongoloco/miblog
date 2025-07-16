@@ -464,7 +464,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
-    <script src="js/firebase-manager.js"></script>
     
     <script>
         // Sistema de Login y Edición Funcional
@@ -494,32 +493,20 @@
             }
             
             setupFirebase() {
-                // El diagnóstico se hace en firebase-manager.js
-                console.log('🔥 Configurando Firebase...');
-                
-                // Verificar cada 2 segundos hasta que esté listo
-                this.firebaseCheckInterval = setInterval(() => {
-                    if (window.firebaseManager) {
-                        const status = window.firebaseManager.getStatus();
-                        if (status.isReady && status.connectionStatus) {
-                            this.firebaseReady = true;
-                            this.showNotification('🔥 Firebase conectado correctamente', 'success');
-                            clearInterval(this.firebaseCheckInterval);
-                        } else if (status.isReady && !status.connectionStatus) {
-                            this.showNotification('⚠️ Firebase sin conexión', 'warning');
+                // Verificar si Firebase está disponible
+                if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                    this.firebaseReady = true;
+                    console.log('✅ Firebase configurado');
+                    
+                    // Verificar conexión
+                    firebase.database().ref('.info/connected').on('value', (snapshot) => {
+                        if (snapshot.val() === true) {
+                            console.log('🔥 Conectado a Firebase');
                         }
-                    }
-                }, 2000);
-                
-                // Timeout después de 10 segundos
-                setTimeout(() => {
-                    if (this.firebaseCheckInterval) {
-                        clearInterval(this.firebaseCheckInterval);
-                        if (!this.firebaseReady) {
-                            this.showNotification('❌ Firebase no disponible - usando local', 'error');
-                        }
-                    }
-                }, 10000);
+                    });
+                } else {
+                    console.warn('⚠️ Firebase no disponible');
+                }
             }
             
             setupEvents() {
@@ -658,8 +645,6 @@
             saveChanges() {
                 if (!this.isEditMode) return;
                 
-                console.log('💾 Iniciando guardado...');
-                
                 const elements = document.querySelectorAll('[contenteditable="true"]');
                 const changes = {};
                 
@@ -676,29 +661,25 @@
                     page: 'index',
                     changes: changes,
                     timestamp: Date.now(),
-                    user: this.credentials.username,
-                    browser: navigator.userAgent,
-                    url: window.location.href
+                    user: this.credentials.username
                 };
                 
-                // Guardar localmente SIEMPRE
+                // Guardar localmente
                 localStorage.setItem('blogEdits_index', JSON.stringify(saveData));
-                console.log('💾 Guardado local exitoso');
                 
-                // Intentar guardar en Firebase
-                if (window.firebaseManager && window.firebaseManager.getStatus().isReady) {
-                    window.firebaseManager.savePage(saveData)
-                        .then((key) => {
-                            this.showNotification(`✅ Guardado exitoso en Firebase (ID: ${key.substring(0, 8)}...)`, 'success');
-                            console.log('✅ Guardado Firebase exitoso:', key);
+                // Guardar en Firebase si está disponible
+                if (this.firebaseReady) {
+                    firebase.database().ref('page-edits').push(saveData)
+                        .then(() => {
+                            this.showNotification('💾 Guardado exitoso en Firebase', 'success');
+                            console.log('✅ Guardado en Firebase');
                         })
                         .catch((error) => {
                             console.error('❌ Error Firebase:', error);
-                            this.showNotification('⚠️ Guardado local exitoso (Firebase error)', 'warning');
+                            this.showNotification('💾 Guardado local (Firebase error)', 'warning');
                         });
                 } else {
-                    this.showNotification('💾 Guardado local exitoso (Firebase no disponible)', 'warning');
-                    console.log('⚠️ Firebase no disponible, solo guardado local');
+                    this.showNotification('💾 Guardado localmente', 'warning');
                 }
                 
                 // Limpiar marcas de modificado
@@ -726,33 +707,29 @@
                     email: email,
                     message: message,
                     timestamp: Date.now(),
-                    read: false,
-                    source: 'homepage'
+                    read: false
                 };
                 
-                // Guardar localmente SIEMPRE
+                // Guardar localmente
                 const contacts = JSON.parse(localStorage.getItem('contactMessages') || '[]');
                 contacts.push(contactData);
                 localStorage.setItem('contactMessages', JSON.stringify(contacts));
-                console.log('💾 Mensaje guardado localmente');
                 
-                // Intentar guardar en Firebase
-                if (window.firebaseManager && window.firebaseManager.getStatus().isReady) {
-                    window.firebaseManager.saveContact(contactData)
-                        .then((key) => {
-                            this.showNotification(`📧 Mensaje enviado exitosamente (ID: ${key.substring(0, 8)}...)`, 'success');
+                // Guardar en Firebase
+                if (this.firebaseReady) {
+                    firebase.database().ref('contact-messages').push(contactData)
+                        .then(() => {
+                            this.showNotification('📧 Mensaje enviado correctamente', 'success');
                             document.getElementById('contactForm').reset();
-                            console.log('✅ Mensaje enviado a Firebase:', key);
                         })
                         .catch((error) => {
                             console.error('❌ Error enviando mensaje:', error);
-                            this.showNotification('📧 Mensaje guardado localmente (Firebase error)', 'warning');
+                            this.showNotification('📧 Mensaje guardado localmente', 'warning');
                             document.getElementById('contactForm').reset();
                         });
                 } else {
-                    this.showNotification('📧 Mensaje guardado localmente (Firebase no disponible)', 'warning');
+                    this.showNotification('📧 Mensaje guardado localmente', 'warning');
                     document.getElementById('contactForm').reset();
-                    console.log('⚠️ Firebase no disponible, solo guardado local');
                 }
             }
             
