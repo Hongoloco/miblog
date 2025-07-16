@@ -7,10 +7,235 @@
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/front-page.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        /* Login Modal */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-modal.active {
+            display: flex;
+        }
+        
+        .login-content {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .login-title {
+            color: #4a90e2;
+            margin-bottom: 1rem;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .login-input {
+            padding: 0.8rem;
+            border: 1px solid #333;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+        }
+        
+        .login-btn {
+            padding: 0.8rem;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .login-btn:hover {
+            background: #357abd;
+        }
+        
+        .login-error {
+            color: #f44336;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        /* Edit Mode Styles */
+        .edit-toolbar {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #4a90e2;
+            color: white;
+            padding: 1rem;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .edit-toolbar.active {
+            display: block;
+        }
+        
+        .toolbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .toolbar-title {
+            font-weight: 600;
+        }
+        
+        .toolbar-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-toolbar {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-toolbar:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .btn-save {
+            background: #4caf50 !important;
+        }
+        
+        .btn-logout {
+            background: #f44336 !important;
+        }
+        
+        body.edit-mode {
+            padding-top: 60px;
+        }
+        
+        body.edit-mode [contenteditable="true"] {
+            outline: 2px dashed #4a90e2;
+            min-height: 20px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        body.edit-mode [contenteditable="true"]:hover {
+            background: rgba(74, 144, 226, 0.1);
+        }
+        
+        body.edit-mode [contenteditable="true"]:focus {
+            outline: 2px solid #4a90e2;
+            background: rgba(74, 144, 226, 0.1);
+        }
+        
+        /* Quick Login Button */
+        .quick-login-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .quick-login-btn:hover {
+            background: #357abd;
+        }
+        
+        .status-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 4px;
+            z-index: 9998;
+            display: none;
+        }
+        
+        .status-message.success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .status-message.error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .status-message.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-content">
+            <h2 class="login-title">🔐 Login</h2>
+            <form id="loginForm" class="login-form">
+                <input type="text" id="username" class="login-input" placeholder="Usuario" required>
+                <input type="password" id="password" class="login-input" placeholder="Contraseña" required>
+                <button type="submit" class="login-btn">Entrar</button>
+                <div id="loginError" class="login-error">Usuario o contraseña incorrectos</div>
+            </form>
+            <div style="margin-top: 1rem; color: #888; font-size: 0.9rem;">
+                <p>Usuario: <strong>alito</strong></p>
+                <p>Contraseña: <strong>vinilo28</strong></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Toolbar -->
+    <div id="editToolbar" class="edit-toolbar">
+        <div class="toolbar-content">
+            <div class="toolbar-title">✏️ Modo Edición Activado</div>
+            <div class="toolbar-buttons">
+                <button id="saveBtn" class="btn-toolbar btn-save">💾 Guardar</button>
+                <button id="logoutBtn" class="btn-toolbar btn-logout">🚪 Salir</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Status Message -->
+    <div id="statusMessage" class="status-message"></div>
+    
+    <!-- Quick Login Button -->
+    <button id="quickLoginBtn" class="quick-login-btn" title="Login para editar">🔐</button>
+    
     <header>
-        <h1>Ale Gallo - Mi Espacio Digital</h1>
+        <h1 contenteditable="false">Ale Gallo - Mi Espacio Digital</h1>
         <nav>
             <ul>
                 <li><a href="index.html" style="color: #4a90e2;">🏠 Inicio</a></li>
@@ -25,8 +250,8 @@
     
     <main>
         <section class="hero">
-            <h2>¡Bienvenido a mi espacio digital personal! 🚀</h2>
-            <p>Un lugar donde organizo mis pensamientos, trabajo y recursos digitales</p>
+            <h2 contenteditable="false">¡Bienvenido a mi espacio digital personal! 🚀</h2>
+            <p contenteditable="false">Un lugar donde organizo mis pensamientos, trabajo y recursos digitales</p>
             <div class="hero-buttons">
                 <a href="blog-simple.html" class="btn-primary">📝 Ir al Blog</a>
                 <a href="resources.html" class="btn-secondary">🔗 Ver Recursos</a>
@@ -34,55 +259,53 @@
         </section>
         
         <section class="features">
-            <h3>¿Qué encontrarás aquí?</h3>
+            <h3 contenteditable="false">¿Qué encontrarás aquí?</h3>
             <div class="features-grid">
                 <div class="feature-card">
-                    <h4>📝 Blog Personal</h4>
-                    <p>Notas, ideas, artículos y reflexiones sobre trabajo, tecnología y vida</p>
+                    <h4 contenteditable="false">📝 Blog Personal</h4>
+                    <p contenteditable="false">Notas, ideas, artículos y reflexiones sobre trabajo, tecnología y vida</p>
                     <a href="blog-simple.html" class="feature-link">Explorar Blog</a>
                 </div>
                 
                 <div class="feature-card">
-                    <h4>🔗 Recursos Organizados</h4>
-                    <p>Enlaces útiles, herramientas y recursos categorizados para fácil acceso</p>
+                    <h4 contenteditable="false">🔗 Recursos Organizados</h4>
+                    <p contenteditable="false">Enlaces útiles, herramientas y recursos categorizados para fácil acceso</p>
                     <a href="resources.html" class="feature-link">Ver Recursos</a>
                 </div>
                 
                 <div class="feature-card">
-                    <h4>🎯 Organización Personal</h4>
-                    <p>Un sistema simple para gestionar información importante y proyectos</p>
+                    <h4 contenteditable="false">🎯 Organización Personal</h4>
+                    <p contenteditable="false">Un sistema simple para gestionar información importante y proyectos</p>
                     <a href="admin.html" class="feature-link">Panel Admin</a>
                 </div>
             </div>
         </section>
         
         <section class="quick-contact">
-            <h3>💬 Contacto Rápido</h3>
-            <p>¿Tienes algo interesante que compartir? ¡Escríbeme!</p>
+            <h3 contenteditable="false">💬 Contacto Rápido</h3>
+            <p contenteditable="false">¿Tienes algo interesante que compartir? ¡Escríbeme!</p>
             
-            <form id="quick-contact-form" class="contact-form">
+            <form id="quickContactForm" class="contact-form">
                 <div class="form-group">
-                    <input type="text" id="contact-name" placeholder="Tu nombre" required>
+                    <input type="text" id="contactName" placeholder="Tu nombre" required>
                 </div>
                 
                 <div class="form-group">
-                    <input type="email" id="contact-email" placeholder="Tu email" required>
+                    <input type="email" id="contactEmail" placeholder="Tu email" required>
                 </div>
                 
                 <div class="form-group">
-                    <textarea id="contact-message" placeholder="Tu mensaje" rows="4" required></textarea>
+                    <textarea id="contactMessage" placeholder="Tu mensaje" rows="4" required></textarea>
                 </div>
                 
                 <button type="submit" class="btn-primary">Enviar Mensaje</button>
             </form>
-            
-            <div id="contact-status" class="contact-status"></div>
         </section>
     </main>
     
     <footer>
         <div class="footer-content">
-            <p>© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
+            <p contenteditable="false">© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
             <div class="footer-links">
                 <a href="about.html">Sobre mí</a>
                 <a href="contact.html">Contacto</a>
@@ -95,6 +318,188 @@
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
-    <script src="js/front-page.js"></script>
+    
+    <script>
+        // Sistema de Login y Edición Simple
+        class SimpleEditor {
+            constructor() {
+                this.isLoggedIn = false;
+                this.isEditMode = false;
+                this.credentials = {
+                    username: 'alito',
+                    password: 'vinilo28'
+                };
+                this.init();
+            }
+            
+            init() {
+                // Event listeners
+                document.getElementById('quickLoginBtn').addEventListener('click', () => this.showLogin());
+                document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
+                document.getElementById('saveBtn').addEventListener('click', () => this.saveChanges());
+                document.getElementById('logoutBtn').addEventListener('click', () => this.logout());
+                
+                // Contact form
+                document.getElementById('quickContactForm').addEventListener('submit', (e) => this.handleContact(e));
+                
+                // Close modal on background click
+                document.getElementById('loginModal').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('loginModal')) {
+                        this.hideLogin();
+                    }
+                });
+                
+                // Check if already logged in
+                if (sessionStorage.getItem('editorLoggedIn') === 'true') {
+                    this.isLoggedIn = true;
+                    this.updateUI();
+                }
+            }
+            
+            showLogin() {
+                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('username').focus();
+            }
+            
+            hideLogin() {
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('loginError').style.display = 'none';
+            }
+            
+            handleLogin(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (username === this.credentials.username && password === this.credentials.password) {
+                    this.isLoggedIn = true;
+                    sessionStorage.setItem('editorLoggedIn', 'true');
+                    this.hideLogin();
+                    this.enableEditMode();
+                    this.showStatus('¡Login exitoso! Modo edición activado', 'success');
+                } else {
+                    document.getElementById('loginError').style.display = 'block';
+                }
+            }
+            
+            enableEditMode() {
+                this.isEditMode = true;
+                document.body.classList.add('edit-mode');
+                document.getElementById('editToolbar').classList.add('active');
+                document.getElementById('quickLoginBtn').style.display = 'none';
+                
+                // Make elements editable
+                document.querySelectorAll('[contenteditable="false"]').forEach(el => {
+                    el.contentEditable = 'true';
+                });
+                
+                this.showStatus('Modo edición activado. Haz clic en cualquier texto para editarlo', 'success');
+            }
+            
+            disableEditMode() {
+                this.isEditMode = false;
+                document.body.classList.remove('edit-mode');
+                document.getElementById('editToolbar').classList.remove('active');
+                document.getElementById('quickLoginBtn').style.display = 'block';
+                
+                // Make elements non-editable
+                document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                    el.contentEditable = 'false';
+                });
+            }
+            
+            saveChanges() {
+                // Save to localStorage as backup
+                const editableElements = document.querySelectorAll('[contenteditable="true"]');
+                const changes = {};
+                
+                editableElements.forEach((el, index) => {
+                    changes[`element_${index}`] = el.innerHTML;
+                });
+                
+                localStorage.setItem('pageEdits', JSON.stringify(changes));
+                
+                // Try to save to Firebase
+                if (typeof BlogDB !== 'undefined') {
+                    const pageData = {
+                        page: 'index',
+                        content: changes,
+                        timestamp: Date.now()
+                    };
+                    
+                    firebase.database().ref('page-edits').push(pageData)
+                        .then(() => {
+                            this.showStatus('Cambios guardados exitosamente', 'success');
+                        })
+                        .catch(error => {
+                            this.showStatus('Guardado local exitoso (Firebase no disponible)', 'success');
+                        });
+                } else {
+                    this.showStatus('Cambios guardados localmente', 'success');
+                }
+            }
+            
+            logout() {
+                this.isLoggedIn = false;
+                sessionStorage.removeItem('editorLoggedIn');
+                this.disableEditMode();
+                this.showStatus('Sesión cerrada', 'success');
+                
+                // Clear form
+                document.getElementById('loginForm').reset();
+            }
+            
+            handleContact(e) {
+                e.preventDefault();
+                const name = document.getElementById('contactName').value;
+                const email = document.getElementById('contactEmail').value;
+                const message = document.getElementById('contactMessage').value;
+                
+                const contactData = {
+                    name: name,
+                    email: email,
+                    message: message,
+                    timestamp: Date.now(),
+                    read: false
+                };
+                
+                // Save to Firebase
+                if (typeof firebase !== 'undefined') {
+                    firebase.database().ref('contact-messages').push(contactData)
+                        .then(() => {
+                            this.showStatus('Mensaje enviado exitosamente', 'success');
+                            document.getElementById('quickContactForm').reset();
+                        })
+                        .catch(error => {
+                            this.showStatus('Error al enviar mensaje', 'error');
+                        });
+                } else {
+                    this.showStatus('Mensaje guardado localmente', 'success');
+                    document.getElementById('quickContactForm').reset();
+                }
+            }
+            
+            showStatus(message, type) {
+                const statusEl = document.getElementById('statusMessage');
+                statusEl.textContent = message;
+                statusEl.className = `status-message ${type} active`;
+                
+                setTimeout(() => {
+                    statusEl.classList.remove('active');
+                }, 3000);
+            }
+            
+            updateUI() {
+                if (this.isLoggedIn) {
+                    this.enableEditMode();
+                }
+            }
+        }
+        
+        // Initialize editor when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new SimpleEditor();
+        });
+    </script>
 </body>
 </html>
