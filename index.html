@@ -8,37 +8,50 @@
     <link rel="stylesheet" href="assets/front-page.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        /* Login Modal */
-        .login-modal {
-            display: none;
+        /* Sistema de Login Mejorado */
+        .login-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
             justify-content: center;
             align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
         }
         
-        .login-modal.active {
+        .login-overlay.show {
             display: flex;
         }
         
-        .login-content {
+        .login-box {
             background: #1a1a1a;
+            border: 2px solid #4a90e2;
+            border-radius: 10px;
             padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-            max-width: 400px;
             width: 90%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .login-header {
             text-align: center;
+            margin-bottom: 2rem;
         }
         
         .login-title {
             color: #4a90e2;
-            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-subtitle {
+            color: #888;
+            font-size: 0.9rem;
         }
         
         .login-form {
@@ -47,45 +60,102 @@
             gap: 1rem;
         }
         
-        .login-input {
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            color: #f0f0f0;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
             padding: 0.8rem;
             border: 1px solid #333;
             background: #2a2a2a;
             color: #f0f0f0;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s;
         }
         
-        .login-btn {
-            padding: 0.8rem;
+        .form-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+        
+        .login-button {
             background: #4a90e2;
             color: white;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
         }
         
-        .login-btn:hover {
+        .login-button:hover {
             background: #357abd;
+            transform: translateY(-2px);
         }
         
-        .login-error {
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #f0f0f0;
+        }
+        
+        .error-message {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid #f44336;
             color: #f44336;
+            padding: 0.8rem;
+            border-radius: 5px;
             margin-top: 1rem;
             display: none;
-            padding: 0.5rem;
-            background: rgba(244, 67, 54, 0.1);
-            border-radius: 4px;
-            border: 1px solid #f44336;
         }
         
-        .login-error.show {
+        .error-message.show {
             display: block;
         }
         
-        /* Edit Mode Styles */
+        .credentials-info {
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid #4a90e2;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .credentials-info h4 {
+            color: #4a90e2;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .credentials-info p {
+            margin: 0.25rem 0;
+            color: #ccc;
+        }
+        
+        /* Toolbar de Edición */
         .edit-toolbar {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -94,23 +164,25 @@
             color: white;
             padding: 1rem;
             z-index: 9999;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            display: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
         
-        .edit-toolbar.active {
+        .edit-toolbar.show {
             display: block;
         }
         
         .toolbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
         }
         
         .toolbar-title {
             font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .toolbar-buttons {
@@ -118,18 +190,19 @@
             gap: 0.5rem;
         }
         
-        .btn-toolbar {
-            background: rgba(255,255,255,0.2);
+        .toolbar-btn {
+            background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
         
-        .btn-toolbar:hover {
-            background: rgba(255,255,255,0.3);
+        .toolbar-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .btn-save {
@@ -140,8 +213,71 @@
             background: #f44336 !important;
         }
         
+        /* Botón de Login Flotante */
+        .floating-login {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .floating-login:hover {
+            background: #357abd;
+            transform: scale(1.1);
+        }
+        
+        /* Notificaciones */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            z-index: 10001;
+            font-weight: 600;
+            min-width: 200px;
+            text-align: center;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .notification.error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .notification.warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .notification.info {
+            background: #2196f3;
+            color: white;
+        }
+        
+        /* Modo Edición */
         body.edit-mode {
-            padding-top: 60px;
+            padding-top: 70px;
         }
         
         body.edit-mode [contenteditable="true"] {
@@ -150,99 +286,99 @@
             padding: 4px;
             border-radius: 4px;
             transition: all 0.3s;
+            position: relative;
         }
         
         body.edit-mode [contenteditable="true"]:hover {
             background: rgba(74, 144, 226, 0.1);
+            outline-color: #357abd;
         }
         
         body.edit-mode [contenteditable="true"]:focus {
             outline: 2px solid #4a90e2;
-            background: rgba(74, 144, 226, 0.1);
+            background: rgba(74, 144, 226, 0.15);
         }
         
-        /* Quick Login Button */
-        .quick-login-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        /* Animaciones */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
         
-        .quick-login-btn:hover {
-            background: #357abd;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         
-        .status-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem;
-            border-radius: 4px;
-            z-index: 9998;
-            display: none;
-        }
-        
-        .status-message.success {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .status-message.error {
-            background: #f44336;
-            color: white;
-        }
-        
-        .status-message.active {
-            display: block;
+        .login-box {
+            animation: fadeIn 0.3s ease;
         }
     </style>
 </head>
 <body>
-    <!-- Login Modal -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-content">
-            <h2 class="login-title">🔐 Login de Administrador</h2>
-            <form id="loginForm" class="login-form">
-                <input type="text" id="username" class="login-input" placeholder="Usuario" required autocomplete="username">
-                <input type="password" id="password" class="login-input" placeholder="Contraseña" required autocomplete="current-password">
-                <button type="submit" class="login-btn">🔐 Iniciar Sesión</button>
-                <div id="loginError" class="login-error" style="display: none;">Usuario o contraseña incorrectos</div>
-            </form>
-            <div style="margin-top: 1rem; color: #888; font-size: 0.9rem;">
-                <p><strong>Credenciales de prueba:</strong></p>
-                <p>Usuario: <strong>alito</strong></p>
-                <p>Contraseña: <strong>vinilo28</strong></p>
+    <!-- Overlay de Login -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <button class="close-btn" onclick="closeLogin()">&times;</button>
+            
+            <div class="login-header">
+                <h2 class="login-title">🔐 Acceso de Administrador</h2>
+                <p class="login-subtitle">Ingresa tus credenciales para editar el sitio</p>
             </div>
-            <button type="button" onclick="closeLoginModal()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #888; font-size: 1.5rem; cursor: pointer;">×</button>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label class="form-label">👤 Usuario</label>
+                    <input type="text" id="loginUsername" class="form-input" placeholder="Ingresa tu usuario" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">🔒 Contraseña</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Ingresa tu contraseña" required>
+                </div>
+                
+                <button type="submit" class="login-button">🚀 Iniciar Sesión</button>
+                
+                <div id="loginError" class="error-message">
+                    ❌ Usuario o contraseña incorrectos
+                </div>
+            </form>
+            
+            <div class="credentials-info">
+                <h4>🔍 Credenciales de Prueba</h4>
+                <p><strong>Usuario:</strong> alito</p>
+                <p><strong>Contraseña:</strong> vinilo28</p>
+            </div>
         </div>
     </div>
     
-    <!-- Edit Toolbar -->
+    <!-- Toolbar de Edición -->
     <div id="editToolbar" class="edit-toolbar">
         <div class="toolbar-content">
             <div class="toolbar-title">✏️ Modo Edición Activado</div>
             <div class="toolbar-buttons">
-                <button id="saveBtn" class="btn-toolbar btn-save">💾 Guardar</button>
-                <button id="logoutBtn" class="btn-toolbar btn-logout">🚪 Salir</button>
+                <button id="saveBtn" class="toolbar-btn btn-save">💾 Guardar</button>
+                <button id="logoutBtn" class="toolbar-btn btn-logout">🚪 Cerrar Sesión</button>
             </div>
         </div>
     </div>
     
-    <!-- Status Message -->
-    <div id="statusMessage" class="status-message"></div>
-    
-    <!-- Quick Login Button -->
-    <button id="quickLoginBtn" class="quick-login-btn" title="Login para editar">🔐</button>
+    <!-- Botón de Login Flotante -->
+    <button id="floatingLogin" class="floating-login" onclick="showLogin()" title="Iniciar sesión para editar">
+        🔐
+    </button>
     
     <header>
         <h1 contenteditable="false">Ale Gallo - Mi Espacio Digital</h1>
@@ -295,7 +431,7 @@
             <h3 contenteditable="false">💬 Contacto Rápido</h3>
             <p contenteditable="false">¿Tienes algo interesante que compartir? ¡Escríbeme!</p>
             
-            <form id="quickContactForm" class="contact-form">
+            <form id="contactForm" class="contact-form">
                 <div class="form-group">
                     <input type="text" id="contactName" placeholder="Tu nombre" required>
                 </div>
@@ -308,7 +444,7 @@
                     <textarea id="contactMessage" placeholder="Tu mensaje" rows="4" required></textarea>
                 </div>
                 
-                <button type="submit" class="btn-primary">Enviar Mensaje</button>
+                <button type="submit" class="btn-primary">📧 Enviar Mensaje</button>
             </form>
         </section>
     </main>
@@ -324,179 +460,136 @@
         </div>
     </footer>
     
-    <!-- Scripts -->
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
     
     <script>
-        // Sistema de Login y Edición Mejorado
-        class AdvancedEditor {
+        // Sistema de Login y Edición Funcional
+        class BlogEditor {
             constructor() {
-                this.isLoggedIn = false;
+                this.isAuthenticated = false;
                 this.isEditMode = false;
                 this.credentials = {
                     username: 'alito',
                     password: 'vinilo28'
                 };
+                this.firebaseReady = false;
                 this.init();
             }
             
             init() {
-                console.log('🎨 Advanced Editor System iniciado');
+                console.log('🎨 Blog Editor iniciado');
                 
-                // Verificar si Firebase está disponible
-                this.checkFirebaseConnection();
+                // Configurar Firebase
+                this.setupFirebase();
                 
-                // Event listeners
-                this.setupEventListeners();
+                // Configurar eventos
+                this.setupEvents();
                 
-                // Verificar estado de autenticación
+                // Verificar autenticación previa
                 this.checkAuthState();
             }
             
-            checkFirebaseConnection() {
+            setupFirebase() {
+                // Verificar si Firebase está disponible
                 if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-                    console.log('✅ Firebase conectado correctamente');
-                    this.firebaseAvailable = true;
+                    this.firebaseReady = true;
+                    console.log('✅ Firebase configurado');
                     
-                    // Probar conexión a la base de datos
+                    // Verificar conexión
                     firebase.database().ref('.info/connected').on('value', (snapshot) => {
                         if (snapshot.val() === true) {
-                            console.log('✅ Conexión a Firebase Database establecida');
-                            this.showStatus('🔥 Firebase conectado', 'success');
-                        } else {
-                            console.warn('⚠️ Sin conexión a Firebase Database');
-                            this.showStatus('⚠️ Firebase sin conexión', 'warning');
+                            console.log('🔥 Conectado a Firebase');
                         }
                     });
                 } else {
-                    console.warn('⚠️ Firebase no está disponible');
-                    this.firebaseAvailable = false;
-                    this.showStatus('⚠️ Firebase no disponible - usando almacenamiento local', 'warning');
+                    console.warn('⚠️ Firebase no disponible');
                 }
             }
             
-            setupEventListeners() {
-                // Botón de login rápido
-                const quickLoginBtn = document.getElementById('quickLoginBtn');
-                if (quickLoginBtn) {
-                    quickLoginBtn.addEventListener('click', () => this.showLogin());
-                }
-                
+            setupEvents() {
                 // Formulario de login
-                const loginForm = document.getElementById('loginForm');
-                if (loginForm) {
-                    loginForm.addEventListener('submit', (e) => this.handleLogin(e));
-                }
+                document.getElementById('loginForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
                 
-                // Botones de la toolbar
-                const saveBtn = document.getElementById('saveBtn');
-                const logoutBtn = document.getElementById('logoutBtn');
+                // Botones de toolbar
+                document.getElementById('saveBtn').addEventListener('click', () => {
+                    this.saveChanges();
+                });
                 
-                if (saveBtn) {
-                    saveBtn.addEventListener('click', () => this.saveChanges());
-                }
-                
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => this.logout());
-                }
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    this.logout();
+                });
                 
                 // Formulario de contacto
-                const contactForm = document.getElementById('quickContactForm');
-                if (contactForm) {
-                    contactForm.addEventListener('submit', (e) => this.handleContact(e));
-                }
+                document.getElementById('contactForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleContact();
+                });
                 
-                // Cerrar modal al hacer clic fuera
-                const loginModal = document.getElementById('loginModal');
-                if (loginModal) {
-                    loginModal.addEventListener('click', (e) => {
-                        if (e.target === loginModal) {
-                            this.hideLogin();
-                        }
-                    });
-                }
-                
-                // Atajos de teclado
+                // Cerrar modal con Escape
                 document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && document.getElementById('loginOverlay').classList.contains('show')) {
+                        this.closeLogin();
+                    }
+                    
+                    // Guardar con Ctrl+S
                     if (e.ctrlKey && e.key === 's' && this.isEditMode) {
                         e.preventDefault();
                         this.saveChanges();
                     }
-                    if (e.key === 'Escape' && document.getElementById('loginModal').classList.contains('active')) {
-                        this.hideLogin();
+                });
+                
+                // Cerrar modal al hacer clic fuera
+                document.getElementById('loginOverlay').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('loginOverlay')) {
+                        this.closeLogin();
                     }
                 });
             }
             
             checkAuthState() {
-                const auth = sessionStorage.getItem('editorLoggedIn');
+                const auth = sessionStorage.getItem('blogEditorAuth');
                 if (auth === 'true') {
-                    this.isLoggedIn = true;
+                    this.isAuthenticated = true;
                     this.enableEditMode();
                 }
             }
             
             showLogin() {
-                const modal = document.getElementById('loginModal');
-                const usernameInput = document.getElementById('username');
-                const errorDiv = document.getElementById('loginError');
-                
-                if (modal) {
-                    modal.classList.add('active');
-                    if (usernameInput) {
-                        usernameInput.focus();
-                    }
-                    if (errorDiv) {
-                        errorDiv.style.display = 'none';
-                        errorDiv.classList.remove('show');
-                    }
-                }
+                document.getElementById('loginOverlay').classList.add('show');
+                document.getElementById('loginUsername').focus();
+                document.getElementById('loginError').classList.remove('show');
             }
             
-            hideLogin() {
-                const modal = document.getElementById('loginModal');
-                const form = document.getElementById('loginForm');
-                const errorDiv = document.getElementById('loginError');
-                
-                if (modal) {
-                    modal.classList.remove('active');
-                }
-                if (form) {
-                    form.reset();
-                }
-                if (errorDiv) {
-                    errorDiv.style.display = 'none';
-                    errorDiv.classList.remove('show');
-                }
+            closeLogin() {
+                document.getElementById('loginOverlay').classList.remove('show');
+                document.getElementById('loginForm').reset();
+                document.getElementById('loginError').classList.remove('show');
             }
             
-            handleLogin(e) {
-                e.preventDefault();
+            handleLogin() {
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
                 
-                const username = document.getElementById('username').value.trim();
-                const password = document.getElementById('password').value.trim();
-                const errorDiv = document.getElementById('loginError');
-                
-                console.log('🔐 Intentando login con usuario:', username);
+                console.log('🔐 Intentando login:', username);
                 
                 if (username === this.credentials.username && password === this.credentials.password) {
-                    this.isLoggedIn = true;
-                    sessionStorage.setItem('editorLoggedIn', 'true');
+                    this.isAuthenticated = true;
+                    sessionStorage.setItem('blogEditorAuth', 'true');
                     
-                    this.hideLogin();
+                    this.closeLogin();
                     this.enableEditMode();
+                    this.showNotification('✅ ¡Sesión iniciada correctamente!', 'success');
                     
-                    this.showStatus('✅ Login exitoso - Modo edición activado', 'success');
                     console.log('✅ Login exitoso');
                 } else {
-                    if (errorDiv) {
-                        errorDiv.style.display = 'block';
-                        errorDiv.classList.add('show');
-                        errorDiv.textContent = '❌ Usuario o contraseña incorrectos';
-                    }
-                    this.showStatus('❌ Credenciales incorrectas', 'error');
+                    document.getElementById('loginError').classList.add('show');
+                    this.showNotification('❌ Credenciales incorrectas', 'error');
                     console.log('❌ Login fallido');
                 }
             }
@@ -505,24 +598,20 @@
                 this.isEditMode = true;
                 document.body.classList.add('edit-mode');
                 
-                const toolbar = document.getElementById('editToolbar');
-                const quickLoginBtn = document.getElementById('quickLoginBtn');
+                // Mostrar toolbar
+                document.getElementById('editToolbar').classList.add('show');
                 
-                if (toolbar) {
-                    toolbar.classList.add('active');
-                }
-                if (quickLoginBtn) {
-                    quickLoginBtn.style.display = 'none';
-                }
+                // Ocultar botón flotante
+                document.getElementById('floatingLogin').style.display = 'none';
                 
                 // Hacer elementos editables
-                const editableElements = document.querySelectorAll('[contenteditable="false"]');
-                editableElements.forEach(el => {
+                const elements = document.querySelectorAll('[contenteditable="false"]');
+                elements.forEach(el => {
                     el.contentEditable = 'true';
                     el.addEventListener('input', () => this.handleContentChange(el));
                 });
                 
-                this.showStatus('✏️ Modo edición activado - Ctrl+S para guardar', 'success');
+                this.showNotification('✏️ Modo edición activado. Haz clic para editar.', 'info');
                 console.log('✏️ Modo edición activado');
             }
             
@@ -530,28 +619,23 @@
                 this.isEditMode = false;
                 document.body.classList.remove('edit-mode');
                 
-                const toolbar = document.getElementById('editToolbar');
-                const quickLoginBtn = document.getElementById('quickLoginBtn');
+                // Ocultar toolbar
+                document.getElementById('editToolbar').classList.remove('show');
                 
-                if (toolbar) {
-                    toolbar.classList.remove('active');
-                }
-                if (quickLoginBtn) {
-                    quickLoginBtn.style.display = 'block';
-                }
+                // Mostrar botón flotante
+                document.getElementById('floatingLogin').style.display = 'block';
                 
                 // Hacer elementos no editables
-                const editableElements = document.querySelectorAll('[contenteditable="true"]');
-                editableElements.forEach(el => {
+                const elements = document.querySelectorAll('[contenteditable="true"]');
+                elements.forEach(el => {
                     el.contentEditable = 'false';
                 });
             }
             
             handleContentChange(element) {
-                // Marcar como modificado
                 element.classList.add('modified');
                 
-                // Auto-guardar después de 3 segundos de inactividad
+                // Auto-guardar después de 3 segundos
                 clearTimeout(this.autoSaveTimer);
                 this.autoSaveTimer = setTimeout(() => {
                     this.saveChanges();
@@ -559,17 +643,12 @@
             }
             
             saveChanges() {
-                if (!this.isEditMode) {
-                    this.showStatus('⚠️ No estás en modo edición', 'warning');
-                    return;
-                }
+                if (!this.isEditMode) return;
                 
-                console.log('💾 Guardando cambios...');
-                
-                const editableElements = document.querySelectorAll('[contenteditable="true"]');
+                const elements = document.querySelectorAll('[contenteditable="true"]');
                 const changes = {};
                 
-                editableElements.forEach((el, index) => {
+                elements.forEach((el, index) => {
                     const selector = this.getElementSelector(el);
                     changes[selector] = {
                         content: el.textContent,
@@ -578,43 +657,33 @@
                     };
                 });
                 
-                const pageData = {
+                const saveData = {
                     page: 'index',
                     changes: changes,
                     timestamp: Date.now(),
-                    savedBy: 'alito'
+                    user: this.credentials.username
                 };
                 
-                // Guardar en localStorage como respaldo
-                localStorage.setItem('pageEdits_index', JSON.stringify(pageData));
+                // Guardar localmente
+                localStorage.setItem('blogEdits_index', JSON.stringify(saveData));
                 
-                // Intentar guardar en Firebase
-                if (this.firebaseAvailable) {
-                    this.saveToFirebase(pageData);
+                // Guardar en Firebase si está disponible
+                if (this.firebaseReady) {
+                    firebase.database().ref('page-edits').push(saveData)
+                        .then(() => {
+                            this.showNotification('💾 Guardado exitoso en Firebase', 'success');
+                            console.log('✅ Guardado en Firebase');
+                        })
+                        .catch((error) => {
+                            console.error('❌ Error Firebase:', error);
+                            this.showNotification('💾 Guardado local (Firebase error)', 'warning');
+                        });
                 } else {
-                    this.showStatus('💾 Guardado localmente (Firebase no disponible)', 'success');
+                    this.showNotification('💾 Guardado localmente', 'warning');
                 }
                 
-                // Remover marca de modificado
-                editableElements.forEach(el => {
-                    el.classList.remove('modified');
-                });
-                
-                console.log('💾 Cambios guardados');
-            }
-            
-            saveToFirebase(pageData) {
-                const saveRef = firebase.database().ref('page-edits').push();
-                
-                saveRef.set(pageData)
-                    .then(() => {
-                        this.showStatus('💾 Guardado exitoso en Firebase', 'success');
-                        console.log('✅ Guardado en Firebase exitoso');
-                    })
-                    .catch(error => {
-                        console.error('❌ Error guardando en Firebase:', error);
-                        this.showStatus('❌ Error en Firebase - Guardado local exitoso', 'error');
-                    });
+                // Limpiar marcas de modificado
+                elements.forEach(el => el.classList.remove('modified'));
             }
             
             getElementSelector(element) {
@@ -623,15 +692,13 @@
                 return element.tagName.toLowerCase();
             }
             
-            handleContact(e) {
-                e.preventDefault();
-                
+            handleContact() {
                 const name = document.getElementById('contactName').value.trim();
                 const email = document.getElementById('contactEmail').value.trim();
                 const message = document.getElementById('contactMessage').value.trim();
                 
                 if (!name || !email || !message) {
-                    this.showStatus('⚠️ Completa todos los campos', 'warning');
+                    this.showNotification('⚠️ Por favor completa todos los campos', 'warning');
                     return;
                 }
                 
@@ -643,62 +710,82 @@
                     read: false
                 };
                 
-                // Guardar en localStorage
+                // Guardar localmente
                 const contacts = JSON.parse(localStorage.getItem('contactMessages') || '[]');
                 contacts.push(contactData);
                 localStorage.setItem('contactMessages', JSON.stringify(contacts));
                 
-                // Intentar guardar en Firebase
-                if (this.firebaseAvailable) {
+                // Guardar en Firebase
+                if (this.firebaseReady) {
                     firebase.database().ref('contact-messages').push(contactData)
                         .then(() => {
-                            this.showStatus('📧 Mensaje enviado exitosamente', 'success');
-                            document.getElementById('quickContactForm').reset();
-                            console.log('✅ Mensaje de contacto enviado');
+                            this.showNotification('📧 Mensaje enviado correctamente', 'success');
+                            document.getElementById('contactForm').reset();
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             console.error('❌ Error enviando mensaje:', error);
-                            this.showStatus('❌ Error enviando mensaje - Guardado local exitoso', 'error');
+                            this.showNotification('📧 Mensaje guardado localmente', 'warning');
+                            document.getElementById('contactForm').reset();
                         });
                 } else {
-                    this.showStatus('📧 Mensaje guardado localmente', 'success');
-                    document.getElementById('quickContactForm').reset();
+                    this.showNotification('📧 Mensaje guardado localmente', 'warning');
+                    document.getElementById('contactForm').reset();
                 }
             }
             
             logout() {
-                this.isLoggedIn = false;
-                sessionStorage.removeItem('editorLoggedIn');
+                this.isAuthenticated = false;
+                sessionStorage.removeItem('blogEditorAuth');
                 this.disableEditMode();
-                this.showStatus('🚪 Sesión cerrada exitosamente', 'success');
+                this.showNotification('🚪 Sesión cerrada', 'info');
                 console.log('🚪 Logout exitoso');
             }
             
-            showStatus(message, type) {
-                const statusEl = document.getElementById('statusMessage');
-                if (!statusEl) return;
+            showNotification(message, type = 'info') {
+                // Remover notificación anterior
+                const existing = document.querySelector('.notification');
+                if (existing) {
+                    existing.remove();
+                }
                 
-                statusEl.textContent = message;
-                statusEl.className = `status-message ${type} active`;
+                // Crear nueva notificación
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
                 
+                document.body.appendChild(notification);
+                
+                // Mostrar con animación
                 setTimeout(() => {
-                    statusEl.classList.remove('active');
+                    notification.classList.add('show');
+                }, 100);
+                
+                // Ocultar después de 4 segundos
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
                 }, 4000);
             }
         }
         
-        // Función global para cerrar modal
-        function closeLoginModal() {
-            const modal = document.getElementById('loginModal');
-            if (modal) {
-                modal.classList.remove('active');
+        // Funciones globales
+        function showLogin() {
+            if (window.blogEditor) {
+                window.blogEditor.showLogin();
+            }
+        }
+        
+        function closeLogin() {
+            if (window.blogEditor) {
+                window.blogEditor.closeLogin();
             }
         }
         
         // Inicializar cuando el DOM esté listo
-        let editorInstance;
         document.addEventListener('DOMContentLoaded', () => {
-            editorInstance = new AdvancedEditor();
+            window.blogEditor = new BlogEditor();
         });
     </script>
 </body>
