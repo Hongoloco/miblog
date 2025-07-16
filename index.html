@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ale Gallo - Mi Espacio Digital</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/front-page.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Ale Gallo - Mi Espacio Digital</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" style="color: #4a90e2;">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html">📋 Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <h2>¡Bienvenido a mi espacio digital personal! 🚀</h2>
+            <p>Un lugar donde organizo mis pensamientos, trabajo y recursos digitales</p>
+            <div class="hero-buttons">
+                <a href="blog-simple.html" class="btn-primary">📝 Ir al Blog</a>
+                <a href="resources.html" class="btn-secondary">🔗 Ver Recursos</a>
+            </div>
+        </section>
+        
+        <section class="features">
+            <h3>¿Qué encontrarás aquí?</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>📝 Blog Personal</h4>
+                    <p>Notas, ideas, artículos y reflexiones sobre trabajo, tecnología y vida</p>
+                    <a href="blog-simple.html" class="feature-link">Explorar Blog</a>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔗 Recursos Organizados</h4>
+                    <p>Enlaces útiles, herramientas y recursos categorizados para fácil acceso</p>
+                    <a href="resources.html" class="feature-link">Ver Recursos</a>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🎯 Organización Personal</h4>
+                    <p>Un sistema simple para gestionar información importante y proyectos</p>
+                    <a href="admin.html" class="feature-link">Panel Admin</a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="quick-contact">
+            <h3>💬 Contacto Rápido</h3>
+            <p>¿Tienes algo interesante que compartir? ¡Escríbeme!</p>
+            
+            <form id="quick-contact-form" class="contact-form">
+                <div class="form-group">
+                    <input type="text" id="contact-name" placeholder="Tu nombre" required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" id="contact-email" placeholder="Tu email" required>
+                </div>
+                
+                <div class="form-group">
+                    <textarea id="contact-message" placeholder="Tu mensaje" rows="4" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Enviar Mensaje</button>
+            </form>
+            
+            <div id="contact-status" class="contact-status"></div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
+            <div class="footer-links">
+                <a href="about.html">Sobre mí</a>
+                <a href="contact.html">Contacto</a>
+                <a href="admin.html">Admin</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/front-page.js"></script>
+</body>
+</html>
