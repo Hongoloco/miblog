@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notas - Ale Gallo</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/gaming-lite.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/clean-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="gaming-header">
         <div class="header-content">
-            <h1 class="gaming-title">🎮 Ale Gallo</h1>
+            <h1 class="gaming-title">💻 Ale Gallo</h1>
             
             <!-- Botón hamburguesa para móvil -->
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
@@ -41,32 +40,20 @@
             <div class="container">
                 <div class="section-header">
                     <h2>📝 Notas</h2>
-                    <p>Apuntes, tutoriales y experiencias sobre desarrollo y gaming</p>
+                    <p>Apuntes, tutoriales y experiencias sobre desarrollo web y tecnología</p>
                 </div>
 
                 <!-- Filtros -->
                 <div class="filter-section">
                     <button class="filter-btn active" data-filter="all">🔥 Todas</button>
                     <button class="filter-btn" data-filter="dev">💻 Desarrollo</button>
-                    <button class="filter-btn" data-filter="gaming">🎮 Gaming</button>
-                    <button class="filter-btn" data-filter="tutorials">📚 Tutoriales</button>
+                    <button class="filter-btn" data-filter="tech">🚀 Tecnología</button>
+                    <button class="filter-btn" data-filter="tools">🛠️ Herramientas</button>
                 </div>
 
                 <!-- Grid de notas -->
                 <div class="posts-grid" id="notes-grid">
                     <!-- Las notas se cargarán dinámicamente aquí -->
-                </div>
-
-                <!-- Paginación -->
-                <div class="pagination" id="pagination">
-                    <!-- La paginación se generará dinámicamente -->
-                </div>
-
-                <!-- Nueva nota -->
-                <div class="add-note">
-                    <button id="addNoteBtn" class="btn-gaming primary">
-                        ➕ Nueva Nota
-                    </button>
                 </div>
             </div>
         </section>
@@ -80,45 +67,5 @@
 
     <!-- Scripts -->
     <script src="js/notes.js"></script>
-    <script>
-        // Funcionalidad del menú móvil
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            
-            if (menu.classList.contains('show')) {
-                menu.classList.remove('show');
-                menu.classList.add('hide');
-                icon.textContent = '☰';
-                setTimeout(() => menu.classList.remove('hide'), 300);
-            } else {
-                menu.classList.add('show');
-                icon.textContent = '✕';
-            }
-        }
-
-        // Eventos
-        document.addEventListener('DOMContentLoaded', function() {
-            // Filtrado
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    const filter = this.dataset.filter;
-                    // Aquí iría la lógica de filtrado
-                });
-            });
-
-            // Nueva nota
-            document.getElementById('addNoteBtn').addEventListener('click', function() {
-                // Aquí iría la lógica para crear nueva nota
-            });
-        });
-
-        // Detectar dispositivos táctiles
-        if ('ontouchstart' in window) {
-            document.body.classList.add('touch-device');
-        }
-    </script>
 </body>
 </html>

@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ale Gallo - Desarrollo y Gaming</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <link rel="stylesheet" href="assets/gaming-lite.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/clean-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="gaming-header">
         <div class="header-content">
-            <h1 class="gaming-title">🎮 Ale Gallo</h1>
+            <h1 class="gaming-title">💻 Ale Gallo</h1>
             
             <!-- Botón hamburguesa para móvil -->
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
@@ -41,8 +39,8 @@
         <section class="hero-section">
             <div class="container">
                 <div class="hero-content">
-                    <h2>Desarrollo & Gaming</h2>
-                    <p>Bienvenido a mi espacio personal donde comparto recursos sobre desarrollo y gaming</p>
+                    <h2>Desarrollo & Tecnología</h2>
+                    <p>Bienvenido a mi espacio personal donde comparto conocimientos sobre desarrollo web, tecnología y herramientas modernas</p>
                 </div>
             </div>
         </section>
@@ -52,16 +50,16 @@
                 <div class="grid grid-2">
                     <div class="card">
                         <div class="card-info">
-                            <h3>💻 Desarrollo</h3>
-                            <p>Recursos, herramientas y notas sobre desarrollo de software</p>
-                            <a href="recursos.html?category=desarrollo" class="btn-gaming primary">Ver recursos</a>
+                            <h3>💻 Desarrollo Web</h3>
+                            <p>Tutoriales, herramientas y recursos para desarrollo frontend y backend</p>
+                            <a href="recursos.html?category=desarrollo" class="btn-gaming primary">Explorar recursos</a>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-info">
-                            <h3>🎮 Gaming</h3>
-                            <p>Colección de recursos y herramientas para gaming</p>
-                            <a href="recursos.html?category=gaming" class="btn-gaming primary">Ver recursos</a>
+                            <h3>🚀 Tecnología</h3>
+                            <p>Últimas tendencias en tecnología, frameworks y herramientas</p>
+                            <a href="recursos.html?category=tech" class="btn-gaming primary">Ver tecnologías</a>
                         </div>
                     </div>
                 </div>
@@ -89,49 +87,5 @@
 
     <!-- Scripts -->
     <script src="js/front-page.js"></script>
-    <script>
-        // Funcionalidad del menú móvil
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            
-            if (menu.classList.contains('show')) {
-                menu.classList.remove('show');
-                menu.classList.add('hide');
-                icon.textContent = '☰';
-                setTimeout(() => menu.classList.remove('hide'), 300);
-            } else {
-                menu.classList.add('show');
-                icon.textContent = '✕';
-            }
-        }
-
-        // Eventos del menú
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cerrar menú al hacer clic en enlaces
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    document.getElementById('mobile-menu').classList.remove('show');
-                    document.getElementById('menu-icon').textContent = '☰';
-                });
-            });
-
-            // Cerrar menú al hacer clic fuera
-            document.addEventListener('click', function(event) {
-                const menu = document.getElementById('mobile-menu');
-                const header = document.querySelector('header');
-                
-                if (!header.contains(event.target) && menu.classList.contains('show')) {
-                    menu.classList.remove('show');
-                    document.getElementById('menu-icon').textContent = '☰';
-                }
-            });
-        });
-
-        // Detectar dispositivos táctiles
-        if ('ontouchstart' in window) {
-            document.body.classList.add('touch-device');
-        }
-    </script>
 </body>
 </html>
