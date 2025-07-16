@@ -2,29 +2,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🔍 Inicializando blog-viewer...');
     
-    // Esperar a que BlogConfig esté disponible
-    if (typeof BlogConfig === 'undefined') {
-        console.error('❌ BlogConfig no está disponible');
-        return;
-    }
-    
-    // Verificar autenticación usando BlogConfig
-    if (!BlogConfig.auth.isAuthenticated()) {
-        console.log('❌ No autenticado, redirigiendo...');
-        BlogConfig.navigation.redirectToHome();
-        return;
-    }
-    
-    console.log('✅ Usuario autenticado, cargando posts...');
-    
-    // Verificar que Firebase esté disponible
-    if (!BlogConfig.firebase.isAvailable()) {
-        console.error('❌ Firebase no está disponible');
-        BlogConfig.error.show('Firebase no está disponible');
-        return;
-    }
-    
-    // Cargar los posts del blog
+    // Cargar los posts del blog directamente
     loadBlogPosts();
 });
 
@@ -40,13 +18,10 @@ function loadBlogPosts() {
     // Mostrar mensaje de carga
     postsContainer.innerHTML = '<p>Cargando entradas del blog...</p>';
     
-    // Referencia a la base de datos
-    const database = firebase.database();
-    const postsRef = database.ref('blog-posts');
-    
     console.log('Cargando posts desde Firebase...');
     
-    postsRef.on('value', (snapshot) => {
+    // Usar BlogDB para obtener los posts
+    BlogDB.getBlogPosts().then(snapshot => {
         const posts = snapshot.val();
         console.log('Posts recibidos:', posts);
         
