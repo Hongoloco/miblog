@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/gaming-lite.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/content-style.css">
+    <script src="js/content-manager.js" defer></script>
 </head>
 <body>
     <!-- Header mejorado para móvil -->
@@ -20,32 +23,63 @@
                 <li><a href="index.html">🏠 Inicio</a></li>
                 <li><a href="blog-simple.html" style="color: #4a90e2;">📝 Blog</a></li>
                 <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="login.html" style="color: #4a90e2;">🔑 Iniciar sesión</a></li>
                 <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Cerrar Sesión</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>📝 Gaming Blog</h2>
-                    <p>Escribe sobre videojuegos, reviews y experiencias gaming</p>
-                </div>
+    <main class="content-container">
+        <!-- Barra de herramientas de edición -->
+        <div class="edit-toolbar">
+            <button class="toolbar-button" onclick="toggleNewPostForm()">
+                <i class="fas fa-plus"></i> Nuevo Post
+            </button>
+            <button class="toolbar-button" onclick="toggleCategories()">
+                <i class="fas fa-tags"></i> Categorías
+            </button>
+            <button class="toolbar-button" onclick="toggleDraft()">
+                <i class="fas fa-save"></i> Borradores
+            </button>
+            <button class="toolbar-button" onclick="exportPosts()">
+                <i class="fas fa-file-export"></i> Exportar
+            </button>
+        </div>
+
+        <!-- Filtros de categorías -->
+        <div class="filter-bar" id="categoryFilters">
+            <span class="filter-chip active" data-category="all">Todos</span>
+            <span class="filter-chip" data-category="gaming">Gaming</span>
+            <span class="filter-chip" data-category="reviews">Reviews</span>
+            <span class="filter-chip" data-category="tutoriales">Tutoriales</span>
+            <span class="filter-chip" data-category="noticias">Noticias</span>
+        </div>
                 
-                <!-- Formulario para crear posts -->
-                <div class="card">
-                    <h3>✍️ Crear Nuevo Post</h3>
-                    <form id="postForm">
-                        <div class="form-group">
-                            <input type="text" id="postTitle" placeholder="Título del post..." required>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="postContent" placeholder="Contenido del post..." required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="postTags" placeholder="Tags (separados por comas)...">
-                        </div>
+        <!-- Formulario para crear posts -->
+        <div class="edit-form" id="newPostForm" style="display: none;">
+            <form id="postForm">
+                <div class="form-row">
+                    <label class="form-label" for="postTitle">Título</label>
+                    <input type="text" id="postTitle" class="form-input" placeholder="Escribe un título llamativo..." required>
+                </div>
+                <div class="form-row">
+                    <label class="form-label" for="postContent">Contenido</label>
+                    <textarea id="postContent" class="form-input form-textarea" placeholder="Escribe tu contenido aquí..." required></textarea>
+                </div>
+                <div class="form-row">
+                    <label class="form-label" for="postTags">Etiquetas</label>
+                    <input type="text" id="postTags" class="form-input" placeholder="gaming, review, tutorial...">
+                </div>
+                <button type="submit" class="toolbar-button">
+                    <i class="fas fa-save"></i> Publicar Post
+                </button>
+            </form>
+        </div>
+
+        <!-- Grid de posts -->
+        <div class="content-grid" id="postsGrid">
+            <!-- Los posts se cargarán dinámicamente aquí -->
+        </div>
                         <button type="submit" class="btn-gaming primary">
                             <span>🚀 Publicar Post</span>
                         </button>

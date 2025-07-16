@@ -6,12 +6,16 @@
     <title>Recursos - Ale Gallo Gaming Universe</title>
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/gaming-lite.css">
+    <link rel="stylesheet" href="assets/auth-style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/content-style.css">
+    <script src="js/content-manager.js" defer></script>
 </head>
 <body>
     <header class="gaming-header">
         <div class="header-content">
-            <h1 class="gaming-title">🎮 Gaming Blog</h1>
+            <h1 class="gaming-title">🎮 Gaming Universe</h1>
             
             <!-- Botón hamburguesa para móvil -->
             <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
@@ -22,230 +26,82 @@
             <nav class="gaming-nav">
                 <ul class="nav-links">
                     <li><a href="index.html">🏠 Inicio</a></li>
-                    <li><a href="blog-simple.html">📝 Blog</a></li>
-                    <li><a href="resources.html" class="active">� Recursos</a></li>
-                    <li><a href="about.html">👨‍💻 Sobre Mí</a></li>
-                    <li><a href="contact.html">💬 Contacto</a></li>
-                    <li><a href="admin.html">⚙️ Admin</a></li>
-                    <li><a href="#" onclick="logout()">🚪 Salir</a></li>
+                    <li><a href="blog-simple.html">📝 Notas</a></li>
+                    <li><a href="resources.html" class="active">🔗 Recursos</a></li>
                 </ul>
             </nav>
             
             <!-- Menú móvil -->
             <div id="mobile-menu" class="mobile-menu">
                 <a href="index.html">🏠 Inicio</a>
-                <a href="blog-simple.html">📝 Blog</a>
-                <a href="resources.html" class="active">� Recursos</a>
-                <a href="about.html">👨‍💻 Sobre Mí</a>
-                <a href="contact.html">💬 Contacto</a>
-                <a href="admin.html">⚙️ Admin</a>
-                <a href="#" onclick="logout()">🚪 Salir</a>
+                <a href="blog-simple.html">📝 Notas</a>
+                <a href="resources.html" class="active">🔗 Recursos</a>
             </div>
         </div>
     </header>
 
-    <main>
-        <section class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>🔗 Recursos Gaming</h2>
-                    <p>Gestiona tus herramientas, enlaces y recursos favoritos</p>
-                </div>
-                
-                <!-- Botones de control -->
-                <div class="text-center mb-3">
-                    <button onclick="showAddResourceForm()" class="btn-gaming primary">➕ Agregar Recurso</button>
-                    <button onclick="showAddCategoryForm()" class="btn-gaming secondary">📁 Nueva Categoría</button>
-                    <button onclick="toggleEditMode()" class="btn-gaming secondary" id="editModeBtn">✏️ Modo Edición</button>
-                </div>
-
-                <!-- Formulario para agregar recurso -->
-                <div id="add-resource-form" class="content-form card" style="display: none;">
-                    <div class="card-info">
-                        <h3>➕ Nuevo Recurso</h3>
-                        <form id="new-resource-form">
-                            <div class="form-group">
-                                <label for="resource-title">Título:</label>
-                                <input type="text" id="resource-title" name="title" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="resource-url">URL:</label>
-                                <input type="url" id="resource-url" name="url" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="resource-category">Categoría:</label>
-                                <select id="resource-category" name="category" class="form-control" required>
-                                    <option value="">Selecciona una categoría</option>
-                                    <option value="gaming">🎮 Gaming</option>
-                                    <option value="desarrollo">💻 Desarrollo</option>
-                                    <option value="streaming">📺 Streaming</option>
-                                    <option value="noticias">📰 Noticias</option>
-                                    <option value="hardware">🔧 Hardware</option>
-                                    <option value="comunidad">👥 Comunidad</option>
-                                    <option value="herramientas">🛠️ Herramientas</option>
-                                    <option value="otros">📂 Otros</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="resource-description">Descripción:</label>
-                                <textarea id="resource-description" name="description" class="form-control" rows="3" placeholder="Breve descripción del recurso"></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="resource-icon">Icono (emoji):</label>
-                                <input type="text" id="resource-icon" name="icon" class="form-control" placeholder="🎮" maxlength="2">
-                            </div>
-                            
-                            <div class="modal-actions">
-                                <button type="submit" class="btn-gaming primary">💾 Guardar Recurso</button>
-                                <button type="button" onclick="hideAddResourceForm()" class="btn-gaming secondary">❌ Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Formulario para agregar categoría -->
-                <div id="add-category-form" class="content-form card" style="display: none;">
-                    <div class="card-info">
-                        <h3>📁 Nueva Categoría</h3>
-                        <form id="new-category-form">
-                            <div class="form-group">
-                                <label for="category-name">Nombre de la Categoría:</label>
-                                <input type="text" id="category-name" name="name" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="category-icon">Icono (emoji):</label>
-                                <input type="text" id="category-icon" name="icon" class="form-control" placeholder="📂" maxlength="2">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="category-description">Descripción:</label>
-                                <textarea id="category-description" name="description" class="form-control" rows="2" placeholder="Descripción de la categoría"></textarea>
-                            </div>
-                            
-                            <div class="modal-actions">
-                                <button type="submit" class="btn-gaming primary">💾 Crear Categoría</button>
-                                <button type="button" onclick="hideAddCategoryForm()" class="btn-gaming secondary">❌ Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Filtros -->
-                <div class="text-center mb-3">
-                    <div class="filter-buttons">
-                        <button onclick="filterResources('all')" class="btn-gaming secondary active" data-filter="all">🔥 Todos</button>
-                        <button onclick="filterResources('gaming')" class="btn-gaming secondary" data-filter="gaming">🎮 Gaming</button>
-                        <button onclick="filterResources('desarrollo')" class="btn-gaming secondary" data-filter="desarrollo">💻 Desarrollo</button>
-                        <button onclick="filterResources('streaming')" class="btn-gaming secondary" data-filter="streaming">📺 Streaming</button>
-                        <button onclick="filterResources('herramientas')" class="btn-gaming secondary" data-filter="herramientas">🛠️ Herramientas</button>
-                    </div>
-                </div>
-
-                <!-- Recursos dinámicos -->
-                <div id="resources-container" class="grid grid-auto">
-                    <!-- Los recursos se cargarán dinámicamente aquí -->
-                </div>
-
-                <!-- Mensaje cuando no hay recursos -->
-                <div id="no-resources" class="text-center" style="display: none;">
-                    <div class="card">
-                        <div class="card-info text-center">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">📂</div>
-                            <h3>No hay recursos aún</h3>
-                            <p>Agrega tu primer recurso haciendo clic en "Agregar Recurso"</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="section">
-        <div class="container text-center">
-            <p>© 2025 Ale Gallo - Gaming Universe</p>
+    <main class="content-container">
+        <!-- Barra de herramientas de edición -->
+        <div class="edit-toolbar">
+            <button class="toolbar-button" onclick="toggleNewResourceForm()">
+                <i class="fas fa-plus"></i> Nuevo Recurso
+            </button>
+            <button class="toolbar-button" onclick="toggleCategories()">
+                <i class="fas fa-folder"></i> Categorías
+            </button>
+            <button class="toolbar-button" onclick="toggleVisibility()">
+                <i class="fas fa-eye"></i> Visibilidad
+            </button>
+            <button class="toolbar-button" onclick="exportResources()">
+                <i class="fas fa-file-export"></i> Exportar
+            </button>
         </div>
-    </footer>
 
-    <!-- Botones flotantes -->
-    <button id="steamConfigBtn" class="floating-btn floating-steam" title="Configurar Steam">
-        🎮
-    </button>
-    
-    <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-    <script src="js/firebase-config.js"></script>
-    <script src="js/gaming-app.js"></script>
-    <script src="js/resources-simple.js"></script>
-    <script src="js/auth-guard.js"></script>
-    
-    <script>
-        // 📱 Funcionalidad del menú móvil
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            
-            if (menu.classList.contains('show')) {
-                menu.classList.remove('show');
-                menu.classList.add('hide');
-                icon.textContent = '☰';
+        <!-- Filtros de categorías -->
+        <div class="filter-bar" id="categoryFilters">
+            <span class="filter-chip active" data-category="all">Todos</span>
+            <span class="filter-chip" data-category="desarrollo">Desarrollo</span>
+            <span class="filter-chip" data-category="gaming">Gaming</span>
+            <span class="filter-chip" data-category="tutoriales">Tutoriales</span>
+            <span class="filter-chip" data-category="tools">Herramientas</span>
+        </div>
                 
-                setTimeout(() => {
-                    menu.classList.remove('hide');
-                }, 300);
-            } else {
-                menu.classList.add('show');
-                icon.textContent = '✕';
-            }
-        }
-        
-        // Cerrar menú al hacer clic en un enlace
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuLinks = document.querySelectorAll('#mobile-menu a');
-            menuLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    const menu = document.getElementById('mobile-menu');
-                    const icon = document.getElementById('menu-icon');
-                    
-                    if (menu.classList.contains('show')) {
-                        menu.classList.remove('show');
-                        icon.textContent = '☰';
-                    }
-                });
-            });
-        });
-        
-        // Cerrar menú al hacer clic fuera
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('mobile-menu');
-            const toggle = document.querySelector('.mobile-menu-toggle');
-            const header = document.querySelector('header');
-            
-            if (!header.contains(event.target) && menu.classList.contains('show')) {
-                menu.classList.remove('show');
-                document.getElementById('menu-icon').textContent = '☰';
-            }
-        });
-        
-        // Cerrar menú al cambiar orientación
-        window.addEventListener('orientationchange', function() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            
-            if (menu.classList.contains('show')) {
-                menu.classList.remove('show');
-                icon.textContent = '☰';
-            }
-        });
-        
-        if ('ontouchstart' in window) {
-            document.body.classList.add('touch-device');
-        }
-    </script>
-</body>
-</html>
+        <!-- Formulario para crear recursos -->
+        <div class="edit-form" id="newResourceForm" style="display: none;">
+            <form id="resourceForm">
+                <div class="form-row">
+                    <label class="form-label" for="resourceTitle">Título del Recurso</label>
+                    <input type="text" id="resourceTitle" class="form-input" placeholder="Nombre del recurso..." required>
+                </div>
+                <div class="form-row">
+                    <label class="form-label" for="resourceDesc">Descripción</label>
+                    <textarea id="resourceDesc" class="form-input form-textarea" placeholder="Describe el recurso..." required></textarea>
+                </div>
+                <div class="form-row">
+                    <label class="form-label" for="resourceUrl">URL</label>
+                    <input type="url" id="resourceUrl" class="form-input" placeholder="https://..." required>
+                </div>
+                <div class="form-row">
+                    <label class="form-label" for="resourceCategory">Categoría</label>
+                    <select id="resourceCategory" class="form-input">
+                        <option value="desarrollo">Desarrollo</option>
+                        <option value="gaming">Gaming</option>
+                        <option value="tutoriales">Tutoriales</option>
+                        <option value="tools">Herramientas</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label class="form-label" for="resourceTags">Etiquetas</label>
+                    <input type="text" id="resourceTags" class="form-input" placeholder="desarrollo, herramientas, tutorial...">
+                </div>
+                <button type="submit" class="toolbar-button">
+                    <i class="fas fa-save"></i> Guardar Recurso
+                </button>
+            </form>
+        </div>
+
+        <!-- Grid de recursos -->
+        <div class="content-grid" id="resourcesGrid">
+            <!-- Los recursos se cargarán dinámicamente aquí -->
+        </div>
+    </main>

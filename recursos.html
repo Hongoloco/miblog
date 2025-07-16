@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos - Ale Gallo</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/gaming-lite.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="gaming-header">
+        <div class="header-content">
+            <h1 class="gaming-title">🎮 Ale Gallo</h1>
+            
+            <!-- Botón hamburguesa para móvil -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú">
+                <span id="menu-icon">☰</span>
+            </button>
+            
+            <!-- Menú de navegación -->
+            <nav class="gaming-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html">🏠 Inicio</a></li>
+                    <li><a href="notas.html">📝 Notas</a></li>
+                    <li><a href="recursos.html" class="active">🔗 Recursos</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Menú móvil -->
+            <div id="mobile-menu" class="mobile-menu">
+                <a href="index.html">🏠 Inicio</a>
+                <a href="notas.html">📝 Notas</a>
+                <a href="recursos.html" class="active">🔗 Recursos</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>🔗 Recursos</h2>
+                    <p>Herramientas y recursos para desarrollo y gaming</p>
+                </div>
+
+                <!-- Categorías Principales -->
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-category="all">🔥 Todos</button>
+                    <button class="tab-btn" data-category="dev">💻 Desarrollo</button>
+                    <button class="tab-btn" data-category="gaming">🎮 Gaming</button>
+                </div>
+
+                <!-- Desarrollo -->
+                <div class="category-section" id="dev-section">
+                    <h3>💻 Desarrollo</h3>
+                    <div class="subcategories">
+                        <button class="filter-btn" data-filter="coding">⌨️ Coding</button>
+                        <button class="filter-btn" data-filter="tools">🛠️ Herramientas</button>
+                        <button class="filter-btn" data-filter="productivity">⚡ Productividad</button>
+                        <button class="filter-btn" data-filter="ai">🤖 IA</button>
+                    </div>
+                    <div class="resources-grid" id="dev-resources">
+                        <!-- Recursos de desarrollo se cargarán aquí -->
+                    </div>
+                </div>
+
+                <!-- Gaming -->
+                <div class="category-section" id="gaming-section">
+                    <h3>🎮 Gaming</h3>
+                    <div class="subcategories">
+                        <button class="filter-btn" data-filter="games">🎮 Juegos</button>
+                        <button class="filter-btn" data-filter="streaming">🎥 Streaming</button>
+                        <button class="filter-btn" data-filter="hardware">🔧 Hardware</button>
+                        <button class="filter-btn" data-filter="community">👥 Comunidad</button>
+                    </div>
+                    <div class="resources-grid" id="gaming-resources">
+                        <!-- Recursos de gaming se cargarán aquí -->
+                    </div>
+                </div>
+
+                <!-- Agregar Recurso -->
+                <div class="add-resource">
+                    <button id="addResourceBtn" class="btn-gaming primary">
+                        ➕ Agregar Recurso
+                    </button>
+                </div>
+
+                <!-- Modal para agregar recurso -->
+                <div id="resourceModal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <h3>➕ Nuevo Recurso</h3>
+                        <form id="resourceForm">
+                            <div class="form-group">
+                                <label for="title">Título:</label>
+                                <input type="text" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="url">URL:</label>
+                                <input type="url" id="url" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Categoría:</label>
+                                <select id="category" required>
+                                    <optgroup label="Desarrollo">
+                                        <option value="coding">⌨️ Coding</option>
+                                        <option value="tools">🛠️ Herramientas</option>
+                                        <option value="productivity">⚡ Productividad</option>
+                                        <option value="ai">🤖 IA</option>
+                                    </optgroup>
+                                    <optgroup label="Gaming">
+                                        <option value="games">🎮 Juegos</option>
+                                        <option value="streaming">🎥 Streaming</option>
+                                        <option value="hardware">🔧 Hardware</option>
+                                        <option value="community">👥 Comunidad</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Descripción:</label>
+                                <textarea id="description" rows="3"></textarea>
+                            </div>
+                            <div class="modal-actions">
+                                <button type="submit" class="btn-gaming primary">💾 Guardar</button>
+                                <button type="button" class="btn-gaming secondary" onclick="closeModal()">❌ Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="section">
+        <div class="container text-center">
+            <p>© 2025 Ale Gallo</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/resources.js"></script>
+    <script>
+        // Funcionalidad del menú móvil
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                menu.classList.add('hide');
+                icon.textContent = '☰';
+                setTimeout(() => menu.classList.remove('hide'), 300);
+            } else {
+                menu.classList.add('show');
+                icon.textContent = '✕';
+            }
+        }
+
+        // Modal
+        function openModal() {
+            document.getElementById('resourceModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('resourceModal').style.display = 'none';
+        }
+
+        // Eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Botón para agregar recurso
+            document.getElementById('addResourceBtn').addEventListener('click', openModal);
+
+            // Cerrar modal al hacer clic fuera
+            window.addEventListener('click', function(event) {
+                if (event.target == document.getElementById('resourceModal')) {
+                    closeModal();
+                }
+            });
+
+            // Manejo del formulario
+            document.getElementById('resourceForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Aquí iría la lógica para guardar el recurso
+                closeModal();
+            });
+
+            // Filtrado por categorías
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // Aquí iría la lógica de filtrado
+                });
+            });
+
+            // Filtrado por subcategorías
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    // Aquí iría la lógica de filtrado
+                });
+            });
+        });
+
+        // Detectar dispositivos táctiles
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
+    </script>
+</body>
+</html>

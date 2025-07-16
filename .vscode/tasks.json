@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Abrir index.html en navegador",
+			"command": "xdg-open index.html",
+			"group": "test"
+		}
+	]
+}

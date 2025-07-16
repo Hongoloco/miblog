@@ -154,6 +154,47 @@ nav a:focus {
     outline-offset: 2px;
 }
 
+/* Botón de cerrar sesión */
+.logout-button {
+    background: linear-gradient(135deg, #ff4d4d 0%, #f9304d 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(249, 48, 77, 0.2);
+}
+
+.logout-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(249, 48, 77, 0.3);
+}
+
+.logout-button:active {
+    transform: translateY(0);
+}
+
+.logout-button i {
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .logout-button {
+        position: static;
+        margin: 1rem auto;
+        width: fit-content;
+    }
+}
+
 /* Estilos responsivos mejorados para el menú */
 @media (max-width: 768px) {
     header {
