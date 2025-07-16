@@ -1,4 +1,4 @@
-// Verificar autenticación al cargar la página
+// Cargar posts del blog al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🔍 Inicializando blog-viewer...');
     
@@ -162,18 +162,4 @@ function loadComments(postId) {
             commentsContainer.appendChild(commentElement);
         });
     });
-}
-
-// Función para cerrar sesión
-function logout() {
-    console.log('🚪 Cerrando sesión...');
-    
-    if (typeof BlogConfig !== 'undefined') {
-        BlogConfig.auth.clearSession();
-        BlogConfig.navigation.redirectToHome();
-    } else {
-        // Fallback si BlogConfig no está disponible
-        sessionStorage.removeItem('authenticated');
-        window.location.href = 'index.html';
-    }
 }
