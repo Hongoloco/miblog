@@ -1,8 +1,8 @@
 // JavaScript para el blog simple
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Cargar contenido guardado del localStorage
-    loadSavedContent();
+    // Cargar contenido desde Firebase primero, luego localStorage como respaldo
+    loadFromFirebase();
     
     // Función para mostrar formulario
     window.showAddForm = function() {
@@ -85,8 +85,25 @@ document.addEventListener('DOMContentLoaded', function() {
     window.deletePost = function(button) {
         if (confirm('¿Estás seguro de que quieres eliminar este contenido?')) {
             const post = button.closest('.blog-post');
+            const firebaseId = post.dataset.firebaseId;
+            
+            // Eliminar de Firebase si tiene ID
+            if (firebaseId && typeof BlogDB !== 'undefined') {
+                BlogDB.deleteBlogContent(firebaseId)
+                    .then(() => {
+                        console.log('✅ Contenido eliminado de Firebase');
+                    })
+                    .catch((error) => {
+                        console.error('❌ Error al eliminar de Firebase:', error);
+                    });
+            }
+            
+            // Eliminar del DOM
             post.remove();
+            
+            // Actualizar localStorage como respaldo
             saveContent();
+            
             showNotification('Contenido eliminado correctamente');
         }
     };
@@ -104,13 +121,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Crear nuevo post
         createPost(title, type, url, description, tags);
         
+        // Guardar en Firebase
+        saveToFirebase(title, type, url, description, tags);
+        
         // Limpiar formulario y ocultarlo
         hideAddForm();
         
-        // Guardar contenido
+        // Guardar contenido en localStorage como respaldo
         saveContent();
         
-        showNotification('Contenido agregado correctamente');
+        showNotification('Contenido agregado y guardado en Firebase');
     });
     
     // Función para crear nuevo post
@@ -241,6 +261,122 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p>${item.description}</p>
                     ${item.url ? `<div class="post-url"><a href="${item.url}" target="_blank">🌐 Visitar sitio</a></div>` : ''}
                     ${item.tags.length > 0 ? `<div class="post-tags">${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
+                </div>
+                <div class="post-actions">
+                    <button onclick="editPost(this)" class="btn-edit">✏️ Editar</button>
+                    <button onclick="deletePost(this)" class="btn-delete">🗑️ Eliminar</button>
+                </div>
+            </article>
+        `;
+        
+        const blogPosts = document.getElementById('blog-posts');
+        blogPosts.insertAdjacentHTML('afterbegin', postHTML);
+    }
+    
+    // Función para guardar en Firebase
+    function saveToFirebase(title, type, url, description, tags) {
+        if (typeof BlogDB !== 'undefined') {
+            BlogDB.saveBlogContent(title, type, url, description, tags)
+                .then(() => {
+                    console.log('✅ Contenido guardado en Firebase');
+                })
+                .catch((error) => {
+                    console.error('❌ Error al guardar en Firebase:', error);
+                    showNotification('Error al guardar en Firebase, pero se guardó localmente', 'error');
+                });
+        } else {
+            console.warn('⚠️ BlogDB no está disponible, solo se guarda localmente');
+        }
+    }
+    
+    // Función para cargar contenido desde Firebase
+    function loadFromFirebase() {
+        if (typeof BlogDB !== 'undefined') {
+            BlogDB.getBlogContent()
+                .then((snapshot) => {
+                    const firebaseContent = snapshot.val();
+                    if (firebaseContent) {
+                        console.log('📥 Contenido cargado desde Firebase');
+                        displayFirebaseContent(firebaseContent);
+                    } else {
+                        console.log('📭 No hay contenido en Firebase, cargando desde localStorage');
+                        loadSavedContent();
+                    }
+                })
+                .catch((error) => {
+                    console.error('❌ Error al cargar desde Firebase:', error);
+                    console.log('📭 Cargando desde localStorage como respaldo');
+                    loadSavedContent();
+                });
+        } else {
+            console.warn('⚠️ BlogDB no está disponible, cargando desde localStorage');
+            loadSavedContent();
+        }
+    }
+    
+    // Función para mostrar contenido de Firebase
+    function displayFirebaseContent(firebaseContent) {
+        const blogPosts = document.getElementById('blog-posts');
+        
+        // Limpiar posts existentes excepto los ejemplos
+        const existingPosts = blogPosts.querySelectorAll('.blog-post');
+        existingPosts.forEach(post => {
+            if (!post.querySelector('h3').textContent.includes('Bienvenida') && 
+                !post.querySelector('h3').textContent.includes('GitHub')) {
+                post.remove();
+            }
+        });
+        
+        // Convertir a array y ordenar por timestamp
+        const contentArray = Object.entries(firebaseContent)
+            .map(([key, value]) => ({ id: key, ...value }))
+            .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        
+        // Agregar cada contenido
+        contentArray.forEach(item => {
+            if (!item.title.includes('Bienvenida') && !item.title.includes('GitHub')) {
+                createPostFromFirebase(item);
+            }
+        });
+    }
+    
+    // Función para crear post desde Firebase
+    function createPostFromFirebase(item) {
+        const typeIcons = {
+            'nota': '📝',
+            'enlace': '🔗',
+            'articulo': '📰',
+            'idea': '💡',
+            'recurso': '🛠️'
+        };
+        
+        const typeNames = {
+            'nota': 'Nota Personal',
+            'enlace': 'Enlace Interesante',
+            'articulo': 'Artículo',
+            'idea': 'Ideas',
+            'recurso': 'Recurso Útil'
+        };
+        
+        const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString('es-ES', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }) : 'Fecha no disponible';
+        
+        const tags = item.tags ? item.tags.split(',').map(tag => tag.trim()) : [];
+        
+        const postHTML = `
+            <article class="blog-post" data-type="${item.type}" data-firebase-id="${item.id}">
+                <header class="post-header">
+                    <h3>${typeIcons[item.type] || '📝'} ${item.title}</h3>
+                    <span class="post-date">${date}</span>
+                    <span class="post-type">${typeIcons[item.type] || '📝'} ${typeNames[item.type] || 'Contenido'}</span>
+                </header>
+                <div class="post-content">
+                    <p>${item.description}</p>
+                    ${item.url ? `<div class="post-url"><a href="${item.url}" target="_blank">🌐 Visitar sitio</a></div>` : ''}
+                    ${tags.length > 0 ? `<div class="post-tags">${tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
                 </div>
                 <div class="post-actions">
                     <button onclick="editPost(this)" class="btn-edit">✏️ Editar</button>

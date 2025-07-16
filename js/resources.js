@@ -47,12 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const category = document.getElementById('resource-category').value;
         const description = document.getElementById('resource-description').value;
         
-        // Aquí podrías guardar en Firebase si quieres persistencia
-        // Por ahora, simplemente agregamos al DOM
+        // Guardar en Firebase
+        saveResourceToFirebase(name, url, category, description);
+        
+        // Agregar al DOM
         addResourceToPage(name, url, category, description);
         
         // Mostrar notificación
-        showNotification('Recurso agregado correctamente');
+        showNotification('Recurso agregado y guardado en Firebase');
         
         // Limpiar formulario y ocultarlo
         hideAddResourceForm();
@@ -85,6 +87,57 @@ document.addEventListener('DOMContentLoaded', function() {
             resourceList.appendChild(listItem);
         }
     }
+    
+    // Función para guardar recurso en Firebase
+    function saveResourceToFirebase(name, url, category, description) {
+        if (typeof BlogDB !== 'undefined') {
+            BlogDB.saveResource(name, url, category, description)
+                .then(() => {
+                    console.log('✅ Recurso guardado en Firebase');
+                })
+                .catch((error) => {
+                    console.error('❌ Error al guardar recurso en Firebase:', error);
+                    showNotification('Error al guardar en Firebase, pero se agregó localmente', 'error');
+                });
+        } else {
+            console.warn('⚠️ BlogDB no está disponible');
+        }
+    }
+    
+    // Función para cargar recursos desde Firebase
+    function loadResourcesFromFirebase() {
+        if (typeof BlogDB !== 'undefined') {
+            BlogDB.getResources()
+                .then((snapshot) => {
+                    const firebaseResources = snapshot.val();
+                    if (firebaseResources) {
+                        console.log('📥 Recursos cargados desde Firebase');
+                        displayFirebaseResources(firebaseResources);
+                    } else {
+                        console.log('📭 No hay recursos en Firebase');
+                    }
+                })
+                .catch((error) => {
+                    console.error('❌ Error al cargar recursos desde Firebase:', error);
+                });
+        } else {
+            console.warn('⚠️ BlogDB no está disponible');
+        }
+    }
+    
+    // Función para mostrar recursos de Firebase
+    function displayFirebaseResources(firebaseResources) {
+        const resourcesArray = Object.entries(firebaseResources)
+            .map(([key, value]) => ({ id: key, ...value }))
+            .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        
+        resourcesArray.forEach(resource => {
+            addResourceToPage(resource.name, resource.url, resource.category, resource.description);
+        });
+    }
+    
+    // Cargar recursos al inicializar
+    loadResourcesFromFirebase();
     
     // Agregar estilos CSS adicionales
     const additionalStyles = `

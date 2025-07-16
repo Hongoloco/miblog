@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto - Ale Gallo Espacio Digital</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Ale Gallo - Mi Espacio Digital</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html">📋 Sobre mí</a></li>
+                <li><a href="contact.html" style="color: #4a90e2;">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Salir</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>📞 Contacto</h2>
+            
+            <div class="contact-section">
+                <h3>Enviame un mensaje</h3>
+                
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Mensaje:</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Cuéntame sobre tu consulta, propuesta, o cualquier cosa que tengas en mente..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Enviar mensaje</button>
+                </form>
+                
+                <div id="contact-status" class="contact-status" style="display: none;"></div>
+            </div>
+            
+            <div class="social-section">
+                <h3>También podés encontrarme en:</h3>
+                <ul class="social-links">
+                    <li><a href="mailto:ale21rock@gmail.com" target="_blank">📧 Email Directo</a></li>
+                    <li><a href="#" target="_blank">💼 LinkedIn</a></li>
+                    <li><a href="#" target="_blank">💻 GitHub</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
+    </footer>
+    
+    <!-- Scripts de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/blog-config.js"></script>
+    <script src="js/contact-handler.js"></script>
+    <script src="js/public-pages.js"></script>
+</body>
+</html>
