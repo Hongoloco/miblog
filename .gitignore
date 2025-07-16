@@ -30,3 +30,12 @@ yarn-error.log*
 # Archivos de build (si se agregan en el futuro)
 dist/
 build/
+
+# Firebase
+.firebase/
+.firebaserc
+firebase-debug.log
+firebase-debug.*.log
+
+# Configuración sensible (descomenta si usas archivo de configuración local)
+# firebase-config.js

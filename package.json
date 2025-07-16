@@ -1,0 +1,22 @@
+{
+  "name": "miblog",
+  "version": "1.0.0",
+  "description": "Blog personal sobre desarrollo y gaming con Firebase.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "firebase serve",
+    "build": "echo 'Building static files...'",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "serve": "firebase serve --only hosting",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["blog", "firebase", "javascript", "html", "css"],
+  "author": "Ale Gallo",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^11.10.0"
+  },
+  "devDependencies": {},
+  "type": "module"
+}
