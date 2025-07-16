@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Ale Gallo Gaming Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/gaming-lite.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animación de fondo */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Partículas flotantes */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .login-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.02);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-input[type="password"] {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .login-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-button .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .login-button.loading .spinner {
+            display: inline-block;
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #ffcdd2;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #c8e6c9;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .forgot-password a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: white;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <!-- Partículas flotantes -->
+    <div class="particle" style="top: 20%; left: 10%; width: 20px; height: 20px; animation-delay: 0s;"></div>
+    <div class="particle" style="top: 60%; left: 80%; width: 15px; height: 15px; animation-delay: 2s;"></div>
+    <div class="particle" style="top: 30%; left: 70%; width: 25px; height: 25px; animation-delay: 4s;"></div>
+    <div class="particle" style="top: 70%; left: 20%; width: 18px; height: 18px; animation-delay: 1s;"></div>
+    <div class="particle" style="top: 40%; left: 40%; width: 12px; height: 12px; animation-delay: 3s;"></div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-logo">🔐</div>
+            <h1 class="login-title">Acceso Restringido</h1>
+            <p class="login-subtitle">Ingresa tus credenciales para acceder al sitio</p>
+        </div>
+
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="successMessage" class="success-message" style="display: none;"></div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="username" 
+                    placeholder="👤 Usuario" 
+                    required 
+                    autocomplete="username"
+                >
+            </div>
+            
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    class="form-input" 
+                    id="password" 
+                    placeholder="🔑 Contraseña" 
+                    required 
+                    autocomplete="current-password"
+                >
+            </div>
+            
+            <button type="submit" class="login-button" id="loginButton">
+                <span class="spinner"></span>
+                <span class="button-text">Acceder</span>
+            </button>
+        </form>
+
+        <div class="forgot-password">
+            <a href="#" onclick="showHint()">¿Olvidaste tu contraseña?</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Ale Gallo - Acceso Seguro</p>
+    </div>
+
+    <script>
+        // Configuración de credenciales
+        const CREDENTIALS = {
+            username: 'alegallo',
+            password: 'miweb2025'
+        };
+
+        // Configuración de sesión
+        const SESSION_KEY = 'aleGalloAuth';
+        const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+
+        // Elementos del DOM
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        // Verificar si ya hay una sesión activa
+        function checkExistingSession() {
+            const session = localStorage.getItem(SESSION_KEY);
+            if (session) {
+                try {
+                    const sessionData = JSON.parse(session);
+                    const now = new Date().getTime();
+                    
+                    if (now < sessionData.expires) {
+                        // Sesión válida, redirigir a la página de retorno o al index
+                        const returnPage = localStorage.getItem('returnToPage');
+                        const targetPage = returnPage || 'index.html';
+                        
+                        showSuccess('Sesión activa encontrada. Redirigiendo...');
+                        setTimeout(() => {
+                            localStorage.removeItem('returnToPage');
+                            window.location.href = targetPage;
+                        }, 1500);
+                        return true;
+                    } else {
+                        // Sesión expirada
+                        localStorage.removeItem(SESSION_KEY);
+                    }
+                } catch (error) {
+                    localStorage.removeItem(SESSION_KEY);
+                }
+            }
+            return false;
+        }
+
+        // Manejar el envío del formulario
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            // Limpiar mensajes previos
+            hideMessages();
+
+            // Validar campos vacíos
+            if (!username || !password) {
+                showError('Por favor completa todos los campos');
+                return;
+            }
+
+            // Mostrar estado de carga
+            showLoading(true);
+
+            // Simular delay de autenticación
+            setTimeout(() => {
+                if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
+                    // Autenticación exitosa
+                    const sessionData = {
+                        user: username,
+                        loginTime: new Date().getTime(),
+                        expires: new Date().getTime() + SESSION_DURATION
+                    };
+                    
+                    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+                    
+                    showSuccess('¡Acceso concedido! Redirigiendo...');
+                    
+                    // Verificar si hay una página de retorno guardada
+                    const returnPage = localStorage.getItem('returnToPage');
+                    const targetPage = returnPage || 'index.html';
+                    
+                    setTimeout(() => {
+                        localStorage.removeItem('returnToPage'); // Limpiar página de retorno
+                        window.location.href = targetPage;
+                    }, 1500);
+                } else {
+                    // Credenciales incorrectas
+                    showError('Usuario o contraseña incorrectos');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+                
+                showLoading(false);
+            }, 1000);
+        });
+
+        // Funciones de utilidad
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+
+        function showLoading(isLoading) {
+            loginButton.disabled = isLoading;
+            loginButton.classList.toggle('loading', isLoading);
+            
+            if (isLoading) {
+                loginButton.querySelector('.button-text').textContent = 'Verificando...';
+            } else {
+                loginButton.querySelector('.button-text').textContent = 'Acceder';
+            }
+        }
+
+        function showHint() {
+            alert('💡 Pista:\n\nUsuario: alegallo\nContraseña: miweb2025\n\n¡Estas son tus credenciales!');
+        }
+
+        // Manejar Enter en los campos
+        usernameInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                passwordInput.focus();
+            }
+        });
+
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Autofocus en el campo de usuario
+        usernameInput.focus();
+
+        // Verificar sesión existente al cargar la página
+        checkExistingSession();
+
+        // Crear más partículas dinámicamente
+        function createParticles() {
+            const particleCount = 8;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 20 + 10) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Crear partículas cuando carga la página
+        window.addEventListener('load', createParticles);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos - Ale Gallo (Offline)</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Sistema de Autenticación -->
+    <script src="js/auth-system.js"></script>
+    <!-- Efectos Visuales -->
+    <script src="js/visual-effects.js"></script>
+    <style>
+        .resources-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .resources-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border-radius: 10px;
+            color: white;
+            position: relative;
+        }
+        
+        .offline-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #ff9800;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .resources-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        
+        .toolbar-left {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .toolbar-right {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #357abd;
+        }
+        
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #45a049;
+        }
+        
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+        
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+        }
+        
+        .search-box {
+            padding: 0.5rem;
+            border: 1px solid #444;
+            background: #1a1a1a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            width: 200px;
+        }
+        
+        .resource-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .resource-category {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .resource-category:hover {
+            border-color: #4a90e2;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.1);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #444;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            color: #4a90e2;
+            margin: 0;
+        }
+        
+        .resource-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .resource-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .resource-item:hover {
+            background: #333;
+            border-color: #4a90e2;
+        }
+        
+        .resource-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .resource-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .resource-info {
+            flex: 1;
+        }
+        
+        .resource-name {
+            font-weight: 600;
+            color: #4a90e2;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        
+        .resource-name:hover {
+            text-decoration: underline;
+        }
+        
+        .resource-description {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .resource-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: #333;
+            color: #f0f0f0;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #444;
+        }
+        
+        .modal-title {
+            color: #4a90e2;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .close-btn:hover {
+            background: #333;
+            color: #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #f0f0f0;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .icon-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .icon-option {
+            padding: 0.5rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .icon-option:hover {
+            border-color: #4a90e2;
+            background: #333;
+        }
+        
+        .icon-option.selected {
+            border-color: #4a90e2;
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            z-index: 10001;
+            font-weight: 600;
+            min-width: 200px;
+            text-align: center;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .notification.error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .notification.warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .stats-info {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        
+        .stats-info h3 {
+            color: #4a90e2;
+            margin: 0 0 1rem 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ale Gallo - Mi Espacio Digital</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html">📝 Blog</a></li>
+                <li><a href="resources-offline.html" style="color: #4a90e2;">🔗 Recursos</a></li>
+                <li><a href="about.html">📋 Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="resources-container">
+        <div class="resources-header">
+            <div class="offline-badge">📱 MODO OFFLINE</div>
+            <h2>🔗 Mis Recursos</h2>
+            <p>Links útiles, herramientas y recursos organizados por categorías</p>
+            <small>✨ Funciona completamente sin conexión - Los datos se guardan localmente</small>
+        </div>
+
+        <div class="resources-toolbar">
+            <div class="toolbar-left">
+                <input type="text" class="search-box" placeholder="🔍 Buscar recursos..." id="searchBox">
+                <button class="btn btn-primary" onclick="showAddResourceModal()">
+                    <i class="fas fa-plus"></i> Nuevo Recurso
+                </button>
+                <button class="btn btn-success" onclick="addCategory()">
+                    <i class="fas fa-folder-plus"></i> Nueva Categoría
+                </button>
+            </div>
+            
+            <div class="toolbar-right">
+                <button class="btn btn-warning" onclick="exportData()">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="btn btn-secondary" onclick="importData()">
+                    <i class="fas fa-upload"></i> Importar
+                </button>
+            </div>
+        </div>
+
+        <div class="resource-categories" id="resourceCategories">
+            <!-- Las categorías se cargarán dinámicamente -->
+        </div>
+
+        <div class="stats-info">
+            <h3>📊 Estadísticas</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalResources">0</div>
+                    <div class="stat-label">Recursos Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCategories">0</div>
+                    <div class="stat-label">Categorías</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="localStorage">0</div>
+                    <div class="stat-label">KB Almacenados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">✅</div>
+                    <div class="stat-label">Totalmente Offline</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar recurso -->
+    <div id="resourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="resourceModalTitle">Nuevo Recurso</h3>
+                <button class="close-btn" onclick="closeResourceModal()">&times;</button>
+            </div>
+            
+            <form id="resourceForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre del Recurso</label>
+                    <input type="text" class="form-input" id="resourceName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input type="url" class="form-input" id="resourceUrl" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select" id="resourceCategory" required>
+                        <option value="">Selecciona una categoría</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-textarea" id="resourceDescription" placeholder="Descripción del recurso..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Icono (Emoji)</label>
+                    <input type="text" class="form-input" id="resourceIcon" placeholder="Emoji para el recurso">
+                    <div class="icon-options">
+                        <div class="icon-option" onclick="selectIcon('🌐')">🌐</div>
+                        <div class="icon-option" onclick="selectIcon('💻')">💻</div>
+                        <div class="icon-option" onclick="selectIcon('📱')">📱</div>
+                        <div class="icon-option" onclick="selectIcon('🔧')">🔧</div>
+                        <div class="icon-option" onclick="selectIcon('📚')">📚</div>
+                        <div class="icon-option" onclick="selectIcon('🎨')">🎨</div>
+                        <div class="icon-option" onclick="selectIcon('📊')">📊</div>
+                        <div class="icon-option" onclick="selectIcon('🔐')">🔐</div>
+                        <div class="icon-option" onclick="selectIcon('🎵')">🎵</div>
+                        <div class="icon-option" onclick="selectIcon('🎮')">🎮</div>
+                        <div class="icon-option" onclick="selectIcon('🏦')">🏦</div>
+                        <div class="icon-option" onclick="selectIcon('🛒')">🛒</div>
+                        <div class="icon-option" onclick="selectIcon('✈️')">✈️</div>
+                        <div class="icon-option" onclick="selectIcon('🍕')">🍕</div>
+                        <div class="icon-option" onclick="selectIcon('⚡')">⚡</div>
+                        <div class="icon-option" onclick="selectIcon('🔥')">🔥</div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeResourceModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Ale Gallo - Mi Espacio Digital Personal | Versión Offline</p>
+    </footer>
+
+    <script>
+        // Gestor de recursos completamente offline
+        class OfflineResourceManager {
+            constructor() {
+                this.resources = [];
+                this.categories = [
+                    { id: 'work', name: 'Herramientas de Trabajo', icon: '💼' },
+                    { id: 'dev', name: 'Desarrollo', icon: '💻' },
+                    { id: 'education', name: 'Educación', icon: '📚' },
+                    { id: 'utilities', name: 'Utilidades', icon: '🔧' },
+                    { id: 'design', name: 'Diseño', icon: '🎨' },
+                    { id: 'social', name: 'Redes Sociales', icon: '🌐' },
+                    { id: 'entertainment', name: 'Entretenimiento', icon: '🎵' },
+                    { id: 'shopping', name: 'Compras', icon: '🛒' }
+                ];
+                this.currentEditId = null;
+                this.storageKey = 'offlineResources';
+                this.categoryKey = 'offlineCategories';
+                this.init();
+            }
+
+            init() {
+                this.loadFromStorage();
+                this.setupEventListeners();
+                this.renderCategories();
+                this.renderResources();
+                this.populateCategoryDropdown();
+                this.updateStats();
+                this.showNotification('✅ Sistema de recursos cargado - Modo Offline', 'success');
+            }
+
+            setupEventListeners() {
+                const searchBox = document.getElementById('searchBox');
+                searchBox.addEventListener('input', (e) => this.searchResources(e.target.value));
+
+                document.getElementById('resourceForm').addEventListener('submit', (e) => this.handleResourceSubmit(e));
+
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        this.closeResourceModal();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeResourceModal();
+                    }
+                });
+            }
+
+            loadFromStorage() {
+                try {
+                    const savedResources = localStorage.getItem(this.storageKey);
+                    const savedCategories = localStorage.getItem(this.categoryKey);
+                    
+                    if (savedResources) {
+                        this.resources = JSON.parse(savedResources);
+                    } else {
+                        this.resources = this.getDefaultResources();
+                        this.saveToStorage();
+                    }
+                    
+                    if (savedCategories) {
+                        this.categories = JSON.parse(savedCategories);
+                    } else {
+                        this.saveCategoriesToStorage();
+                    }
+                } catch (error) {
+                    console.error('Error cargando datos:', error);
+                    this.resources = this.getDefaultResources();
+                    this.saveToStorage();
+                }
+            }
+
+            saveToStorage() {
+                try {
+                    localStorage.setItem(this.storageKey, JSON.stringify(this.resources));
+                } catch (error) {
+                    console.error('Error guardando recursos:', error);
+                    this.showNotification('Error al guardar recursos', 'error');
+                }
+            }
+
+            saveCategoriesToStorage() {
+                try {
+                    localStorage.setItem(this.categoryKey, JSON.stringify(this.categories));
+                } catch (error) {
+                    console.error('Error guardando categorías:', error);
+                }
+            }
+
+            getDefaultResources() {
+                return [
+                    {
+                        id: 'gmail',
+                        name: 'Gmail',
+                        url: 'https://gmail.com',
+                        description: 'Correo electrónico personal',
+                        category: 'work',
+                        icon: '📧',
+                        created: Date.now()
+                    },
+                    {
+                        id: 'github',
+                        name: 'GitHub',
+                        url: 'https://github.com',
+                        description: 'Repositorios de código',
+                        category: 'dev',
+                        icon: '🐱',
+                        created: Date.now()
+                    },
+                    {
+                        id: 'vscode',
+                        name: 'Visual Studio Code',
+                        url: 'https://code.visualstudio.com',
+                        description: 'Editor de código',
+                        category: 'dev',
+                        icon: '💻',
+                        created: Date.now()
+                    },
+                    {
+                        id: 'youtube',
+                        name: 'YouTube',
+                        url: 'https://youtube.com',
+                        description: 'Videos y entretenimiento',
+                        category: 'entertainment',
+                        icon: '📹',
+                        created: Date.now()
+                    },
+                    {
+                        id: 'canva',
+                        name: 'Canva',
+                        url: 'https://canva.com',
+                        description: 'Diseño gráfico online',
+                        category: 'design',
+                        icon: '🎨',
+                        created: Date.now()
+                    },
+                    {
+                        id: 'translate',
+                        name: 'Google Translate',
+                        url: 'https://translate.google.com',
+                        description: 'Traductor automático',
+                        category: 'utilities',
+                        icon: '🌐',
+                        created: Date.now()
+                    }
+                ];
+            }
+
+            renderCategories() {
+                const container = document.getElementById('resourceCategories');
+                container.innerHTML = '';
+
+                this.categories.forEach(category => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'resource-category';
+                    categoryDiv.innerHTML = `
+                        <div class="category-header">
+                            <h3 class="category-title">${category.icon} ${category.name}</h3>
+                        </div>
+                        <ul class="resource-list" id="category-${category.id}">
+                            <!-- Los recursos se cargarán aquí -->
+                        </ul>
+                    `;
+                    container.appendChild(categoryDiv);
+                });
+            }
+
+            renderResources() {
+                this.categories.forEach(category => {
+                    const list = document.getElementById(`category-${category.id}`);
+                    if (list) list.innerHTML = '';
+                });
+
+                this.resources.forEach(resource => {
+                    this.renderResource(resource);
+                });
+            }
+
+            renderResource(resource) {
+                const categoryList = document.getElementById(`category-${resource.category}`);
+                if (!categoryList) return;
+
+                const listItem = document.createElement('li');
+                listItem.className = 'resource-item';
+                listItem.dataset.resourceId = resource.id;
+                
+                listItem.innerHTML = `
+                    <div class="resource-content">
+                        <div class="resource-icon">${resource.icon}</div>
+                        <div class="resource-info">
+                            <a href="${resource.url}" target="_blank" class="resource-name">${resource.name}</a>
+                            <div class="resource-description">${resource.description || ''}</div>
+                        </div>
+                    </div>
+                    <div class="resource-actions">
+                        <button class="action-btn" onclick="editResource('${resource.id}')" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" onclick="deleteResource('${resource.id}')" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="action-btn" onclick="copyResourceUrl('${resource.url}')" title="Copiar URL">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                `;
+
+                categoryList.appendChild(listItem);
+            }
+
+            populateCategoryDropdown() {
+                const select = document.getElementById('resourceCategory');
+                select.innerHTML = '<option value="">Selecciona una categoría</option>';
+                
+                this.categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = `${category.icon} ${category.name}`;
+                    select.appendChild(option);
+                });
+            }
+
+            searchResources(query) {
+                const items = document.querySelectorAll('.resource-item');
+                const lowerQuery = query.toLowerCase();
+                
+                items.forEach(item => {
+                    const name = item.querySelector('.resource-name').textContent.toLowerCase();
+                    const description = item.querySelector('.resource-description').textContent.toLowerCase();
+                    
+                    if (name.includes(lowerQuery) || description.includes(lowerQuery)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            handleResourceSubmit(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    id: this.currentEditId || this.generateId(),
+                    name: document.getElementById('resourceName').value,
+                    url: document.getElementById('resourceUrl').value,
+                    category: document.getElementById('resourceCategory').value,
+                    description: document.getElementById('resourceDescription').value,
+                    icon: document.getElementById('resourceIcon').value || '🔗',
+                    created: this.currentEditId ? this.findResource(this.currentEditId).created : Date.now(),
+                    modified: Date.now()
+                };
+
+                if (this.currentEditId) {
+                    const index = this.resources.findIndex(r => r.id === this.currentEditId);
+                    this.resources[index] = formData;
+                    this.showNotification('✅ Recurso actualizado correctamente', 'success');
+                } else {
+                    this.resources.push(formData);
+                    this.showNotification('✅ Recurso creado correctamente', 'success');
+                }
+
+                this.saveToStorage();
+                this.renderResources();
+                this.closeResourceModal();
+                this.updateStats();
+            }
+
+            generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            findResource(id) {
+                return this.resources.find(r => r.id === id);
+            }
+
+            deleteResource(id) {
+                if (confirm('¿Estás seguro de que quieres eliminar este recurso?')) {
+                    this.resources = this.resources.filter(r => r.id !== id);
+                    this.saveToStorage();
+                    this.renderResources();
+                    this.updateStats();
+                    this.showNotification('✅ Recurso eliminado correctamente', 'success');
+                }
+            }
+
+            exportData() {
+                const data = {
+                    resources: this.resources,
+                    categories: this.categories,
+                    exportDate: new Date().toISOString(),
+                    version: 'offline-v1.0'
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `recursos_offline_${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                
+                URL.revokeObjectURL(url);
+                this.showNotification('✅ Datos exportados correctamente', 'success');
+            }
+
+            importData() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            if (data.resources && data.categories) {
+                                this.resources = data.resources;
+                                this.categories = data.categories;
+                                
+                                this.saveToStorage();
+                                this.saveCategoriesToStorage();
+                                
+                                this.renderCategories();
+                                this.renderResources();
+                                this.populateCategoryDropdown();
+                                this.updateStats();
+                                
+                                this.showNotification('✅ Datos importados correctamente', 'success');
+                            } else {
+                                this.showNotification('❌ Formato de archivo inválido', 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error importando datos:', error);
+                            this.showNotification('❌ Error al importar datos', 'error');
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                
+                input.click();
+            }
+
+            addCategory() {
+                const name = prompt('Nombre de la nueva categoría:');
+                if (!name) return;
+                
+                const icon = prompt('Emoji para la categoría (ej: 🌟):') || '📁';
+                
+                const newCategory = {
+                    id: this.generateId(),
+                    name: name,
+                    icon: icon
+                };
+                
+                this.categories.push(newCategory);
+                this.saveCategoriesToStorage();
+                this.renderCategories();
+                this.populateCategoryDropdown();
+                this.updateStats();
+                this.showNotification('✅ Categoría creada correctamente', 'success');
+            }
+
+            updateStats() {
+                document.getElementById('totalResources').textContent = this.resources.length;
+                document.getElementById('totalCategories').textContent = this.categories.length;
+                
+                const storageSize = (JSON.stringify(this.resources).length + JSON.stringify(this.categories).length) / 1024;
+                document.getElementById('localStorage').textContent = Math.round(storageSize);
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+
+            closeResourceModal() {
+                document.getElementById('resourceModal').classList.remove('active');
+                document.getElementById('resourceForm').reset();
+                this.currentEditId = null;
+                
+                // Limpiar selección de iconos
+                document.querySelectorAll('.icon-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+            }
+        }
+
+        // Funciones globales
+        function showAddResourceModal() {
+            document.getElementById('resourceModalTitle').textContent = 'Nuevo Recurso';
+            document.getElementById('resourceModal').classList.add('active');
+            resourceManager.currentEditId = null;
+        }
+
+        function closeResourceModal() {
+            resourceManager.closeResourceModal();
+        }
+
+        function selectIcon(icon) {
+            document.getElementById('resourceIcon').value = icon;
+            
+            document.querySelectorAll('.icon-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        function editResource(id) {
+            const resource = resourceManager.findResource(id);
+            if (!resource) return;
+            
+            document.getElementById('resourceModalTitle').textContent = 'Editar Recurso';
+            document.getElementById('resourceName').value = resource.name;
+            document.getElementById('resourceUrl').value = resource.url;
+            document.getElementById('resourceCategory').value = resource.category;
+            document.getElementById('resourceDescription').value = resource.description || '';
+            document.getElementById('resourceIcon').value = resource.icon;
+            
+            resourceManager.currentEditId = id;
+            document.getElementById('resourceModal').classList.add('active');
+        }
+
+        function deleteResource(id) {
+            resourceManager.deleteResource(id);
+        }
+
+        function copyResourceUrl(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                resourceManager.showNotification('✅ URL copiada al portapapeles', 'success');
+            }).catch(() => {
+                resourceManager.showNotification('❌ Error al copiar URL', 'error');
+            });
+        }
+
+        function exportData() {
+            resourceManager.exportData();
+        }
+
+        function importData() {
+            resourceManager.importData();
+        }
+
+        function addCategory() {
+            resourceManager.addCategory();
+        }
+
+        // Inicializar cuando se cargue la página
+        let resourceManager;
+        document.addEventListener('DOMContentLoaded', () => {
+            resourceManager = new OfflineResourceManager();
+        });
+    </script>
+</body>
+</html>

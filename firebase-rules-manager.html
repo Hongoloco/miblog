@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Rules Manager</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #4a90e2, #7b68ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .rules-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .rules-section h2 {
+            color: #4a90e2;
+            margin-bottom: 1rem;
+        }
+        
+        .rules-textarea {
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            color: #f0f0f0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+        
+        .btn.secondary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .btn.success {
+            background: linear-gradient(45deg, #4caf50, #45a049);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+            font-weight: 600;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+        }
+        
+        .notification.error {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        .info-box {
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .info-box h3 {
+            color: #4a90e2;
+            margin-top: 0;
+        }
+        
+        .code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .steps {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .steps ol {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        
+        .steps li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔥 Firebase Rules Manager</h1>
+            <p>Gestiona las reglas de seguridad de Firebase fácilmente</p>
+        </div>
+        
+        <div class="rules-section">
+            <h2>📋 Reglas de Desarrollo (Permisivas)</h2>
+            <div class="info-box">
+                <h3>⚠️ Uso Recomendado</h3>
+                <p>Estas reglas son permisivas y están diseñadas para desarrollo y pruebas. Permiten lectura y escritura sin autenticación.</p>
+            </div>
+            
+            <textarea id="developmentRules" class="rules-textarea" readonly></textarea>
+            
+            <div class="buttons">
+                <button class="btn" onclick="copyRules('development')">
+                    📋 Copiar Reglas
+                </button>
+                <button class="btn secondary" onclick="selectRules('development')">
+                    🔍 Seleccionar Todo
+                </button>
+                <a href="https://console.firebase.google.com" target="_blank" class="btn success">
+                    🚀 Abrir Firebase Console
+                </a>
+            </div>
+        </div>
+        
+        <div class="rules-section">
+            <h2>🔒 Reglas de Producción (Seguras)</h2>
+            <div class="info-box">
+                <h3>✅ Recomendado para Producción</h3>
+                <p>Estas reglas incluyen autenticación y validación de datos. Úsalas cuando publiques tu sitio web.</p>
+            </div>
+            
+            <textarea id="productionRules" class="rules-textarea" readonly></textarea>
+            
+            <div class="buttons">
+                <button class="btn" onclick="copyRules('production')">
+                    📋 Copiar Reglas
+                </button>
+                <button class="btn secondary" onclick="selectRules('production')">
+                    🔍 Seleccionar Todo
+                </button>
+                <a href="https://console.firebase.google.com" target="_blank" class="btn success">
+                    🚀 Abrir Firebase Console
+                </a>
+            </div>
+        </div>
+        
+        <div class="rules-section">
+            <h2>📖 Cómo Aplicar las Reglas</h2>
+            <div class="steps">
+                <ol>
+                    <li>Haz clic en <strong>"Copiar Reglas"</strong> para el tipo que necesites</li>
+                    <li>Ve a <a href="https://console.firebase.google.com" target="_blank" class="code">Firebase Console</a></li>
+                    <li>Selecciona tu proyecto: <span class="code">mi-b-99ca8</span></li>
+                    <li>Ve a <strong>"Realtime Database"</strong> en el menú lateral</li>
+                    <li>Haz clic en la pestaña <strong>"Reglas"</strong></li>
+                    <li>Borra el contenido actual y pega las nuevas reglas</li>
+                    <li>Haz clic en <strong>"Publicar"</strong></li>
+                    <li>Verifica que no haya errores</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="rules-section">
+            <h2>🔧 Verificación</h2>
+            <p>Para verificar que las reglas funcionen correctamente:</p>
+            <div class="buttons">
+                <a href="firebase-diagnostic.html" class="btn">
+                    🔍 Diagnóstico Firebase
+                </a>
+                <a href="firebase-rules-helper.html" class="btn secondary">
+                    🛠️ Helper Original
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/firebase-rules.js"></script>
+    <script>
+        // Cargar las reglas en los textareas
+        document.addEventListener('DOMContentLoaded', function() {
+            const devTextarea = document.getElementById('developmentRules');
+            const prodTextarea = document.getElementById('productionRules');
+            
+            if (typeof getDevelopmentRulesJSON === 'function') {
+                devTextarea.value = getDevelopmentRulesJSON();
+            }
+            
+            if (typeof getProductionRulesJSON === 'function') {
+                prodTextarea.value = getProductionRulesJSON();
+            }
+        });
+        
+        // Función para copiar reglas
+        function copyRules(type) {
+            const textarea = document.getElementById(type + 'Rules');
+            const content = textarea.value;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(content).then(() => {
+                    showNotification('✅ Reglas copiadas al portapapeles', 'success');
+                }).catch(err => {
+                    showNotification('❌ Error al copiar: ' + err.message, 'error');
+                });
+            } else {
+                // Fallback para navegadores antiguos
+                textarea.select();
+                textarea.setSelectionRange(0, 99999);
+                try {
+                    document.execCommand('copy');
+                    showNotification('✅ Reglas copiadas al portapapeles', 'success');
+                } catch (err) {
+                    showNotification('❌ Error al copiar. Selecciona y copia manualmente.', 'error');
+                }
+            }
+        }
+        
+        // Función para seleccionar todo el contenido
+        function selectRules(type) {
+            const textarea = document.getElementById(type + 'Rules');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            showNotification('📋 Contenido seleccionado', 'success');
+        }
+        
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

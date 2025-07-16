@@ -102,7 +102,8 @@
                 <li><a href="index.html">🏠 Inicio</a></li>
                 <li><a href="blog-simple.html">📝 Blog</a></li>
                 <li><a href="resources.html">🔗 Recursos</a></li>
-                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Cerrar Sesión</a></li>
+                <li><a href="about.html">📋 Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
             </ul>
         </nav>
     </header>
@@ -350,12 +351,51 @@
                 </div>
             </div>
         </section>
+
+        <!-- Contact optimizada -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>💬 Conecta Conmigo</h2>
+                    <p>¿Tienes recomendaciones de juegos o quieres charlar sobre gaming?</p>
+                </div>
+                
+                <div class="form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Tu nombre de gamer" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Tu email" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" required>
+                                <option value="">Selecciona un tema</option>
+                                <option value="recommendation">Recomendación de juego</option>
+                                <option value="review">Solicitar review</option>
+                                <option value="collaboration">Colaboración</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Tu mensaje sobre gaming..." rows="4" required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn-gaming primary">📧 Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
     </main>
     
     <!-- Footer optimizado -->
     <footer class="section">
         <div class="container text-center">
             <p>© 2025 Ale Gallo - Gaming Universe</p>
+            <div style="margin-top: 1rem;">
+                <a href="about.html" style="margin: 0 1rem;">Sobre mí</a>
+                <a href="contact.html" style="margin: 0 1rem;">Contacto</a>
+            </div>
         </div>
     </footer>
     
@@ -366,6 +406,5 @@
     
     <!-- JavaScript optimizado - Solo un archivo -->
     <script src="js/gaming-app.js"></script>
-    <script src="js/auth-guard.js"></script>
 </body>
 </html>

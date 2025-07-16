@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursos - Ale Gallo Gaming Universe</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/gaming-lite.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Estilos específicos para recursos editables */
+        .resources-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .resources-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .resources-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+        
+        .toolbar-left {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .toolbar-right {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #357abd;
+        }
+        
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #45a049;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+        
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+        
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+        }
+        
+        .search-box {
+            padding: 0.5rem;
+            border: 1px solid #444;
+            background: #1a1a1a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            width: 200px;
+        }
+        
+        .resource-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .resource-category {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .resource-category:hover {
+            border-color: #4a90e2;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.1);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #444;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            color: #4a90e2;
+            margin: 0;
+        }
+        
+        .category-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .resource-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .resource-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .resource-item:hover {
+            background: #333;
+            border-color: #4a90e2;
+        }
+        
+        .resource-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+        
+        .resource-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #4a90e2;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        .resource-info {
+            flex: 1;
+        }
+        
+        .resource-name {
+            font-weight: 600;
+            color: #4a90e2;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+        
+        .resource-name:hover {
+            text-decoration: underline;
+        }
+        
+        .resource-description {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .resource-actions {
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .resource-item:hover .resource-actions {
+            opacity: 1;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: #333;
+            color: #f0f0f0;
+        }
+        
+        .action-btn.edit:hover {
+            color: #4a90e2;
+        }
+        
+        .action-btn.delete:hover {
+            color: #f44336;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #444;
+        }
+        
+        .modal-title {
+            color: #4a90e2;
+            margin: 0;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .close-btn:hover {
+            background: #333;
+            color: #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #f0f0f0;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        
+        .icon-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .icon-preview img {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+        }
+        
+        .icon-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .icon-option {
+            padding: 0.5rem;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .icon-option:hover {
+            border-color: #4a90e2;
+            background: #333;
+        }
+        
+        .icon-option.selected {
+            border-color: #4a90e2;
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .icon-search-container {
+            position: relative;
+        }
+        
+        .icon-search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .icon-search-results.show {
+            display: block;
+        }
+        
+        .icon-search-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.3s;
+        }
+        
+        .icon-search-item:hover {
+            background: #333;
+        }
+        
+        .icon-search-item:last-child {
+            border-bottom: none;
+        }
+        
+        .icon-search-item-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-search-item-name {
+            font-size: 0.9rem;
+            color: #f0f0f0;
+        }
+        
+        .edit-mode .resource-actions {
+            opacity: 1 !important;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            z-index: 10001;
+            font-weight: 600;
+            min-width: 200px;
+            text-align: center;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .notification.error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .notification.warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .notification.info {
+            background: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Ale Gallo - Gaming Universe</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html">📝 Blog</a></li>
+                <li><a href="resources.html" style="color: #4a90e2;">🔗 Recursos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="resources-container">
+        <div class="resources-header">
+            <h2>🔗 Mis Recursos</h2>
+            <p>Links útiles, herramientas y recursos organizados por categorías</p>
+        </div>
+
+        <div class="resources-toolbar">
+            <div class="toolbar-left">
+                <input type="text" class="search-box" placeholder="🔍 Buscar recursos..." id="searchBox">
+                <button class="btn btn-primary" onclick="showAddResourceModal()">
+                    <i class="fas fa-plus"></i> Nuevo Recurso
+                </button>
+                <button class="btn btn-success" onclick="showAddCategoryModal()">
+                    <i class="fas fa-folder-plus"></i> Nueva Categoría
+                </button>
+            </div>
+            
+            <div class="toolbar-right">
+                <button class="btn btn-secondary" onclick="toggleEditMode()" id="editModeBtn">
+                    <i class="fas fa-edit"></i> Modo Edición
+                </button>
+                <button class="btn btn-warning" onclick="exportResources()">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="btn btn-danger" onclick="importResources()">
+                    <i class="fas fa-upload"></i> Importar
+                </button>
+            </div>
+        </div>
+
+        <div class="resource-categories" id="resourceCategories">
+            <!-- Las categorías se cargarán dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar recurso -->
+    <div id="resourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="resourceModalTitle">Nuevo Recurso</h3>
+                <button class="close-btn" onclick="closeResourceModal()">&times;</button>
+            </div>
+            
+            <form id="resourceForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre del Recurso</label>
+                    <input type="text" class="form-input" id="resourceName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">URL</label>
+                    <input type="url" class="form-input" id="resourceUrl" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Categoría</label>
+                    <select class="form-select" id="resourceCategory" required>
+                        <option value="">Selecciona una categoría</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-textarea" id="resourceDescription" placeholder="Descripción del recurso..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Icono</label>
+                    <input type="text" class="form-input" id="resourceIcon" placeholder="Emoji, URL o nombre del icono (ej: mdi:github)">
+                    <div class="icon-search-container">
+                        <input type="text" class="form-input" id="iconSearch" placeholder="🔍 Buscar iconos en línea..." style="margin-top: 0.5rem;">
+                        <div class="icon-search-results" id="iconSearchResults"></div>
+                    </div>
+                    <div class="icon-options">
+                        <div class="icon-option" onclick="selectIcon('🌐')">🌐</div>
+                        <div class="icon-option" onclick="selectIcon('💻')">💻</div>
+                        <div class="icon-option" onclick="selectIcon('📱')">📱</div>
+                        <div class="icon-option" onclick="selectIcon('🔧')">🔧</div>
+                        <div class="icon-option" onclick="selectIcon('📚')">📚</div>
+                        <div class="icon-option" onclick="selectIcon('🎨')">🎨</div>
+                        <div class="icon-option" onclick="selectIcon('📊')">📊</div>
+                        <div class="icon-option" onclick="selectIcon('🔐')">🔐</div>
+                        <div class="icon-option" onclick="selectIcon('mdi:github')">GitHub</div>
+                        <div class="icon-option" onclick="selectIcon('mdi:google')">Google</div>
+                        <div class="icon-option" onclick="selectIcon('simple-icons:youtube')">YouTube</div>
+                        <div class="icon-option" onclick="selectIcon('simple-icons:facebook')">Facebook</div>
+                    </div>
+                    <div class="icon-preview" id="iconPreview"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeResourceModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para agregar categoría -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Nueva Categoría</h3>
+                <button class="close-btn" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre de la Categoría</label>
+                    <input type="text" class="form-input" id="categoryName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Icono</label>
+                    <input type="text" class="form-input" id="categoryIcon" placeholder="Emoji para la categoría">
+                    <div class="icon-options">
+                        <div class="icon-option" onclick="selectCategoryIcon('💼')">💼</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('🚀')">🚀</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('📚')">📚</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('🔧')">🔧</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('🎨')">🎨</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('📊')">📊</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('🌐')">🌐</div>
+                        <div class="icon-option" onclick="selectCategoryIcon('⚡')">⚡</div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Categoría</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-manager.js"></script>
+    <script src="js/icon-manager.js"></script>
+    <script src="js/resources-manager.js"></script>
+    
+    <script>
+        // Verificar que todos los scripts se cargaron correctamente
+        window.addEventListener('load', function() {
+            console.log('🔥 Verificando dependencias...');
+            
+            if (typeof firebase === 'undefined') {
+                console.error('❌ Firebase no está disponible');
+                alert('Error: Firebase no se cargó correctamente');
+                return;
+            }
+            
+            if (typeof IconManager === 'undefined') {
+                console.error('❌ IconManager no está disponible');
+                alert('Error: IconManager no se cargó correctamente');
+                return;
+            }
+            
+            if (typeof ResourceManager === 'undefined') {
+                console.error('❌ ResourceManager no está disponible');
+                alert('Error: ResourceManager no se cargó correctamente');
+                return;
+            }
+            
+            console.log('✅ Todas las dependencias cargadas correctamente');
+        });
+        
+        // Manejo de errores globales
+        window.addEventListener('error', function(e) {
+            console.error('Error global:', e.error);
+            if (e.filename && e.filename.includes('resources')) {
+                console.error('Error en sistema de recursos:', e.message);
+            }
+        });
+    </script>
+</body>
+</html>
