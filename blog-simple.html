@@ -9,10 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Header mejorado para móvil -->
     <header>
         <h1>Ale Gallo - Gaming Universe</h1>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Menú">
+            <span id="menu-icon">☰</span>
+        </button>
         <nav>
-            <ul>
+            <ul id="mobile-menu">
                 <li><a href="index.html">🏠 Inicio</a></li>
                 <li><a href="blog-simple.html" style="color: #4a90e2;">📝 Blog</a></li>
                 <li><a href="resources.html">🔗 Recursos</a></li>
@@ -75,5 +79,69 @@
     <script src="js/gaming-app.js"></script>
     <script src="js/blog-simple.js"></script>
     <script src="js/auth-guard.js"></script>
+    
+    <script>
+        // 📱 Funcionalidad del menú móvil
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                menu.classList.add('hide');
+                icon.textContent = '☰';
+                
+                setTimeout(() => {
+                    menu.classList.remove('hide');
+                }, 300);
+            } else {
+                menu.classList.add('show');
+                icon.textContent = '✕';
+            }
+        }
+        
+        // Cerrar menú al hacer clic en un enlace
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuLinks = document.querySelectorAll('#mobile-menu a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const menu = document.getElementById('mobile-menu');
+                    const icon = document.getElementById('menu-icon');
+                    
+                    if (menu.classList.contains('show')) {
+                        menu.classList.remove('show');
+                        icon.textContent = '☰';
+                    }
+                });
+            });
+        });
+        
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mobile-menu');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            const header = document.querySelector('header');
+            
+            if (!header.contains(event.target) && menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                document.getElementById('menu-icon').textContent = '☰';
+            }
+        });
+        
+        // Cerrar menú al cambiar orientación
+        window.addEventListener('orientationchange', function() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                icon.textContent = '☰';
+            }
+        });
+        
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
+    </script>
 </body>
 </html>
