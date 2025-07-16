@@ -1,62 +1,85 @@
 
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html        <nav>
+            <ul>
+                <li><a href="index.html" style="color: #4a90e2;">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html">📋 Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Salir</a></li>
+            </ul>
+        </nav>g="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ale Gallo - Blog Personal</title>
+    <title>Ale Gallo - Mi Espacio Digital Personal</title>
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/front-page.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Header de navegación -->
+    <header>
+        <h1>Ale Gallo - Gaming Blog</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" style="color: #4a90e2;">🏠 Inicio</a></li>
+                <li><a href="blog-viewer.html">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html">� Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Salir</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="front-page">
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content">
                 <h1 class="hero-title">Ale Gallo</h1>
-                <p class="hero-subtitle">Cantante, Artista, Creadora de Emociones</p>
+                <p class="hero-subtitle">Mi Espacio Digital Personal</p>
                 <p class="hero-description">
-                    Especializada en R&B, Blues, Rockabilly, Swing, Rock & Roll y Soul de los años 50
+                    Bienvenido a mi sitio personal donde organizo mis links, contenidos, información y datos de trabajo
                 </p>
                 <div class="hero-actions">
-                    <button onclick="showLoginModal()" class="btn-primary-large">Acceder al Blog</button>
-                    <button onclick="scrollToContact()" class="btn-secondary-large">Contacto</button>
+                    <button onclick="scrollToFeatures()" class="btn-primary-large">🔍 Explorar Contenido</button>
+                    <button onclick="scrollToContact()" class="btn-secondary-large">📞 Contacto</button>
                 </div>
             </div>
             <div class="hero-image">
                 <div class="placeholder-image">
-                    <span>🎤</span>
+                    <span>💼</span>
                 </div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section class="about-section">
+        <section class="about-section" id="features">
             <div class="container">
-                <h2>Mi Música, Mi Pasión</h2>
+                <h2>🗂️ Mi Espacio Digital</h2>
                 <div class="about-content">
                     <div class="about-text">
                         <p>
-                            Soy Ale Gallo, una cantante argentina apasionada por los géneros que marcaron época. 
-                            Mi música abarca desde el soulful R&B hasta el enérgico Rockabilly, 
-                            siempre con la autenticidad y emoción que caracterizan mi estilo.
+                            Este sitio es mi espacio personal organizado donde centralizo toda mi información importante:
+                            links útiles, contenidos relevantes, datos de trabajo y recursos que uso frecuentemente.
                         </p>
                         <p>
-                            En este espacio personal comparto mi experiencia artística, reflexiones sobre la música, 
-                            y mi journey como artista independiente. Cada canción cuenta una historia, 
-                            cada performance es una experiencia única.
+                            Un lugar donde puedo crear nuevos menús, pestañas y secciones según mis necesidades,
+                            manteniendo todo organizado y accesible desde cualquier lugar.
                         </p>
                     </div>
                     <div class="music-genres">
-                        <h3>Géneros Musicales</h3>
+                        <h3>📂 Secciones Principales</h3>
                         <div class="genre-tags">
-                            <span class="genre-tag">R&B</span>
-                            <span class="genre-tag">Blues</span>
-                            <span class="genre-tag">Rockabilly</span>
-                            <span class="genre-tag">Swing</span>
-                            <span class="genre-tag">Rock & Roll</span>
-                            <span class="genre-tag">Soul</span>
+                            <span class="genre-tag">📝 Blog Personal</span>
+                            <span class="genre-tag">🔗 Enlaces Útiles</span>
+                            <span class="genre-tag">💼 Datos de Trabajo</span>
+                            <span class="genre-tag">📚 Recursos</span>
+                            <span class="genre-tag">🎯 Proyectos</span>
+                            <span class="genre-tag">⚙️ Herramientas</span>
                         </div>
                     </div>
                 </div>
@@ -66,8 +89,8 @@
         <!-- Contact Section -->
         <section class="contact-section" id="contact">
             <div class="container">
-                <h2>Conectemos</h2>
-                <p>¿Quieres colaborar, contratarme para un evento, o simplemente charlar sobre música? ¡Escribime!</p>
+                <h2>📞 Conectemos</h2>
+                <p>¿Tienes alguna sugerencia, quieres colaborar, o simplemente charlar? ¡Escríbeme!</p>
                 
                 <div class="contact-content">
                     <div class="contact-form-container">
@@ -84,7 +107,7 @@
                             
                             <div class="form-group">
                                 <label for="message">Mensaje:</label>
-                                <textarea id="message" name="message" rows="5" required placeholder="Cuéntame sobre tu proyecto, evento, o lo que tengas en mente..."></textarea>
+                                <textarea id="message" name="message" rows="5" required placeholder="Cuéntame sobre tu consulta, propuesta, o cualquier cosa que tengas en mente..."></textarea>
                             </div>
                             
                             <button type="submit" class="btn-primary">Enviar Mensaje</button>
@@ -98,8 +121,8 @@
                             <a href="mailto:ale21rock@gmail.com">ale21rock@gmail.com</a>
                         </div>
                         <div class="contact-item">
-                            <strong>🎵 Géneros:</strong>
-                            R&B, Blues, Rockabilly, Swing, Rock & Roll, Soul
+                            <strong>💼 Enfoque:</strong>
+                            Organización personal, Links útiles, Datos de trabajo, Recursos digitales
                         </div>
                         <div class="contact-item">
                             <strong>📍 Ubicación:</strong>
@@ -109,9 +132,9 @@
                         <div class="social-links">
                             <h4>Sígueme en:</h4>
                             <div class="social-buttons">
-                                <a href="#" class="social-btn">Instagram</a>
-                                <a href="#" class="social-btn">YouTube</a>
-                                <a href="#" class="social-btn">Spotify</a>
+                                <a href="#" class="social-btn">LinkedIn</a>
+                                <a href="#" class="social-btn">GitHub</a>
+                                <a href="#" class="social-btn">Twitter</a>
                             </div>
                         </div>
                     </div>
@@ -122,41 +145,17 @@
         <!-- Footer -->
         <footer class="front-footer">
             <div class="container">
-                <p>&copy; 2025 Ale Gallo. Todos los derechos reservados.</p>
-                <p>Sitio web y blog desarrollado con ❤️</p>
+                <p>&copy; 2025 Ale Gallo - Mi Espacio Digital Personal</p>
+                <p>Sitio web desarrollado para organizar contenidos, links y datos de trabajo</p>
             </div>
         </footer>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="login-modal" class="auth-modal" style="display: none;">
-        <div class="auth-modal-content">
-            <h3>Acceso al Blog</h3>
-            <p>Ingresa tus credenciales para acceder al contenido completo del blog</p>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="username">Usuario:</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                
-                <div class="auth-buttons">
-                    <button type="submit" class="btn-primary">Iniciar Sesión</button>
-                    <button type="button" onclick="closeLoginModal()" class="btn-secondary">Cancelar</button>
-                </div>
-            </form>
-            <div id="login-error" class="login-error" style="display: none;"></div>
-        </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="js/blog-config.js"></script>
     <script src="js/front-page.js"></script>
 </body>
 </html>

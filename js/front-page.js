@@ -7,6 +7,29 @@ document.addEventListener('DOMContentLoaded', function() {
         password: 'vinilo28'
     };
     
+    // Verificar estado de autenticación al cargar la página
+    function checkAuthStatus() {
+        const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        if (isAuthenticated && logoutBtn) {
+            logoutBtn.style.display = 'inline-block';
+        }
+    }
+    
+    // Función de logout
+    window.logout = function() {
+        sessionStorage.removeItem('authenticated');
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.style.display = 'none';
+        }
+        showNotification('Sesión cerrada correctamente');
+    };
+    
+    // Llamar a checkAuthStatus al cargar la página
+    checkAuthStatus();
+    
     // Función para mostrar notificaciones
     function showNotification(message, type = 'success') {
         const notification = document.createElement('div');
@@ -41,55 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // Función para mostrar modal de login
-    window.showLoginModal = function() {
-        document.getElementById('login-modal').style.display = 'flex';
-        document.getElementById('username').focus();
+    // Función para scroll suave a las características
+    window.scrollToFeatures = function() {
+        document.getElementById('features').scrollIntoView({
+            behavior: 'smooth'
+        });
     };
-    
-    // Función para cerrar modal de login
-    window.closeLoginModal = function() {
-        document.getElementById('login-modal').style.display = 'none';
-        document.getElementById('login-error').style.display = 'none';
-        document.getElementById('login-form').reset();
-    };
-    
-    // Cerrar modal con ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLoginModal();
-        }
-    });
-    
-    // Cerrar modal haciendo click fuera
-    document.getElementById('login-modal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeLoginModal();
-        }
-    });
-    
-    // Manejar login
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        
-        if (username === AUTH_CREDENTIALS.username && password === AUTH_CREDENTIALS.password) {
-            // Guardar sesión
-            sessionStorage.setItem('authenticated', 'true');
-            
-            // Redirigir al blog
-            showNotification('¡Acceso concedido! Redirigiendo al blog...');
-            
-            setTimeout(() => {
-                window.location.href = 'blog-viewer.html';
-            }, 1500);
-        } else {
-            document.getElementById('login-error').style.display = 'block';
-            document.getElementById('login-error').textContent = 'Usuario o contraseña incorrectos';
-        }
-    });
     
     // Manejar formulario de contacto
     document.getElementById('contact-form').addEventListener('submit', function(e) {

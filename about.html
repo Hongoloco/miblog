@@ -1,37 +1,53 @@
 
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE         <nav>
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html" style="color: #4a90e2;">📋 Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Salir</a></li>
+            </ul>
+        </nav> lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Sobre mí - Ale Gallo</title>
+    <title>Sobre mí - Ale Gallo Espacio Digital</title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
     <header>
-        <h1>Ale Gallo</h1>
+        <h1>Ale Gallo - Mi Espacio Digital</h1>
         <nav>
             <ul>
                 <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog-viewer.html">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html" style="color: #4a90e2;">� Sobre mí</a></li>
                 <li><a href="contact.html">📞 Contacto</a></li>
-                <li><a href="admin.html" style="color: #4a90e2;">🔐 Admin</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Salir</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <section>
-            <h2>Sobre mí</h2>
-            <p>Soy Ale Gallo, cantante argentina especializada en géneros como R&B, Blues, Rockabilly, Swing, Rock & Roll y Soul de los años 50.</p>
-            <p>Este espacio combina mi lado artístico y profesional, compartiendo experiencias, reflexiones y trabajos.</p>
+            <h2>📋 Sobre mí</h2>
+            <p>¡Hola! Soy Ale Gallo, y este es mi espacio digital personal donde organizo todo lo que considero importante y útil.</p>
+            <p>En este sitio centralizo mis links favoritos, recursos útiles, datos de trabajo, contenidos relevantes y cualquier información que necesito tener a mano de forma organizada.</p>
+            <p>Me gusta mantener todo bien estructurado y accesible, por eso he creado diferentes secciones donde puedo agregar nuevos contenidos, menús y pestañas según mis necesidades.</p>
+            <p>¡Espero que este espacio me ayude a mantener todo organizado y fácil de encontrar!</p>
         </section>
     </main>
     <footer>
-        <p>Desarrollado por Ale Gallo</p>
+        <p>© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
     </footer>
     
     <!-- Scripts de Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     <script src="js/firebase-config.js"></script>
+    <script src="js/blog-config.js"></script>
     <script src="js/public-pages.js"></script>
 </body>
 </html>

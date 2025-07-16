@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Ale Gallo Espacio Digital</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Ale Gallo - Mi Espacio Digital</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="blog-simple.html" style="color: #4a90e2;">📝 Blog</a></li>
+                <li><a href="resources.html">🔗 Recursos</a></li>
+                <li><a href="about.html">📋 Sobre mí</a></li>
+                <li><a href="contact.html">📞 Contacto</a></li>
+                <li><a href="admin.html" style="color: #888;">🔐 Admin</a></li>
+                <li><a href="#" id="logout-btn" onclick="logout()" style="color: #f44336; display: none;">🚪 Salir</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="blog-header">
+            <h2>📝 Mi Blog Personal</h2>
+            <p>Espacio para guardar pensamientos, enlaces interesantes y contenido útil</p>
+        </section>
+
+        <!-- Formulario para agregar contenido -->
+        <section class="add-content-section">
+            <button onclick="showAddForm()" class="btn-primary">➕ Agregar Contenido</button>
+            
+            <div id="add-content-form" class="content-form" style="display: none;">
+                <h3>➕ Nuevo Contenido</h3>
+                <form id="new-content-form">
+                    <div class="form-group">
+                        <label for="content-title">Título:</label>
+                        <input type="text" id="content-title" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content-type">Tipo de Contenido:</label>
+                        <select id="content-type" name="type" required>
+                            <option value="">Selecciona tipo</option>
+                            <option value="nota">📝 Nota Personal</option>
+                            <option value="enlace">🔗 Enlace Interesante</option>
+                            <option value="articulo">📰 Artículo</option>
+                            <option value="idea">💡 Idea</option>
+                            <option value="recurso">🛠️ Recurso Útil</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content-url">URL (opcional):</label>
+                        <input type="url" id="content-url" name="url" placeholder="https://ejemplo.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content-description">Contenido:</label>
+                        <textarea id="content-description" name="description" rows="6" required placeholder="Escribe tu contenido aquí..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content-tags">Etiquetas (separadas por coma):</label>
+                        <input type="text" id="content-tags" name="tags" placeholder="ejemplo: trabajo, importante, pendiente">
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-primary">Guardar Contenido</button>
+                        <button type="button" onclick="hideAddForm()" class="btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <section class="filters-section">
+            <h3>🔍 Filtros</h3>
+            <div class="filter-buttons">
+                <button onclick="filterContent('all')" class="filter-btn active" data-filter="all">📋 Todos</button>
+                <button onclick="filterContent('nota')" class="filter-btn" data-filter="nota">📝 Notas</button>
+                <button onclick="filterContent('enlace')" class="filter-btn" data-filter="enlace">🔗 Enlaces</button>
+                <button onclick="filterContent('articulo')" class="filter-btn" data-filter="articulo">📰 Artículos</button>
+                <button onclick="filterContent('idea')" class="filter-btn" data-filter="idea">💡 Ideas</button>
+                <button onclick="filterContent('recurso')" class="filter-btn" data-filter="recurso">🛠️ Recursos</button>
+            </div>
+        </section>
+
+        <!-- Contenido del blog -->
+        <section class="blog-content">
+            <div id="blog-posts" class="blog-posts">
+                <!-- Contenido de ejemplo -->
+                <article class="blog-post" data-type="nota">
+                    <header class="post-header">
+                        <h3>📝 Bienvenida a mi blog</h3>
+                        <span class="post-date">16 de Julio, 2025</span>
+                        <span class="post-type">📝 Nota Personal</span>
+                    </header>
+                    <div class="post-content">
+                        <p>Este es mi espacio personal donde puedo guardar pensamientos, enlaces interesantes y cualquier contenido que considere útil para el futuro.</p>
+                        <div class="post-tags">
+                            <span class="tag">personal</span>
+                            <span class="tag">bienvenida</span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <button onclick="editPost(this)" class="btn-edit">✏️ Editar</button>
+                        <button onclick="deletePost(this)" class="btn-delete">🗑️ Eliminar</button>
+                    </div>
+                </article>
+
+                <article class="blog-post" data-type="enlace">
+                    <header class="post-header">
+                        <h3>🔗 GitHub - Repositorio de código</h3>
+                        <span class="post-date">16 de Julio, 2025</span>
+                        <span class="post-type">🔗 Enlace Interesante</span>
+                    </header>
+                    <div class="post-content">
+                        <p>Plataforma principal para gestionar mis proyectos de código y colaborar con otros desarrolladores.</p>
+                        <div class="post-url">
+                            <a href="https://github.com" target="_blank">🌐 Visitar sitio</a>
+                        </div>
+                        <div class="post-tags">
+                            <span class="tag">desarrollo</span>
+                            <span class="tag">código</span>
+                            <span class="tag">trabajo</span>
+                        </div>
+                    </div>
+                    <div class="post-actions">
+                        <button onclick="editPost(this)" class="btn-edit">✏️ Editar</button>
+                        <button onclick="deletePost(this)" class="btn-delete">🗑️ Eliminar</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Ale Gallo - Mi Espacio Digital Personal</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/blog-config.js"></script>
+    <script src="js/blog-simple.js"></script>
+    <script src="js/public-pages.js"></script>
+</body>
+</html>

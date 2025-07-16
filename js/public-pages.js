@@ -3,6 +3,32 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Función de logout para páginas públicas
+    window.logout = function() {
+        sessionStorage.removeItem('authenticated');
+        
+        // Mostrar notificación
+        showNotification('Sesión cerrada correctamente');
+        
+        // Redirigir a index después de un pequeño delay
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1500);
+    };
+    
+    // Verificar estado de autenticación y mostrar/ocultar botón de logout
+    function checkAuthStatus() {
+        const isAuthenticated = sessionStorage.getItem('authenticated') === 'true';
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        if (logoutBtn) {
+            logoutBtn.style.display = isAuthenticated ? 'inline-block' : 'none';
+        }
+    }
+    
+    // Llamar a checkAuthStatus al cargar la página
+    checkAuthStatus();
+    
     // Función para mostrar notificaciones
     function showNotification(message, type = 'success') {
         const notification = document.createElement('div');

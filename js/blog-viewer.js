@@ -1,10 +1,26 @@
 // Verificar autenticación al cargar la página
 document.addEventListener('DOMContentLoaded', function() {
-    const isAuthenticated = sessionStorage.getItem('authenticated');
+    console.log('🔍 Inicializando blog-viewer...');
     
-    if (!isAuthenticated) {
-        // Si no está autenticado, redirigir al inicio
-        window.location.href = 'index.html';
+    // Esperar a que BlogConfig esté disponible
+    if (typeof BlogConfig === 'undefined') {
+        console.error('❌ BlogConfig no está disponible');
+        return;
+    }
+    
+    // Verificar autenticación usando BlogConfig
+    if (!BlogConfig.auth.isAuthenticated()) {
+        console.log('❌ No autenticado, redirigiendo...');
+        BlogConfig.navigation.redirectToHome();
+        return;
+    }
+    
+    console.log('✅ Usuario autenticado, cargando posts...');
+    
+    // Verificar que Firebase esté disponible
+    if (!BlogConfig.firebase.isAvailable()) {
+        console.error('❌ Firebase no está disponible');
+        BlogConfig.error.show('Firebase no está disponible');
         return;
     }
     
@@ -16,16 +32,34 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadBlogPosts() {
     const postsContainer = document.getElementById('blog-posts');
     
+    if (!postsContainer) {
+        console.error('Contenedor de posts no encontrado');
+        return;
+    }
+    
+    // Mostrar mensaje de carga
+    postsContainer.innerHTML = '<p>Cargando entradas del blog...</p>';
+    
     // Referencia a la base de datos
     const database = firebase.database();
     const postsRef = database.ref('blog-posts');
     
+    console.log('Cargando posts desde Firebase...');
+    
     postsRef.on('value', (snapshot) => {
         const posts = snapshot.val();
+        console.log('Posts recibidos:', posts);
+        
         postsContainer.innerHTML = '';
         
         if (!posts) {
-            postsContainer.innerHTML = '<p>No hay entradas en el blog aún.</p>';
+            postsContainer.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #aaa;">
+                    <h3>📝 No hay entradas en el blog aún</h3>
+                    <p>Usa el panel de administración para crear tu primera entrada.</p>
+                    <a href="admin.html" style="color: #4a90e2;">Ir al Panel Admin</a>
+                </div>
+            `;
             return;
         }
         
@@ -37,11 +71,24 @@ function loadBlogPosts() {
         
         postsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         
+        console.log('Posts procesados:', postsArray.length);
+        
         // Crear HTML para cada post
         postsArray.forEach(post => {
             const postElement = createPostElement(post);
             postsContainer.appendChild(postElement);
         });
+    }, (error) => {
+        console.error('Error al cargar posts:', error);
+        postsContainer.innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: #f44336;">
+                <h3>❌ Error al cargar las entradas</h3>
+                <p>Verifica la configuración de Firebase.</p>
+                <button onclick="location.reload()" style="background: #4a90e2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer;">
+                    Reintentar
+                </button>
+            </div>
+        `;
     });
 }
 
@@ -144,6 +191,14 @@ function loadComments(postId) {
 
 // Función para cerrar sesión
 function logout() {
-    sessionStorage.removeItem('authenticated');
-    window.location.href = 'index.html';
+    console.log('🚪 Cerrando sesión...');
+    
+    if (typeof BlogConfig !== 'undefined') {
+        BlogConfig.auth.clearSession();
+        BlogConfig.navigation.redirectToHome();
+    } else {
+        // Fallback si BlogConfig no está disponible
+        sessionStorage.removeItem('authenticated');
+        window.location.href = 'index.html';
+    }
 }
