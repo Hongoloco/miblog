@@ -1,0 +1,151 @@
+{
+  "id": "olt-1747418871049",
+  "nombre": "ZTE C600",
+  "shelf": 1,
+  "slot": 13,
+  "port": 4,
+  "onuId": 38,
+  "comandos": [
+    {
+      "summary": "Factory Reset",
+      "lines": [
+        "# Comando para restaurar la configuración de fábrica de una ONU",
+        "pon-onu-mng gpon_onu-{shelf}/{slot}/{port}:{onuId}",
+        "restore factory"
+      ]
+    },
+    {
+      "summary": "Ver la base de ONU's",
+      "lines": [
+        "# Sirve para ver las onus conectadas ",
+        "pon-onu-mng gpon_onu-1/13/4:2",
+        "show gpon onu baseinfo gpon_olt-{shelf}/{slot}/{port}:{onuId}"
+      ]
+    },
+    {
+      "summary": "Ver configuración de la ONU en la ONT",
+      "lines": [
+        "# Comando para mostrar la configuración de una ONU",
+        "show collection pon-onu gpon_onu-{shelf}/{slot}/{port}:{onuId} config"
+      ]
+    },
+    {
+      "summary": "Configurar en modo bridge (desde modo router)",
+      "lines": [
+        "# Comandos para cambiar la configuración de una ONU a modo bridge",
+        "pon-onu-mng gpon_onu-{shelf}/{slot}/{port}:{onuId}",
+        "no wan-ip",
+        "dhcp-ip ethuni eth_0/1 from-internet",
+        "dhcp-ip ethuni eth_0/2 from-internet",
+        "dhcp-ip ethuni eth_0/3 from-internet",
+        "dhcp-ip ethuni eth_0/4 from-internet",
+        "vlan port eth_0/1 mode tag vlan 10",
+        "vlan port eth_0/2 mode tag vlan 10",
+        "vlan port eth_0/3 mode tag vlan 10",
+        "vlan port eth_0/4 mode tag vlan 10",
+        "interface wifi wifi_0/1 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/2 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/3 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/4 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/5 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/6 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/7 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/8 arc disable arc-interval 0 state lock",
+        "exit"
+      ]
+    },
+    {
+      "summary": "Configurar en modo bridge (desde modo router) (Copia)",
+      "lines": [
+        "# Comandos para cambiar la configuración de una ONU a modo bridge",
+        "pon-onu-mng gpon_onu-{shelf}/{slot}/{port}:{onuId}",
+        "no wan-ip",
+        "dhcp-ip ethuni eth_0/1 from-internet",
+        "dhcp-ip ethuni eth_0/2 from-internet",
+        "dhcp-ip ethuni eth_0/3 from-internet",
+        "dhcp-ip ethuni eth_0/4 from-internet",
+        "vlan port eth_0/1 mode tag vlan 10",
+        "vlan port eth_0/2 mode tag vlan 10",
+        "vlan port eth_0/3 mode tag vlan 10",
+        "vlan port eth_0/4 mode tag vlan 10",
+        "interface wifi wifi_0/1 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/2 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/3 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/4 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/5 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/6 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/7 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/8 arc disable arc-interval 0 state lock",
+        "exit"
+      ]
+    },
+    {
+      "summary": "Configurar en modo bridge (desde modo router) (Copia)",
+      "lines": [
+        "# Comandos para cambiar la configuración de una ONU a modo bridge",
+        "pon-onu-mng gpon_onu-{shelf}/{slot}/{port}:{onuId}",
+        "no wan-ip",
+        "dhcp-ip ethuni eth_0/1 from-internet",
+        "dhcp-ip ethuni eth_0/2 from-internet",
+        "dhcp-ip ethuni eth_0/3 from-internet",
+        "dhcp-ip ethuni eth_0/4 from-internet",
+        "vlan port eth_0/1 mode tag vlan 10",
+        "vlan port eth_0/2 mode tag vlan 10",
+        "vlan port eth_0/3 mode tag vlan 10",
+        "vlan port eth_0/4 mode tag vlan 10",
+        "interface wifi wifi_0/1 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/2 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/3 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/4 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/5 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/6 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/7 arc disable arc-interval 0 state lock",
+        "interface wifi wifi_0/8 arc disable arc-interval 0 state lock",
+        "exit"
+      ]
+    },
+    {
+      "summary": "Volverla a Configurar en modo router (desde modo bridge)",
+      "lines": [
+        "# Comandos para volver la configuración de una ONU a modo router",
+        "pon-onu-mng gpon_onu-{shelf}/{slot}/{port}:{onuId}",
+        "wan-ip ipv4 mode inner vlan-profile vlanHSI host 1",
+        "dhcp-ip ethuni eth_0/1 from-onu",
+        "dhcp-ip ethuni eth_0/2 from-onu",
+        "dhcp-ip ethuni eth_0/3 from-onu",
+        "dhcp-ip ethuni eth_0/4 from-onu",
+        "no vlan port eth_0/1 mode",
+        "no vlan port eth_0/2 mode",
+        "no vlan port eth_0/3 mode",
+        "no vlan port eth_0/4 mode",
+        "interface wifi wifi_0/1 arc disable arc-interval 0 state unlock",
+        "interface wifi wifi_0/5 arc disable arc-interval 0 state unlock",
+        "interface wifi wifi_0/8 arc disable arc-interval 0 state unlock",
+        "exit"
+      ]
+    },
+    {
+      "summary": "Ver configuracion ONU",
+      "lines": [
+        "# Descripción del comando",
+        "pon-onu-mng gpon_onu-1/13/4:1",
+        "show collection pon-onu gpon_onu-{shelf}/{slot}/{port}:{onuId} config"
+      ]
+    },
+    {
+      "summary": "Ver estado de la linea VoiP",
+      "lines": [
+        "# Ver el estado de la linea de telefono",
+        "show gpon remote-onu voip-linestatus gpon_onu-{shelf}/{slot}/{port}:{onuId}",
+        ""
+      ]
+    },
+    {
+      "summary": "Ver IP de Voip",
+      "lines": [
+        "# Ver si le asigno IP al Telefono",
+        "show gpon remote-onu voip-ip gpon_onu-{shelf}/{slot}/{port}"
+      ]
+    }
+  ]
+}
